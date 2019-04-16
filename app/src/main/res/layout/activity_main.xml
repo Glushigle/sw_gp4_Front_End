@@ -51,7 +51,8 @@
         android:layout_gravity="center_horizontal"
         android:text="登 录"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        android:onClick="login"/>
     <!--显示tv register , find_psw -->
     <LinearLayout
         android:layout_width="fill_parent"
