@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chenxing.searchjob.sdk.view.MyRecyclerViewItem xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+    app:move_range="20"
+    app:right_width="200">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <!--内容区域放置布局-->
+
+            <TextView
+                android:id="@+id/show"
+                android:layout_width="1000dp"
+                android:layout_height="200dp"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center_vertical"
+                android:text="点击试试"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!--内容区域放置布局结束-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rightLayout"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@id/content_layout"
+            android:layout_alignBottom="@id/content_layout"
+            android:layout_toEndOf="@id/content_layout"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <!--自定义侧边菜单布局-->
+
+            <TextView
+                android:id="@+id/click"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="删除"
+                android:textColor="#ffffff"
+                android:textSize="26sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="修改"
+                android:textColor="#ff839dff"
+                android:textSize="26sp" />
+
+            <!--自定义侧边菜单布局结束-->
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</com.chenxing.searchjob.sdk.view.MyRecyclerViewItem>

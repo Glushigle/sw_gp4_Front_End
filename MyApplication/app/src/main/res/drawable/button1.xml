@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <!--看上去似乎是边框-->
+            <stroke android:width="5px" android:color="@android:color/holo_red_light"/>
+            <corners android:radius="15dp"/>
+            <!--看上去似乎是背景-->
+            <solid android:color="@android:color/holo_orange_dark"/>
+        </shape>
+    </item>
+</selector>
