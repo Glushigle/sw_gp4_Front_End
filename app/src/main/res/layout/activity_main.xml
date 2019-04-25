@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <!--输入框-->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/logintest"
+        android:layout_gravity="center_horizontal"/>
+
     <EditText
         android:id="@+id/et_user_name"
         android:layout_width="fill_parent"
@@ -51,7 +61,8 @@
         android:layout_gravity="center_horizontal"
         android:text="登 录"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        android:onClick="login"/>
     <!--显示tv register , find_psw -->
     <LinearLayout
         android:layout_width="fill_parent"
