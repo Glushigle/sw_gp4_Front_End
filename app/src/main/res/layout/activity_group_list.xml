@@ -30,4 +30,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
+    <LinearLayout
+        android:layout_width="395dp"
+        android:layout_height="624dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="43dp"/>
+
 </android.support.constraint.ConstraintLayout>
