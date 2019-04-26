@@ -36,7 +36,7 @@ public class GroupList extends AppCompatActivity {
         }
     };
 
-    private void addGroupView(String color, String name, String text){ // Position, size...?
+    private void addGroupView(String color, String name, String preview){ // Position, size...?
         LinearLayout myLayout = findViewById(R.id.group_list);
 
         Button myButton = new Button(this);
@@ -60,10 +60,14 @@ public class GroupList extends AppCompatActivity {
         * */
         String response = "{\"num\":\"3\",\n\"list\":{\n\"1\":{{\"name\":\"Group Name 1\",\"preview\":\"Upcoming DDL preview 1\"},\n\"2\":{\"name\":\"Group Name 2\",\"preview\":\"Upcoming DDL preview 2\"},\n\"3\":{\"name\":\"Group Name 3\",\"preview\":\"Upcoming DDL preview 3\"}}}";
         try {
-            JSONObject jsonObj = new JSONObject(response);
-            int num_groups = jsonObj.getInt("num groups");
+            JSONObject responseObj = new JSONObject(response);
+            int num_groups = responseObj.getInt("num groups");
             for(int i=1; i<=num_groups; ++i){
-                jsonObj.get("list/"+Integer.toString(i));
+                JSONObject list = (JSONObject) responseObj.get("list");
+                JSONObject item_i = (JSONObject) list.get(Integer.toString(i));
+                String name = (String) item_i.get("name");
+                String preview = (String) item_i.get("preview");
+                addGroupView("", name, preview); // TODO Color format?
             }
         } catch (JSONException e) {
             e.printStackTrace();
