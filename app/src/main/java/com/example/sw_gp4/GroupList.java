@@ -37,12 +37,16 @@ public class GroupList extends AppCompatActivity {
     };
 
     private void addGroupView(String color, String name, String preview){ // Position, size...?
+        /*
+        Swipe-to-delete view: https://demonuts.com/android-listview-swipe-delete/
+         */
+
         LinearLayout myLayout = findViewById(R.id.group_list);
 
         Button myButton = new Button(this);
         myButton.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         myLayout.addView(myButton);
     }
@@ -85,9 +89,10 @@ public class GroupList extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Create group_list
-        String[] keys = {"key1"};
-        String[] values = {"value1"};
-        String response = PostRequester.request("full_url", keys, values); // TODO API?
+        //String[] keys = {"key1"};
+        //String[] values = {"value1"};
+        //String response = PostRequester.request("full_url", keys, values); // TODO API?
+        renderGroupListView();
     }
 
 }
