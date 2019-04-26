@@ -5,7 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class GroupList extends AppCompatActivity {
 
@@ -31,20 +36,39 @@ public class GroupList extends AppCompatActivity {
         }
     };
 
-    private void generateGroupView(String name, String text){ // Position, size...?
+    private void addGroupView(String color, String name, String text){ // Position, size...?
+        LinearLayout myLayout = findViewById(R.id.group_list);
 
+        Button myButton = new Button(this);
+        myButton.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+
+        myLayout.addView(myButton);
     }
 
-    private void responseToGroupListView(String response){
+    private void renderGroupListView(){ // String response
         /* The return is in json.
         Suppose it's
-            {"1": {"Group Name 1":"Upcoming DDL text"},
-             "2": {"Group Name 2":"Upcoming DDL text"},
-             ...,
-             "n": {"Group Name n":"Upcoming DDL text"}}
-        sorted by their next DDLs. (Plz refer to the UI design slides.)
+            {"num groups":"n",
+             "list":{
+                 "1":{"name":"Group Name 1","preview":"Upcoming DDL preview 1"},
+                 "2":{"name":"Group Name 2","preview":"Upcoming DDL preview 2"},
+                 ...
+                 "n":{"name":"Group Name 3","preview":"Upcoming DDL preview 3"}}}
+        sorted by their upcoming DDLs. (Please refer to the UI design slides.)
         * */
-        // String to json
+        String response = "{\"num\":\"3\",\n\"list\":{\n\"1\":{{\"name\":\"Group Name 1\",\"preview\":\"Upcoming DDL preview 1\"},\n\"2\":{\"name\":\"Group Name 2\",\"preview\":\"Upcoming DDL preview 2\"},\n\"3\":{\"name\":\"Group Name 3\",\"preview\":\"Upcoming DDL preview 3\"}}}";
+        try {
+            JSONObject jsonObj = new JSONObject(response);
+            int num_groups = jsonObj.getInt("num groups");
+            for(int i=1; i<=num_groups; ++i){
+                jsonObj.get("list/"+Integer.toString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -57,10 +81,9 @@ public class GroupList extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Create group_list
-        PostRequester requester = new PostRequester();
         String[] keys = {"key1"};
         String[] values = {"value1"};
-        String response = requester.request("full_url", keys, values); // TODO API?
+        String response = PostRequester.request("full_url", keys, values); // TODO API?
     }
 
 }
