@@ -38,8 +38,10 @@ public class GroupList extends AppCompatActivity {
 
     private void addGroupView(String color, String name, String preview){ // Position, size...?
         /*
-        Swipe-to-delete view: https://demonuts.com/android-listview-swipe-delete/
-         */
+        Swipe-to-delete: https://github.com/daimajia/AndroidSwipeLayout
+            * Show Mode: PullOut
+            * Drag edge: LEFT
+        */
 
         LinearLayout myLayout = findViewById(R.id.group_list);
 

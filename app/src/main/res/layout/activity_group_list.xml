@@ -44,19 +44,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/group"
+        <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="80dp"
+            android:id="@+id/swipe_layout">
+            <!-- Bottom View Start-->
+            <LinearLayout
+                android:background="#66ddff00"
+                android:id="@+id/bottom_wrapper"
+                android:layout_width="160dp"
+                android:weightSum="1"
+                android:layout_height="match_parent">
+                <!-- TODO: android:layout_gravity='' suggested -->
+                <!--What you want to show-->
+            </LinearLayout>
+            <!-- Bottom View End-->
 
-            <Button
-                android:id="@+id/group_button"
+            <!-- Surface View Start -->
+            <LinearLayout
+                android:padding="10dp"
+                android:background="#ffffff"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:visibility="invisible" />
-        </LinearLayout>
+                android:layout_height="match_parent">
+                <!--What you want to show in SurfaceView-->
+            </LinearLayout>
+            <!-- Surface View End -->
+        </com.daimajia.swipe.SwipeLayout>
 
     </LinearLayout>
 
