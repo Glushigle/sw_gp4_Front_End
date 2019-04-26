@@ -16,19 +16,15 @@ import java.net.URL;
 public class PostRequester {
     /*
     // Sample to use this
-    PostRequester requester = new PostRequester();
-            String[] keys = {"key1"};
-            String[] values = {"value1"};
-            String response = requester.request("full_url", keys, values);
-     */
+    String[] keys = {"key1"};
+    String[] values = {"value1"};
+    String response = PostRequester.request("full_url", keys, values);
+    */
 
     /**
      * Helper function for postRequest: Convert kvp to query for POST.
-     * @param keys
-     * @param values
-     * @return query in byte[]
      */
-    private byte[] convertKvpToByte(String[] keys, String[] values){
+    private static byte[] convertKvpToByte(String[] keys, String[] values){
 
         byte[] query = null;
         JSONObject queryObj = new JSONObject();
@@ -44,10 +40,8 @@ public class PostRequester {
     }
 
     /** Helper function for postRequest
-     * @param is
-     * @return
      */
-    private String convertStreamToString(InputStream is) {
+    private static String convertStreamToString(InputStream is) {
 
         // TODO Confirm the return type with backend
         // From https://stackoverflow.com/questions/43538954/how-to-get-response-after-using-post-method-in-android
@@ -79,7 +73,7 @@ public class PostRequester {
      * @param values Same # as keys
      * @return group_list in String
      */
-    public String request(String full_url, String[] keys, String[] values) {
+    public static String request(String full_url, String[] keys, String[] values) {
 
         /** Note: "/** Enter" generates the template for function description. **/
         // TODO Ask for get_group_list(user_id) API from backend.
