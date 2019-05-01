@@ -4,9 +4,7 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <!-- To send and receive HTTP requests -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- To send and receive HTTP requests -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,9 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".showDDL"></activity>
         <activity
             android:name=".GroupList"
-            android:label="@string/title_activity_group_list"></activity>
+            android:label="@string/title_activity_group_list" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

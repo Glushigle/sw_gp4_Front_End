@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
-        Toast.makeText(this, "登录失败233", Toast.LENGTH_SHORT).show();//print helloworld
+        //Toast.makeText(this, "登录失败233", Toast.LENGTH_SHORT).show();//print helloworld
+        Intent intent = new Intent(this,showDDL.class);
+        startActivity(intent);
     }
 }
