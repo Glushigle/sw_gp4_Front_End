@@ -36,6 +36,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="10dp"
             android:text="2019軟件工程第四組"
+            android:background="@android:color/transparent"
             android:textAlignment="2" />
     </LinearLayout>
 </com.daimajia.swipe.SwipeLayout>

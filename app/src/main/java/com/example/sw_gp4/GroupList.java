@@ -1,3 +1,4 @@
+// Todo: add try...catch
 package com.example.sw_gp4;
 
 import android.os.Bundle;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.util.Attributes;
-//import com.daimajia.swipe.adapters.ArraySwipeAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -124,17 +124,22 @@ public class GroupList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_group_list);
 
         // Navigation bar
-        // Every activity with a navigation bar should add this line
+        // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
         //setContentView(R.layout.activity_group_list);
         mListView = (ListView) findViewById(R.id.group_list);
         mAdapter = new ListViewAdapter(this);
+        mListView.setAdapter(mAdapter);
 
-        mAdapter.setMode(Attributes.Mode.Single); // What is "mode" for???
+        // What is "mode" for???
+        mAdapter.setMode(Attributes.Mode.Single);
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -168,7 +173,8 @@ public class GroupList extends AppCompatActivity {
         //String[] keys = {"key1"};
         //String[] values = {"value1"};
         //String response = PostRequester.request("full_url", keys, values); // TODO API?
-        renderGroupListView();
+
+        //renderGroupListView();
     }
 
 }
