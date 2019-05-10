@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="red">#FF3B00</color>
+    <color name="red_press">#990000</color>
+    <color name="gp_1">#823232</color>
+    <color name="gp_2">#e2c363</color>
+    <color name="gp_3">#b2db4a</color>
+    <color name="gp_4">#4fbc79</color>
+    <color name="gp_5">#54cbd8</color>
 </resources>

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
         <ImageButton
-            android:id="@+id/delete"
+            android:id="@+id/trash"
             android:src="@drawable/trash"
             android:layout_width="70dp"
             android:background="@drawable/red"
@@ -26,15 +26,16 @@
         android:layout_height="match_parent">
         <ImageButton
             android:background="@drawable/round"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
         <Button
-            android:visibility="invisible"
-            android:id="@+id/click"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2019軟件工程第四組" />
+            android:id="@+id/group_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:text="2019軟件工程第四組"
+            android:textAlignment="2" />
     </LinearLayout>
 </com.daimajia.swipe.SwipeLayout>
