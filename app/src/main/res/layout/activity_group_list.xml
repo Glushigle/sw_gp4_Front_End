@@ -7,20 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".GroupList">
 
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/title_home"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -28,49 +19,19 @@
         app:layout_constraintTop_toBottomOf="@+id/group_list"
         app:menu="@menu/navigation" />
 
-    <LinearLayout
+    <ListView
         android:id="@+id/group_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:id="@+id/swipe_layout">
-            <!-- Bottom View Start-->
-            <LinearLayout
-                android:background="#66ddff00"
-                android:id="@+id/bottom_wrapper"
-                android:layout_width="160dp"
-                android:weightSum="1"
-                android:layout_height="match_parent">
-                <!-- TODO: android:layout_gravity='' suggested -->
-                <!--What you want to show-->
-            </LinearLayout>
-            <!-- Bottom View End-->
-
-            <!-- Surface View Start -->
-            <LinearLayout
-                android:padding="10dp"
-                android:background="#ffffff"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <!--What you want to show in SurfaceView-->
-            </LinearLayout>
-            <!-- Surface View End -->
-        </com.daimajia.swipe.SwipeLayout>
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -4,17 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.util.Attributes;
+//import com.daimajia.swipe.adapters.ArraySwipeAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GroupList extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    private ListView mListView;
+    private ListViewAdapter mAdapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -22,35 +32,63 @@ public class GroupList extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                // TODO: 写navigation bar
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    //进到小组页
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    //进到个人页
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    //进到好友页
                     return true;
             }
             return false;
         }
     };
 
-    private void addGroupView(String color, String name, String preview){ // Position, size...?
-        /*
-        Swipe-to-delete: https://github.com/daimajia/AndroidSwipeLayout
-            * Show Mode: PullOut
-            * Drag edge: LEFT
-        */
 
-        LinearLayout myLayout = findViewById(R.id.group_list);
+    // from https://github.com/daimajia/AndroidSwipeLayout
+    private void addSwipeLayout(){
+        SwipeLayout swipeLayout =  (SwipeLayout)findViewById(R.id.swipe_layout);
 
-        Button myButton = new Button(this);
-        myButton.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        //set show mode.
+        swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
-        myLayout.addView(myButton);
+        //add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, findViewById(R.id.buttom_wrapper));
+
+        swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+            @Override
+            public void onClose(SwipeLayout layout) {
+                //when the SurfaceView totally cover the BottomView.
+            }
+
+            @Override
+            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                //you are swiping.
+            }
+
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                //when the BottomView totally show.
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+
+            }
+
+            @Override
+            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                //when user's hand released.
+            }
+        });
     }
 
     private void renderGroupListView(){ // String response
@@ -64,6 +102,7 @@ public class GroupList extends AppCompatActivity {
                  "n":{"name":"Group Name 3","preview":"Upcoming DDL preview 3"}}}
         sorted by their upcoming DDLs. (Please refer to the UI design slides.)
         * */
+        int colors[] = {R.color.gp_1, R.color.gp_2, R.color.gp_3, R.color.gp_4, R.color.gp_5};
         String response = "{\"num\":\"3\",\n\"list\":{\n\"1\":{{\"name\":\"Group Name 1\",\"preview\":\"Upcoming DDL preview 1\"},\n\"2\":{\"name\":\"Group Name 2\",\"preview\":\"Upcoming DDL preview 2\"},\n\"3\":{\"name\":\"Group Name 3\",\"preview\":\"Upcoming DDL preview 3\"}}}";
         try {
             JSONObject responseObj = new JSONObject(response);
@@ -72,8 +111,9 @@ public class GroupList extends AppCompatActivity {
                 JSONObject list = (JSONObject) responseObj.get("list");
                 JSONObject item_i = (JSONObject) list.get(Integer.toString(i));
                 String name = (String) item_i.get("name");
-                String preview = (String) item_i.get("preview");
-                addGroupView("", name, preview); // TODO Color format?
+                int color = colors[i%5];
+                //String preview = (String) item_i.get("preview");
+                // TODO: feed these into an adapter (name & color. preview later)
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -84,11 +124,45 @@ public class GroupList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_list);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        // Navigation bar
+        // Every activity with a navigation bar should add this line
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //setContentView(R.layout.activity_group_list);
+        mListView = (ListView) findViewById(R.id.group_list);
+        mAdapter = new ListViewAdapter(this);
+
+        mAdapter.setMode(Attributes.Mode.Single); // What is "mode" for???
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((SwipeLayout)(mListView.getChildAt(position - mListView.getFirstVisiblePosition()))).open(true);
+            }
+        });
+        mListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.e("ListView", "OnTouch");
+                return false;
+            }
+        });
+
+
+        mListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("ListView", "onItemSelected:" + position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.e("ListView", "onNothingSelected:");
+            }
+        });
+
+
 
         // Create group_list
         //String[] keys = {"key1"};
