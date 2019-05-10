@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +59,7 @@ public class GroupList extends AppCompatActivity {
 
     // from https://github.com/daimajia/AndroidSwipeLayout
     private void addSwipeLayout(){
-        SwipeLayout swipeLayout =  (SwipeLayout)findViewById(R.id.sample1);
+        SwipeLayout swipeLayout =  (SwipeLayout)findViewById(R.id.swipe_layout);
 
         //set show mode.
         swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
@@ -118,6 +120,8 @@ public class GroupList extends AppCompatActivity {
                 JSONObject item_i = (JSONObject) list.get(Integer.toString(i));
                 String name = (String) item_i.get("name");
                 String preview = (String) item_i.get("preview");
+
+                // TODO: feed these into an adapter
                 addGroupView("", name, preview); // TODO Color format?
             }
         } catch (JSONException e) {
