@@ -65,7 +65,7 @@ public class GroupList extends AppCompatActivity {
         swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
         //add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
-        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, findViewById(R.id.bottom_wrapper));
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, findViewById(R.id.buttom_wrapper));
 
         swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
