@@ -68,10 +68,10 @@ public class PostRequester {
 
     /**
      * Intended to be used for other POST requests.
-     * @param full_url User requesting group_list
+     * @param full_url The full url of the API
      * @param keys The keys of key-value pairs of the query
      * @param values Same # as keys
-     * @return group_list in String
+     * @return response in String
      */
     public static String request(String full_url, String[] keys, String[] values) {
 

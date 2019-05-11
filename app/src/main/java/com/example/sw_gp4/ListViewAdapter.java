@@ -24,17 +24,19 @@ public class ListViewAdapter extends BaseSwipeAdapter {
     private Context mContext;
 
     // TODO: colors?
+    private int num_colors = 5;
     private int colors[] = {R.color.gp_1, R.color.gp_2, R.color.gp_3, R.color.gp_4, R.color.gp_5};
 
     // TODO: populate group_names with post
-    private int count = 10;
-    private String group_names[] = {"Group A","乙組","第3組","Gp IV","Di fifth Zu"};
+    private int num_groups;
+    private String group_names[];
 
-    public ListViewAdapter(Context mContext) {
+    public ListViewAdapter(Context mContext, int num_groups, String[] group_names) {
         this.mContext = mContext;
+        this.num_groups = num_groups;
+        this.group_names = new String[num_groups];
+        for(int i=0; i<num_groups; ++i) this.group_names[i] = group_names[i];
     }
-
-    public void populateGrouplist(int count, String []group_names) { this.count=count; this.group_names=group_names;}
 
     @Override
     public int getSwipeLayoutResourceId(int position) {
@@ -65,15 +67,15 @@ public class ListViewAdapter extends BaseSwipeAdapter {
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
 
         ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,colors[position%5]));
-        text_button.setText(group_names[position%5]);
+                ContextCompat.getColor(mContext,colors[position%num_colors]));
+        text_button.setText(group_names[position]);
 
         // TODO: where do the buttons lead to?
     }
 
     @Override
     public int getCount() {
-        return count;
+        return num_groups;
     }
 
     @Override
