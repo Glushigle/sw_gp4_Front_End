@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.util.Attributes;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,31 +56,33 @@ public class GroupList extends AppCompatActivity {
     private void updateData(){
         /* The return is in json.
         Suppose it's
-            {"num groups":"n",
-             "list":{
-                 "1":{"id":"1", "name":"Group Name 1"},
-                 "2":{"id":"2", "name":"Group Name 2"},
+            {"groups":[
+                 {"id":"1", "name":"Group Name 1"},
+                 {"id":"2", "name":"Group Name 2"},
                  ...
-                 "n":{"id":"n", "name":"Group Name n"}}}
-        sorted by their upcoming DDLs. (Please refer to the UI design slides.)
-        * */
+                 {"id":"n", "name":"Group Name n"}]
+            }
+        */
 
         // Create group_list
         //String[] keys = {"key1"};
         //String[] values = {"value1"};
         //String response = PostRequester.request("full_url", keys, values); // TODO: API
         // TODO: programmatically get response (後端API實現了嗎？？)
-        String response = "{\"num groups\":\"3\",\"list\":{\n\"1\":{\"id\":\"1\", \"name\":\"Group Name 1\"},\"2\":{\"id\":\"2\", \"name\":\"Group Name 2\"},\"3\":{\"id\":\"3\", \"name\":\"Group Name 3\"}}}";
+        String response = "{\"groups\":[" +
+                "                 {\"id\":\"1\", \"name\":\"Group Name 1\"}," +
+                "                 {\"id\":\"2\", \"name\":\"Group Name 2\"}," +
+                "                 {\"id\":\"3\", \"name\":\"Group Name 3\"}]" +
+                "            }";
         try {
             JSONObject responseObj = new JSONObject(response);
-            num_groups = responseObj.getInt("num groups");
+            JSONArray groups = (JSONArray) responseObj.getJSONArray("groups");
+            num_groups = groups.length();
             group_ids = new String[num_groups];
             group_names = new String[num_groups];
-            JSONObject list = (JSONObject) responseObj.get("list");
-            for(int i=1; i<=num_groups; ++i){
-                JSONObject item = (JSONObject) list.get(Integer.toString(i));
-                group_ids[i-1] = (String) item.get("id");
-                group_names[i-1] = (String) item.get("name");
+            for(int i=0; i<num_groups; ++i){
+                group_ids[i] = (String) groups.getJSONObject(i).getString("id");
+                group_names[i] = (String) groups.getJSONObject(i).getString("name");
             }
         } catch (JSONException e) {
             e.printStackTrace();
