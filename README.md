@@ -21,8 +21,7 @@ String response = PostRequester.request(full_url, keys, values);
 {"groups":[
      {"id":"1", "name":"Group Name 1"},
      {"id":"2", "name":"Group Name 2"},
-     ...
-     {"id":"n", "name":"Group Name n"}]
+     {"id":"3", "name":"Group Name 3"}]
 }
 ```
 存出数据的code可以是
