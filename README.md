@@ -37,9 +37,9 @@ try {
     group_ids = new String[num_groups];
     group_names = new String[num_groups];
     
-    for(int i=1; i<=num_groups; ++i){
-        group_ids[i-1] = (String) groups.getJSONObject(i-1).getString("id");
-        group_names[i-1] = (String) groups.getJSONObject(i-1).getString("name");
+    for(int i=0; i<num_groups; ++i){
+        group_ids[i] = (String) groups.getJSONObject(i).getString("id");
+        group_names[i] = (String) groups.getJSONObject(i).getString("name");
     }
 } catch (JSONException e) {
     e.printStackTrace();
