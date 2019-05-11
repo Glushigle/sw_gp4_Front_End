@@ -54,3 +54,54 @@ String[] keys = {"username","password"};
 String[] values = {"Glushigle", "mima"};
 String response = PostRequester.request(full_url, keys, values);
 ```
+
+## 加上Navigator
+把activity_???.xml改成这个形式,就会有navigator
+```
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".【对应的java档案名】">
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_list"
+        app:menu="@menu/navigation" />
+
+    <【原先页面内容，例如LinearLayout】
+        android:id="@+id/【页面id】"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        
+            【原先页面其他内容】
+        
+        </【原先页面内容，例如LinearLayout】>
+
+</android.support.constraint.ConstraintLayout>
+```
+
+java那边也要加东西
+```
+//等大家页面都好了再说吧
+```
