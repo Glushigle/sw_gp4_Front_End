@@ -19,6 +19,8 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
+import java.util.ArrayList;
+
 public class ListViewAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
@@ -28,14 +30,11 @@ public class ListViewAdapter extends BaseSwipeAdapter {
     private int colors[] = {R.color.gp_1, R.color.gp_2, R.color.gp_3, R.color.gp_4, R.color.gp_5};
 
     // TODO: populate group_names with post
-    private int num_groups;
-    private String group_names[];
+    private ArrayList<String> group_names;
 
-    public ListViewAdapter(Context mContext, int num_groups, String[] group_names) {
+    public ListViewAdapter(Context mContext, ArrayList<String> group_names) {
         this.mContext = mContext;
-        this.num_groups = num_groups;
-        this.group_names = new String[num_groups];
-        for(int i=0; i<num_groups; ++i) this.group_names[i] = group_names[i];
+        this.group_names = group_names;
     }
 
     @Override
@@ -51,11 +50,7 @@ public class ListViewAdapter extends BaseSwipeAdapter {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
-
-                // Todo: delete/leave group request
-                // Confirmation
-                // POST to database
-                // Toast the returns; update if successful
+                //(GroupList)mContext.on TODO delete logic
             }
         });
         return v;
@@ -68,14 +63,14 @@ public class ListViewAdapter extends BaseSwipeAdapter {
 
         ((GradientDrawable) color_button.getBackground()).setColor(
                 ContextCompat.getColor(mContext,colors[position%num_colors]));
-        text_button.setText(group_names[position]);
+        text_button.setText(group_names.get(position));
 
         // TODO: where do the buttons lead to?
     }
 
     @Override
     public int getCount() {
-        return num_groups;
+        return group_names.size();
     }
 
     @Override
