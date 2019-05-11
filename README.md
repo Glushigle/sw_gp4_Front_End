@@ -18,11 +18,12 @@ String response = PostRequester.request(full_url, keys, values);
 输出String，应该转为JSONObject使用。例如：对于以下string
 （以下皆为string的**内容**。具体后端反传值见其API)
 ```
-{"num groups":"n",
- "list":{
-     "1":{"id":"1", "name":"Group Name 1"},
-     "2":{"id":"2", "name":"Group Name 2"},
-     "3":{"id":"3", "name":"Group Name 3"}}}
+{"groups":[
+     {"id":"1", "name":"Group Name 1"},
+     {"id":"2", "name":"Group Name 2"},
+     ...
+     {"id":"n", "name":"Group Name n"}]
+}
 ```
 存出数据的code可以是
 ```
@@ -31,17 +32,15 @@ import org.json.JSONObject;
 
 try {
     JSONObject responseObj = new JSONObject(response);
+    JSONArray groups = (JSONArray) responseObj.getJSONArray("groups");
     
-    num_groups = responseObj.getInt("num groups");
+    num_groups = groups.length();
     group_ids = new String[num_groups];
     group_names = new String[num_groups];
-
-    JSONObject list = (JSONObject) responseObj.get("list");
+    
     for(int i=1; i<=num_groups; ++i){
-        JSONObject item = (JSONObject) list.get(Integer.toString(i));
-        
-        group_ids[i-1] = (String) item.get("id");
-        group_names[i-1] = (String) item.get("name");
+        group_ids[i-1] = (String) groups.getJSONObject(i-1).getString("id");
+        group_names[i-1] = (String) groups.getJSONObject(i-1).getString("name");
     }
 } catch (JSONException e) {
     e.printStackTrace();
