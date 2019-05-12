@@ -1,11 +1,15 @@
 package com.example.sw_gp4;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,21 +20,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
-
-        //Toast.makeText(this, "登录失败233", Toast.LENGTH_SHORT).show();
-
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
 
+        String full_url = "http://222.29.159.164:10006/login";
+        String[] keys = {"username","password"};
+        String[] values = {username.getText().toString(), password.getText().toString()};
+        String response = PostRequester.request(full_url, keys, values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean success = responseObj.getBoolean("valid");
+            if (success){
+                Intent intent = new Intent(this,showDDL.class);
+                startActivity(intent);
+            }else{
+                String info = responseObj.getString("info");
+                Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
+            }
 
-        if (username.getText().toString().equals("username") &&
-                password.getText().toString().equals("password")){
-            Intent intent = new Intent(this,showDDL.class);
-            startActivity(intent);
-        } else{
-            Toast.makeText(this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, username.getText().toString()
-//                    + password.getText().toString(), Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            Toast.makeText(this, "bug", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+  
+    public void register(View v) {
+
+        EditText username = (EditText) findViewById(R.id.et_user_name) ;
+        EditText password = (EditText) findViewById(R.id.et_psw) ;
+      
+        String full_url = "http://222.29.159.164:10006/register";
+        String[] keys = {"username","password"};
+        String[] values = {username.getText().toString(), password.getText().toString()};
+        String response = PostRequester.request(full_url, keys, values);
+        try {
+            Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
+            JSONObject responseObj = new JSONObject(response);
+            boolean success = responseObj.getBoolean("valid");
+            if (success){
+                Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
+            }else{
+                String info = responseObj.getString("info");
+                Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            Toast.makeText(this, "bug", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 

@@ -82,7 +82,7 @@
             android:text="立即注册"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            />
+            android:onClick="register"/>
         <!--layout_weight="1" layout_width="0dp"实现均分效果-->
         <TextView
             android:id="@+id/tv_find_psw"
