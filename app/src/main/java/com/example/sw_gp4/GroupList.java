@@ -2,6 +2,7 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -46,7 +47,8 @@ public class GroupList extends AppCompatActivity {
                     //进到小组页
                     return true;
                 case R.id.navigation_dashboard:
-                    //进到个人页
+                    Intent intent = new Intent(mContext,showDDL.class);
+                    startActivity(intent);
                     return true;
                 case R.id.navigation_notifications:
                     //进到好友页
@@ -130,7 +132,7 @@ public class GroupList extends AppCompatActivity {
         return valid;
     }
 
-    public void OnAddClicked(){
-
+    public void OnAddClicked(View view){
+        // Todo: open add activity
     }
 }
