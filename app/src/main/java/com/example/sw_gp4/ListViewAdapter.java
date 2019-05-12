@@ -37,20 +37,26 @@ public class ListViewAdapter extends BaseSwipeAdapter {
         this.group_names = group_names;
     }
 
+    public void resetData( ArrayList<String> group_names){
+        this.group_names = group_names;
+        notifyDataSetChanged();
+        closeAllItems();
+    }
+
     @Override
     public int getSwipeLayoutResourceId(int position) {
         return R.id.swipe_layout;
     }
 
     @Override
-    public View generateView(int position, ViewGroup parent) {
+    public View generateView(final int position, ViewGroup parent) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.group_list_item, null);
 
         v.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
-                //(GroupList)mContext.on TODO delete logic
+                ((GroupList) mContext).OnDeleteClicked(view, position);
             }
         });
         return v;

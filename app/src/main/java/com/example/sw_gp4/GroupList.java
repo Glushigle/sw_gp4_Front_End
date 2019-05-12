@@ -106,9 +106,6 @@ public class GroupList extends AppCompatActivity {
         mAdapter = new ListViewAdapter(this, group_names);
         mListView.setAdapter(mAdapter);
 
-        // What is "mode" for???
-        //mAdapter.setMode(Attributes.Mode.Single);
-
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -120,18 +117,20 @@ public class GroupList extends AppCompatActivity {
 
     }
 
-    protected boolean OnDeleteGroupClicked(View view){
+    public boolean OnDeleteClicked(View view, int position){
         // Todo: delete/leave group request
         // Confirmation
         // POST to database
         boolean valid = true;
         // Toast the returns; update if successful
         if(valid){
-            // TODO
-            //group_names.remove(view.getContext().);
-            //notifyDataSetChanged();
+            group_names.remove(position);
+            mAdapter.resetData(group_names);
         }
         return valid;
     }
 
+    public void OnAddClicked(){
+
+    }
 }
