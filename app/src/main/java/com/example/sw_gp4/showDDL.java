@@ -54,12 +54,15 @@ public class showDDL extends AppCompatActivity {
         //新建一个布局来显示ddl
         LinearLayout li_text = new LinearLayout(this);
         li_text.setOrientation(LinearLayout.VERTICAL);//纵向
-        li_text.setLayoutParams(para);
+        LinearLayout.LayoutParams para1 = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        para1.setMargins(0,0,0,0);
+        li_text.setLayoutParams(para1);
         //显示ddl文本
         int amt = texts.length;//数量
         for (int i = 0; i < amt; ++i) {
             TextView tv_text = new TextView(this);
-            tv_text.setLayoutParams(para);
+            tv_text.setLayoutParams(para1);
             tv_text.setGravity(Gravity.CENTER);//文本居中
             if (i % 2 == 0)//背景颜色
                 tv_text.setBackgroundColor(Color.rgb(22,133,169));

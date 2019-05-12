@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
-
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
 
@@ -43,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "bug", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
     }
+  
     public void register(View v) {
 
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
-
+      
         String full_url = "http://222.29.159.164:10006/register";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
@@ -69,6 +68,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "bug", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
     }
+
 }
