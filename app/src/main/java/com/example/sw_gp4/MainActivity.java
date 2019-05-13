@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
 
-        String full_url = "http://222.29.159.164:10006/login";
+        String full_url = "https://222.29.159.164:10016/login";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
         String response = PostRequester.request(full_url, keys, values);
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
       
-        String full_url = "http://222.29.159.164:10006/register";
+        String full_url = "https://222.29.159.164:10016/register";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
         String response = PostRequester.request(full_url, keys, values);
