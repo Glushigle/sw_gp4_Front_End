@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rank_self"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:text="1"
+            android:textAlignment="3" />
+        <ImageButton
+            android:id="@+id/friend_color"
+            android:background="@drawable/ic_group"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+        <TextView
+            android:id="@+id/friend_name"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:text="朋友"
+            android:textAlignment="2" />
+        <TextView
+            android:id="@+id/my_ranking"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:text="95%"
+            android:textAlignment="3" />
+</LinearLayout>

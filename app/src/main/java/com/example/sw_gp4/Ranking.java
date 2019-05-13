@@ -9,9 +9,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-public class friends extends AppCompatActivity {
+public class Ranking extends AppCompatActivity {
 
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -20,6 +19,7 @@ public class friends extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+                // TODO: 写navigation bar
                 case R.id.navigation_home:
                     //进到小组页
                     Intent intent1 = new Intent(mContext,GroupList.class);
@@ -34,25 +34,26 @@ public class friends extends AppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     //进到好友页
-                    Intent intent3 = new Intent(mContext,Ranking.class);
-                    startActivity(intent3);
-                    finish();
                     return true;
             }
             return false;
         }
     };
 
+    public void seeFriends(View view) {
+        // TODO does not work :(
+        Intent intent = new Intent(mContext,friends.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friends);
+        setContentView(R.layout.activity_ranking);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-    }
-    public void add_friends(View v){
-        Toast.makeText(this, "好友请求已发送", Toast.LENGTH_SHORT).show();
     }
 }

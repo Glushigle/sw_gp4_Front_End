@@ -18,4 +18,5 @@
     <string name="title_dashboard">个人</string>
     <string name="title_notifications">好友</string>
     <string name="ddlAddBtn">addBtn</string>
+    <string name="title_activity_ranking">Ranking</string>
 </resources>

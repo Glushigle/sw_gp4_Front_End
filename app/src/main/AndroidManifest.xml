@@ -16,9 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".showDDL"></activity>
-        <activity android:name=".GroupList"></activity>
+        <activity android:name=".Ranking"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".showDDL" />
+        <activity android:name=".GroupList" />
         <activity android:name=".friends">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
