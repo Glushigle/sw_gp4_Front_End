@@ -2,7 +2,9 @@ package com.example.sw_gp4;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,13 +19,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // https://blog.csdn.net/withiter/article/details/19908679 TODO 改成好方法
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     public void login(View v) {
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
 
-        String full_url = "http://222.29.159.164:10006/login";
+        String full_url = "https://222.29.159.164:10016/login";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
         String response = PostRequester.request(full_url, keys, values);
@@ -49,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
       
-        String full_url = "http://222.29.159.164:10006/register";
+        String full_url = "http://222.29.159.164:10016/register";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
         String response = PostRequester.request(full_url, keys, values);
