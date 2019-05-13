@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
 
 import javax.net.ssl.HostnameVerifier;
@@ -30,6 +32,7 @@ import javax.security.cert.CertificateException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 public class PostRequester {
     /*
@@ -39,18 +42,21 @@ public class PostRequester {
     String response = PostRequester.request("full_url", keys, values);
     */
 
+    static final String charset = "UTF8";
+
     /**
      * Helper function for postRequest: Convert kvp to query for POST.
      */
     private static byte[] convertKvpToByte(String[] keys, String[] values){
 
         byte[] query = null;
-        JSONObject queryObj = new JSONObject();
+        String query_string = "Content-Disposition: form-data";
         try {
             for(int i=0; i<keys.length; ++i){
-                queryObj.put(keys[i], values[i]);
+                query_string = query_string + "; " + keys[i] + "=\"" + values[i] + '\"';
             }
-            query = queryObj.toString().getBytes("UTF8"); // TODO Allow configuration
+            query = query_string.getBytes(charset);
+            Log.e("convertKvpToByte",query_string);
         } catch (Exception e) {
             e.printStackTrace(); // TODO Handle exception
         }
@@ -122,7 +128,7 @@ public class PostRequester {
      * @param values Same # as keys
      * @return response in String
      */
-    public static String request(String full_url, String[] keys, String[] values) {
+    public static String request(String full_url, String[] keys, String[] values){
 
         /** Note: "/** Enter" generates the template for function description. **/
         // TODO Ask for get_group_list(user_id) API from backend.
@@ -130,47 +136,28 @@ public class PostRequester {
         // https://www.wikihow.com/Execute-HTTP-POST-Requests-in-Android
         // https://stackoverflow.com/questions/43538954/how-to-get-response-after-using-post-method-in-android
 
-        HttpsURLConnection client = null;
-        String response = "";
-        try {
+        String rtn = "";
+        try{
+            MultipartUtility multipart = new MultipartUtility(full_url, charset);
 
-            // Certificate issue
-            HttpsURLConnection.setDefaultSSLSocketFactory(trustAllHosts(client));
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
-                }
-            });
+            // In your case you are not adding form data so ignore this
+            /*This is to add parameter values */
+            for (int i = 0; i < keys.length; i++) {
+                multipart.addFormField(keys[i], values[i]);
+            }
 
-            URL url = new URL(full_url);
-            client = (HttpsURLConnection) url.openConnection();
-            client.setRequestMethod("POST");
-            client.setRequestProperty("Content-Type", "application/json");
-
-            client.setDoInput(true);
-            client.setDoOutput(true);
-            client.setConnectTimeout(15000);
-
-            client.connect();
-
-            OutputStream outputPost = new BufferedOutputStream(client.getOutputStream());
-            byte[] query = convertKvpToByte(keys, values);
-            outputPost.write(query);
-
-
-            InputStream inputStream = new BufferedInputStream(client.getInputStream());
-            response = convertStreamToString(inputStream);
-            outputPost.flush();
-            outputPost.close();
-
+            String TAG = "request";
+            List<String> response = multipart.finish();
+            Log.e(TAG, "SERVER REPLIED:");
+            for (String line : response) {
+                Log.e(TAG, "Request Response:::" + line);
+                //responseString = line;
+            }
+            rtn = response.get(0);
         } catch (Exception e){
-            e.printStackTrace(); // TODO handle exception
-
-        } finally {
-            if(client != null) // Make sure the connection is not null.
-                client.disconnect();
+            e.printStackTrace();
         }
-        return response;
+        return rtn;
     }
 
     /**
