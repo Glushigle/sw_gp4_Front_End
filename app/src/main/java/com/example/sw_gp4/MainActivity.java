@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,showDDL.class);
                 startActivity(intent);
             }else{
-                String info = responseObj.getString("info");
+                String info = responseObj.getString("error_info");
                 Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
             }
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             if (success){
                 Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
             }else{
-                String info = responseObj.getString("info");
+                String info = responseObj.getString("error_info");
                 Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
             }
 
