@@ -4,19 +4,14 @@ import android.util.Log;
 import java.util.List;
 
 public class PostRequester {
-    /*
-    // Sample to use this
-    String[] keys = {"key1"};
-    String[] values = {"value1"};
-    String response = PostRequester.request("full_url", keys, values);
-    */
-
-    static final String charset = "UTF8";
 
     /**
      * Intended to be used for other POST requests.
      * See https://github.com/Glushigle/sw_gp4_Front_End#postrequester-用法 for usage.
      */
+
+    private static final String charset = "UTF8";
+
     public static String request(String full_url, String[] keys, String[] values){
 
         final String TAG = "request";
