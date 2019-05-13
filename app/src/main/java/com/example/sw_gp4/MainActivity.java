@@ -2,7 +2,9 @@ package com.example.sw_gp4;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +19,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // https://blog.csdn.net/withiter/article/details/19908679 TODO 改成好方法
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     public void login(View v) {
@@ -34,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,showDDL.class);
                 startActivity(intent);
             }else{
-                String info = responseObj.getString("info");
+                String info = responseObj.getString("error_info");
                 Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
             }
 
@@ -60,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             if (success){
                 Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
             }else{
-                String info = responseObj.getString("info");
+                String info = responseObj.getString("error_info");
                 Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
             }
 
