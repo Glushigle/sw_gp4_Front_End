@@ -42,7 +42,6 @@ public class GroupList extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                // TODO: 写navigation bar
                 case R.id.navigation_home:
                     //进到小组页
                     return true;
@@ -54,6 +53,9 @@ public class GroupList extends AppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     //进到好友页
+                    Intent intent3 = new Intent(mContext,Ranking.class);
+                    startActivity(intent3);
+                    finish();
                     return true;
             }
             return false;

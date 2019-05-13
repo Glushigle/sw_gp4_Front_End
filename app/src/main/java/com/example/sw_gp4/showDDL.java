@@ -17,14 +17,12 @@ import android.widget.TextView;
 public class showDDL extends AppCompatActivity {
 
     private Context mContext=this;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                // TODO: 写navigation bar
                 case R.id.navigation_home:
                     //进到小组页
                     Intent intent1 = new Intent(mContext,GroupList.class);
@@ -36,6 +34,9 @@ public class showDDL extends AppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     //进到好友页
+                    Intent intent3 = new Intent(mContext,Ranking.class);
+                    startActivity(intent3);
+                    finish();
                     return true;
             }
             return false;

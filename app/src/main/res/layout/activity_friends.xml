@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,72 +8,96 @@
     android:orientation="vertical"
     android:id="@+id/friend_disp">
 
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_list"
+        app:menu="@menu/navigation" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <EditText
-            android:id="@+id/search_friends"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="4"
-            android:layout_gravity="center_horizontal"
-            android:drawablePadding="10dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <EditText
+                android:id="@+id/search_friends"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="4"
+                android:layout_gravity="center_horizontal"
+                android:drawablePadding="10dp"
+                android:paddingLeft="8dp"
+                android:gravity="center_vertical"
+                android:hint="请输入好友名"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textColorHint="#a3a3a3"
+                android:textSize="14sp"
+                android:inputType="text"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="添加"
+                android:onClick="add_friends"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="我的好友："
             android:paddingLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"/>
+        <TextView
+            android:id="@+id/friend1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Alice"
+            android:textSize="@dimen/activity_vertical_margin"
             android:gravity="center_vertical"
-            android:hint="请输入好友名"
-            android:singleLine="true"
-            android:textColor="#000000"
-            android:textColorHint="#a3a3a3"
-            android:textSize="14sp"
-            android:inputType="text"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="添加"
-            android:onClick="add_friends"
+            android:paddingLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            />
+        <TextView
+            android:id="@+id/friend2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Bob"
+            android:textSize="@dimen/activity_vertical_margin"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            />
+        <TextView
+            android:id="@+id/friend3"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Carol"
+            android:textSize="@dimen/activity_vertical_margin"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            />
+        <TextView
+            android:id="@+id/friend4"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Dave"
+            android:textSize="@dimen/activity_vertical_margin"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
             />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="我的好友："
-        android:paddingLeft="8dp"/>
-    <TextView
-        android:id="@+id/friend1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Alice"
-        android:textSize="@dimen/activity_vertical_margin"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        />
-    <TextView
-        android:id="@+id/friend2"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Bob"
-        android:textSize="@dimen/activity_vertical_margin"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        />
-    <TextView
-        android:id="@+id/friend3"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Carol"
-        android:textSize="@dimen/activity_vertical_margin"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        />
-    <TextView
-        android:id="@+id/friend4"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Dave"
-        android:textSize="@dimen/activity_vertical_margin"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
