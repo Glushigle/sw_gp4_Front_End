@@ -45,108 +45,24 @@ public class PostRequester {
     static final String charset = "UTF8";
 
     /**
-     * Helper function for postRequest: Convert kvp to query for POST.
-     */
-    private static byte[] convertKvpToByte(String[] keys, String[] values){
-
-        byte[] query = null;
-        String query_string = "Content-Disposition: form-data";
-        try {
-            for(int i=0; i<keys.length; ++i){
-                query_string = query_string + "; " + keys[i] + "=\"" + values[i] + '\"';
-            }
-            query = query_string.getBytes(charset);
-            Log.e("convertKvpToByte",query_string);
-        } catch (Exception e) {
-            e.printStackTrace(); // TODO Handle exception
-        }
-        return query;
-    }
-
-    /** Helper function for postRequest
-     */
-    private static String convertStreamToString(InputStream is) {
-
-        // TODO Confirm the return type with backend
-        // From https://stackoverflow.com/questions/43538954/how-to-get-response-after-using-post-method-in-android
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append((line + "\n"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
-
-    // Create a trust manager that does not validate certificate chains
-    private static final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-            return new java.security.cert.X509Certificate[] {};
-        }
-
-        public void checkClientTrusted(X509Certificate[] chain,
-                                       String authType) {
-        }
-
-        public void checkServerTrusted(X509Certificate[] chain,
-                                       String authType) {
-        }
-    } };
-
-    /**
-     * This function will install a trust manager that will blindly trust all SSL certificates.  The reason this code is being added is to enable developers to do development using self signed SSL certificates on their web server. The standard HttpsURLConnection class will throw an exception on self signed certificates if this code is not run.
-     */
-    private static SSLSocketFactory trustAllHosts(HttpsURLConnection connection){
-        SSLSocketFactory oldFactory=connection.getSSLSocketFactory();
-        try {
-            SSLContext sc=SSLContext.getInstance("TLS");
-            sc.init(null,trustAllCerts,new java.security.SecureRandom());
-            SSLSocketFactory newFactory=sc.getSocketFactory();
-            connection.setSSLSocketFactory(newFactory);
-        }
-        catch (  Exception e) {
-            e.printStackTrace();
-        }
-        return oldFactory;
-    }
-    /**
      * Intended to be used for other POST requests.
-     * @param full_url The full url of the API
-     * @param keys The keys of key-value pairs of the query
-     * @param values Same # as keys
-     * @return response in String
+     * See https://github.com/Glushigle/sw_gp4_Front_End#postrequester-用法 for usage.
      */
     public static String request(String full_url, String[] keys, String[] values){
+
+        final String TAG = "request";
 
         /** Note: "/** Enter" generates the template for function description. **/
         // TODO Ask for get_group_list(user_id) API from backend.
         // TODO How to obtain user_id locally? cookies!
-        // https://www.wikihow.com/Execute-HTTP-POST-Requests-in-Android
-        // https://stackoverflow.com/questions/43538954/how-to-get-response-after-using-post-method-in-android
 
         String rtn = "";
         try{
             MultipartUtility multipart = new MultipartUtility(full_url, charset);
 
-            // In your case you are not adding form data so ignore this
-            /*This is to add parameter values */
             for (int i = 0; i < keys.length; i++) {
                 multipart.addFormField(keys[i], values[i]);
             }
-
-            String TAG = "request";
             List<String> response = multipart.finish();
             Log.e(TAG, "SERVER REPLIED:");
             for (String line : response) {
