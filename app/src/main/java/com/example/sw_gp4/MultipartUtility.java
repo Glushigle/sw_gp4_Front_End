@@ -87,7 +87,7 @@ public class MultipartUtility {
         httpConn.setConnectTimeout(15000);
         httpConn.setDoOutput(true);    // indicates POST method
         httpConn.setDoInput(true);
-        httpConn.setDefaultSSLSocketFactory(trustAllHosts(httpConn));
+        HttpsURLConnection.setDefaultSSLSocketFactory(trustAllHosts(httpConn));
         httpConn.setRequestProperty("Content-Type",
                 "multipart/form-data; boundary=" + boundary);
         outputStream = httpConn.getOutputStream();
