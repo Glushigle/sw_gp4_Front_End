@@ -1,10 +1,14 @@
 package com.example.sw_gp4;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -12,10 +16,42 @@ import android.widget.TextView;
 
 public class showDDL extends AppCompatActivity {
 
+    private Context mContext=this;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                // TODO: 写navigation bar
+                case R.id.navigation_home:
+                    //进到小组页
+                    Intent intent1 = new Intent(mContext,GroupList.class);
+                    startActivity(intent1);
+                    finish();
+                    return true;
+                case R.id.navigation_dashboard:
+                    //进到个人页
+                    return true;
+                case R.id.navigation_notifications:
+                    //进到好友页
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_ddl);
+
+        // Navigation bar
+        // Every activity with a navigation bar should add these lines
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         setTitle("show_ddl_view");
         show_ddl_view();
     }

@@ -47,8 +47,10 @@ public class GroupList extends AppCompatActivity {
                     //进到小组页
                     return true;
                 case R.id.navigation_dashboard:
-                    Intent intent = new Intent(mContext,showDDL.class);
-                    startActivity(intent);
+                    //进到个人页
+                    Intent intent2 = new Intent(mContext,showDDL.class);
+                    startActivity(intent2);
+                    finish();
                     return true;
                 case R.id.navigation_notifications:
                     //进到好友页
@@ -75,7 +77,9 @@ public class GroupList extends AppCompatActivity {
         String response = "{\"groups\":[\n" +
                 "                 {\"id\":\"1\", \"name\":\"Group Name 1\"},\n" +
                 "                 {\"id\":\"2\", \"name\":\"Group Name 2\"},\n" +
-                "                 {\"id\":\"3\", \"name\":\"Group Name 3\"}]\n" +
+                "                 {\"id\":\"3\", \"name\":\"Group Name 3\"},\n" +
+                "                 {\"id\":\"4\", \"name\":\"Group Name 4\"},\n" +
+                "                 {\"id\":\"5\", \"name\":\"Group Name 5\"}]\n" +
                 "            }";
         try {
             JSONObject responseObj = new JSONObject(response);

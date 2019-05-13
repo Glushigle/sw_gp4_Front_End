@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".showDDL"> </activity>
+        <activity android:name=".showDDL"></activity>
         <activity android:name=".GroupList">
         </activity>
         <activity android:name=".MainActivity">
