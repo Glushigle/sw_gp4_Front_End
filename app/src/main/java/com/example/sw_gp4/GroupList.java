@@ -177,7 +177,7 @@ public class GroupList extends AppCompatActivity {
         // Toast the returns; update if successful
         if(valid){
             group_ids.remove(position);
-            group_colors.remove(position);
+            //group_colors.remove(position%5);
             group_names.remove(position);
             group_.remove(position);
             mAdapter.resetData(group_colors, group_names);
