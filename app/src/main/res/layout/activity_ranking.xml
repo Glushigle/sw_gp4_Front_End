@@ -41,11 +41,10 @@
         android:layout_marginBottom="24dp"
         android:orientation="horizontal"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/f1"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/friend_color"
+            android:id="@+id/my_color"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginLeft="60dp"
@@ -60,14 +59,15 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/friend_name"
+                android:id="@+id/my_name"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="bottom"
-                android:text="katexlh"
+                android:text="Kate"
                 android:textAlignment="2" />
 
             <TextView
+                android:id="@+id/my_rank"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="top|center_vertical"
@@ -76,7 +76,7 @@
                 android:textColor="@android:color/darker_gray" />
         </LinearLayout>
         <TextView
-            android:id="@+id/my_ranking"
+            android:id="@+id/my_percent"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"
@@ -85,6 +85,24 @@
             android:textAlignment="3" />
     </LinearLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/friends_rank"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rank_self"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        android:clickable="true"
+        android:choiceMode="singleChoice" />
+
+    <!--
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -113,7 +131,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
             android:gravity="center_vertical"
-            android:text="朋友1"
+            android:text="Bob"
             android:textAlignment="2" />
         <TextView
             android:layout_width="40dp"
@@ -151,7 +169,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
             android:gravity="center_vertical"
-            android:text="朋友2"
+            android:text="Carol"
             android:textAlignment="2" />
         <TextView
             android:layout_width="40dp"
@@ -227,7 +245,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
             android:gravity="center_vertical"
-            android:text="朋友3"
+            android:text="Alice"
             android:textAlignment="2" />
         <TextView
             android:layout_width="40dp"
@@ -265,7 +283,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
             android:gravity="center_vertical"
-            android:text="朋友4"
+            android:text="Dave"
             android:textAlignment="2" />
         <TextView
             android:layout_width="40dp"
@@ -275,24 +293,6 @@
             android:text="87%"
             android:textAlignment="3" />
     </LinearLayout>
-
-<!--
-    <ListView
-        android:id="@+id/friends_rank"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rank_self"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        android:clickable="true"
-        android:choiceMode="singleChoice" />
     -->
 
 </android.support.constraint.ConstraintLayout>

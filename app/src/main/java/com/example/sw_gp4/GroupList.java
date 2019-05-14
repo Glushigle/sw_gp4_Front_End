@@ -33,6 +33,7 @@ public class GroupList extends AppCompatActivity {
     private ListViewAdapter mAdapter;
     private Context mContext=this;
 
+    private ArrayList<Integer> group_colors;
     private ArrayList<String> group_ids;
     private ArrayList<String> group_names;
 
@@ -71,7 +72,11 @@ public class GroupList extends AppCompatActivity {
                  {"id":"n", "name":"Group Name n"}]
             }
         */
-
+        int colors[] = {R.color.gp_1,
+                R.color.gp_2,
+                R.color.gp_3,
+                R.color.gp_4,
+                R.color.gp_5};
         // TODO: programmatically get response (後端API實現了嗎？)
         //String[] keys = {"username"};
         //String[] values = {"user1"}; // TODO: username cookie
@@ -88,9 +93,11 @@ public class GroupList extends AppCompatActivity {
             JSONArray groups = (JSONArray) responseObj.getJSONArray("groups");
             group_ids = new ArrayList<String>();
             group_names = new ArrayList<String>();
+            group_colors = new ArrayList<Integer>();
             for(int i=0; i<groups.length(); ++i){
                 group_ids.add((String) groups.getJSONObject(i).getString("id"));
                 group_names.add((String) groups.getJSONObject(i).getString("name"));
+                group_colors.add(colors[i%colors.length]); // TODO 色卡
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -111,7 +118,7 @@ public class GroupList extends AppCompatActivity {
         // Group List
         updateData();
         mListView = (ListView) findViewById(R.id.group_list);
-        mAdapter = new ListViewAdapter(this, group_names);
+        mAdapter = new ListViewAdapter(this,group_colors, group_names);
         mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,8 +139,10 @@ public class GroupList extends AppCompatActivity {
         boolean valid = true;
         // Toast the returns; update if successful
         if(valid){
+            group_ids.remove(position);
+            group_colors.remove(position);
             group_names.remove(position);
-            mAdapter.resetData(group_names);
+            mAdapter.resetData(group_colors, group_names);
         }
         return valid;
     }
