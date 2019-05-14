@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class GroupList extends AppCompatActivity {
 
     private ListView mListView;
-    private ListViewAdapter mAdapter;
+    private GroupListAdapter mAdapter;
     private Context mContext=this;
 
     private ArrayList<Integer> group_colors;
@@ -118,7 +118,7 @@ public class GroupList extends AppCompatActivity {
         // Group List
         updateData();
         mListView = (ListView) findViewById(R.id.group_list);
-        mAdapter = new ListViewAdapter(this,group_colors, group_names);
+        mAdapter = new GroupListAdapter(this,group_colors, group_names);
         mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

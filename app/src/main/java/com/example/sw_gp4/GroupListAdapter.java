@@ -21,7 +21,7 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.ArrayList;
 
-public class ListViewAdapter extends BaseSwipeAdapter {
+public class GroupListAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
 
@@ -29,7 +29,7 @@ public class ListViewAdapter extends BaseSwipeAdapter {
     private ArrayList<String> group_names;
     private ArrayList<Integer> group_colors;
 
-    public ListViewAdapter(Context mContext, ArrayList<Integer> group_colors, ArrayList<String> group_names) {
+    public GroupListAdapter(Context mContext, ArrayList<Integer> group_colors, ArrayList<String> group_names) {
         this.mContext = mContext;
         resetData(group_colors,group_names);
     }
