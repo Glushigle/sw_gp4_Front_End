@@ -16,16 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Ranking"></activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".showDDL" />
-        <activity android:name=".GroupList" />
-        <activity android:name=".friends">
+        <activity android:name=".Ranking">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".showDDL" />
+        <activity android:name=".GroupList" />
+        <activity android:name=".friends">
         </activity>
     </application>
 

@@ -82,11 +82,11 @@ public class GroupList extends AppCompatActivity {
         //String[] values = {"user1"}; // TODO: username cookie
         //String response = PostRequester.request("full_url", keys, values);
         String response = "{\"groups\":[\n" +
-                "                 {\"id\":\"1\", \"name\":\"Group Name 1\"},\n" +
-                "                 {\"id\":\"2\", \"name\":\"Group Name 2\"},\n" +
-                "                 {\"id\":\"3\", \"name\":\"Group Name 3\"},\n" +
-                "                 {\"id\":\"4\", \"name\":\"Group Name 4\"},\n" +
-                "                 {\"id\":\"5\", \"name\":\"Group Name 5\"}]\n" +
+                "                 {\"id\":\"1\", \"name\":\"2019软件工程第四组\"},\n" +
+                "                 {\"id\":\"2\", \"name\":\"2019软件工程\"},\n" +
+                "                 {\"id\":\"3\", \"name\":\"Multi-Document Processing小组\"},\n" +
+                "                 {\"id\":\"4\", \"name\":\"北京大学交响乐团\"},\n" +
+                "                 {\"id\":\"5\", \"name\":\"北京大学健美操队-普通生代表队\"}]\n" +
                 "            }";
         try {
             JSONObject responseObj = new JSONObject(response);
