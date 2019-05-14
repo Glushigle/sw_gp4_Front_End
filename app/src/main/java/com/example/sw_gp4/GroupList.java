@@ -85,7 +85,7 @@ public class GroupList extends AppCompatActivity {
                 "                 {\"id\":\"1\", \"name\":\"2019软件工程第四组\"},\n" +
                 "                 {\"id\":\"2\", \"name\":\"2019软件工程\"},\n" +
                 "                 {\"id\":\"3\", \"name\":\"Multi-Document Processing小组\"},\n" +
-                "                 {\"id\":\"4\", \"name\":\"北京大学交响乐团\"},\n" +
+                "                 {\"id\":\"4\", \"name\":\"北京大学山鹰社\"},\n" +
                 "                 {\"id\":\"5\", \"name\":\"北京大学健美操队-普通生代表队\"}]\n" +
                 "            }";
         try {

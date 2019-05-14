@@ -46,8 +46,9 @@
             android:id="@+id/my_color"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/ic_group" />
 
@@ -74,6 +75,7 @@
                 android:textAlignment="2"
                 android:textColor="@android:color/darker_gray" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/my_percent"
             android:layout_width="40dp"
@@ -94,12 +96,25 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="4dp"
+        android:choiceMode="singleChoice"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="395dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="120dp"
         app:layout_constraintTop_toBottomOf="@id/rank_self"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        android:clickable="true"
-        android:choiceMode="singleChoice" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <!--
     <LinearLayout
