@@ -43,16 +43,16 @@ public class GroupList extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_GroupList:
                     //进到小组页
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_showDDL:
                     //进到个人页
                     Intent intent2 = new Intent(mContext,showDDL.class);
                     startActivity(intent2);
                     finish();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_Ranking:
                     //进到好友页
                     Intent intent3 = new Intent(mContext,Ranking.class);
                     startActivity(intent3);
@@ -114,7 +114,7 @@ public class GroupList extends AppCompatActivity {
         // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_home);
+        navigation.setSelectedItemId(R.id.navigation_GroupList);
 
         // Group List
         updateData();

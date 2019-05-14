@@ -89,34 +89,25 @@ public class Ranking extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_GroupList:
                     //进到小组页
                     Intent intent1 = new Intent(mContext,GroupList.class);
                     startActivity(intent1);
                     finish();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_showDDL:
                     //进到个人页
                     Intent intent2 = new Intent(mContext,showDDL.class);
                     startActivity(intent2);
                     finish();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_Ranking:
                     //进到好友页
                     return true;
             }
             return false;
         }
     };
-
-    private ImageButton.OnClickListener mOnSeeFriendsClickedListerner =
-            new ImageButton.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(mContext,friends.class));
-                    finish();
-                }
-            };
 
     private void setMyRank(){
         int myRank = 2; // TODO: get id from cookie; match rank by myId
@@ -134,9 +125,15 @@ public class Ranking extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_notifications);
+        navigation.setSelectedItemId(R.id.navigation_Ranking);
 
-        findViewById(R.id.add_friend).setOnClickListener(mOnSeeFriendsClickedListerner);
+        findViewById(R.id.add_friend).setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, friends.class));
+                finish();
+            }
+        });
 
         updateData();
         setMyRank();

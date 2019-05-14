@@ -20,19 +20,19 @@ public class friends extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_GroupList:
                     //进到小组页
                     Intent intent1 = new Intent(mContext,GroupList.class);
                     startActivity(intent1);
                     finish();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_showDDL:
                     //进到个人页
                     Intent intent2 = new Intent(mContext,showDDL.class);
                     startActivity(intent2);
                     finish();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_Ranking:
                     //进到好友页
                     Intent intent3 = new Intent(mContext,Ranking.class);
                     startActivity(intent3);
@@ -50,7 +50,7 @@ public class friends extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_notifications);
+        navigation.setSelectedItemId(R.id.navigation_Ranking);
 
     }
     public void add_friends(View v){
