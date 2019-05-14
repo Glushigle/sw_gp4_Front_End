@@ -1,21 +1,75 @@
 package com.example.sw_gp4;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class showDDL extends AppCompatActivity {
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class showDDL extends AppCompatActivity {
+    private Context mContext=this;
+    private OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new OnNavigationItemSelectedListener()
+    {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                // TODO: 写navigation bar.
+                case R.id.navigation_home:
+                    //进到小组页
+                    Intent intent = new Intent(mContext,GroupList.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_dashboard:
+
+                    return true;
+                case R.id.navigation_notifications:
+                    //进到好友页
+                    return true;
+            }
+            return false;
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_show_ddl);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         setTitle("show_ddl_view");
         show_ddl_view();
     }
@@ -54,12 +108,15 @@ public class showDDL extends AppCompatActivity {
         //新建一个布局来显示ddl
         LinearLayout li_text = new LinearLayout(this);
         li_text.setOrientation(LinearLayout.VERTICAL);//纵向
-        li_text.setLayoutParams(para);
+        LinearLayout.LayoutParams para1 = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        para1.setMargins(0,0,0,0);
+        li_text.setLayoutParams(para1);
         //显示ddl文本
         int amt = texts.length;//数量
         for (int i = 0; i < amt; ++i) {
             TextView tv_text = new TextView(this);
-            tv_text.setLayoutParams(para);
+            tv_text.setLayoutParams(para1);
             tv_text.setGravity(Gravity.CENTER);//文本居中
             if (i % 2 == 0)//背景颜色
                 tv_text.setBackgroundColor(Color.rgb(22,133,169));
