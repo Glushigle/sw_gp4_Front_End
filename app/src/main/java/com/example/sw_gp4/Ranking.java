@@ -33,6 +33,7 @@ public class Ranking extends AppCompatActivity {
 
     private Context mContext=this;
 
+    private int my_rank;
     private ArrayList<Integer> friend_colors;
     private ArrayList<String> friend_ids;
     private ArrayList<String> friend_names;
@@ -40,7 +41,8 @@ public class Ranking extends AppCompatActivity {
 
     private boolean updateData(){
         /* Suppose the return format is
-            {"groups":[
+            {"my rank": "2",
+             "ranking":[
                  {"id":"1", "name":"Name 1", "percent":"100"},
                  {"id":"2", "name":"Name 2", "percent":"97"},
                  ...
@@ -56,7 +58,8 @@ public class Ranking extends AppCompatActivity {
         //String[] keys = {"username"};
         //String[] values = {"user1"};
         //String response = PostRequester.request("full_url", keys, values);
-        String response = "{\"ranking\":[\n" +
+        String response = "{\"my rank\":\"2\"," +
+                "           \"ranking\":[\n" +
                 "                 {\"id\":\"1\", \"name\":\"Bob\",   \"percent\":\"100\"},\n" +
                 "                 {\"id\":\"2\", \"name\":\"Alice\", \"percent\": \"97\"},\n" +
                 "                 {\"id\":\"3\", \"name\":\"Kate\",  \"percent\": \"95\"},\n" +
@@ -65,6 +68,7 @@ public class Ranking extends AppCompatActivity {
                 "            }";
         try {
             JSONObject responseObj = new JSONObject(response);
+            my_rank = (int) responseObj.getInt("my rank");
             JSONArray groups = (JSONArray) responseObj.getJSONArray("ranking");
             friend_ids = new ArrayList<String>();
             friend_names = new ArrayList<String>();
@@ -110,12 +114,11 @@ public class Ranking extends AppCompatActivity {
     };
 
     private void setMyRank(){
-        int myRank = 2; // TODO: get id from cookie; match rank by myId
         ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(
-                ContextCompat.getColor(mContext, friend_colors.get(myRank-1)));
-        ((TextView)findViewById(R.id.my_name)).setText(friend_names.get(myRank-1));
-        ((TextView)findViewById(R.id.my_rank)).setText("Rank "+Integer.toString(myRank));
-        ((TextView)findViewById(R.id.my_percent)).setText(friend_percents.get(myRank-1)+"%");
+                ContextCompat.getColor(mContext, friend_colors.get(my_rank-1)));
+        ((TextView)findViewById(R.id.my_name)).setText(friend_names.get(my_rank-1));
+        ((TextView)findViewById(R.id.my_rank)).setText("Rank "+Integer.toString(my_rank));
+        ((TextView)findViewById(R.id.my_percent)).setText(friend_percents.get(my_rank-1)+"%");
     }
 
     @Override
