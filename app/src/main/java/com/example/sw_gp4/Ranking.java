@@ -134,7 +134,7 @@ public class Ranking extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_Ranking);
 
-        addButton = (ImageButton) findViewById(R.id.add_friend);
+        addButton = (ImageButton) findViewById(R.id.imageButton);
         addButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
