@@ -39,7 +39,7 @@ public class Ranking extends AppCompatActivity {
     private ArrayList<String> friend_names;
     private ArrayList<String> friend_percents;
 
-    private boolean updateData(){
+    private void updateData(){
         /* Suppose the return format is
             {"my rank": "2",
              "ranking":[
@@ -78,13 +78,11 @@ public class Ranking extends AppCompatActivity {
                 friend_ids.add((String) groups.getJSONObject(i).getString("id"));
                 friend_names.add((String) groups.getJSONObject(i).getString("name"));
                 friend_percents.add((String) groups.getJSONObject(i).getString("percent"));
-                friend_colors.add(colors[i%colors.length]); // TODO 色卡
+                friend_colors.add(colors[i%colors.length]);
             }
-            return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

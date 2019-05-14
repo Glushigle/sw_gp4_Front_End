@@ -69,7 +69,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
                 ContextCompat.getColor(mContext,group_colors.get(position)));
         text_button.setText(group_names.get(position));
 
-        // TODO: where do the buttons lead to?
+        // TODO: click button -> show group DDL
     }
 
     @Override

@@ -1,4 +1,3 @@
-// Todo: add try...catch
 package com.example.sw_gp4;
 
 import android.content.Context;

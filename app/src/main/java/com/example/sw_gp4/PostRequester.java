@@ -15,11 +15,6 @@ public class PostRequester {
     public static String request(String full_url, String[] keys, String[] values){
 
         final String TAG = "request";
-
-        /** Note: "/** Enter" generates the template for function description. **/
-        // TODO Ask for get_group_list(user_id) API from backend.
-        // TODO How to obtain user_id locally? cookies!
-
         String rtn = "";
         try{
             MultipartUtility multipart = new MultipartUtility(full_url, charset);
@@ -28,9 +23,9 @@ public class PostRequester {
                 multipart.addFormField(keys[i], values[i]);
             }
             List<String> response = multipart.finish();
-            Log.e(TAG, "SERVER REPLIED:");
+            Log.i(TAG, "SERVER REPLIED:");
             for (String line : response) {
-                Log.e(TAG, "Request Response:::" + line);
+                Log.i(TAG, "Request Response:::" + line);
                 //responseString = line;
             }
             rtn = response.get(0);
