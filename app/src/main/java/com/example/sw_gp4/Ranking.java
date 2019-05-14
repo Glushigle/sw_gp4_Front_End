@@ -33,14 +33,16 @@ public class Ranking extends AppCompatActivity {
 
     private Context mContext=this;
 
+    private int my_rank;
     private ArrayList<Integer> friend_colors;
     private ArrayList<String> friend_ids;
     private ArrayList<String> friend_names;
     private ArrayList<String> friend_percents;
 
-    private boolean updateData(){
+    private void updateData(){
         /* Suppose the return format is
-            {"groups":[
+            {"my rank": "2",
+             "ranking":[
                  {"id":"1", "name":"Name 1", "percent":"100"},
                  {"id":"2", "name":"Name 2", "percent":"97"},
                  ...
@@ -56,7 +58,8 @@ public class Ranking extends AppCompatActivity {
         //String[] keys = {"username"};
         //String[] values = {"user1"};
         //String response = PostRequester.request("full_url", keys, values);
-        String response = "{\"ranking\":[\n" +
+        String response = "{\"my rank\":\"2\"," +
+                "           \"ranking\":[\n" +
                 "                 {\"id\":\"1\", \"name\":\"Bob\",   \"percent\":\"100\"},\n" +
                 "                 {\"id\":\"2\", \"name\":\"Alice\", \"percent\": \"97\"},\n" +
                 "                 {\"id\":\"3\", \"name\":\"Kate\",  \"percent\": \"95\"},\n" +
@@ -65,6 +68,7 @@ public class Ranking extends AppCompatActivity {
                 "            }";
         try {
             JSONObject responseObj = new JSONObject(response);
+            my_rank = (int) responseObj.getInt("my rank");
             JSONArray groups = (JSONArray) responseObj.getJSONArray("ranking");
             friend_ids = new ArrayList<String>();
             friend_names = new ArrayList<String>();
@@ -74,13 +78,11 @@ public class Ranking extends AppCompatActivity {
                 friend_ids.add((String) groups.getJSONObject(i).getString("id"));
                 friend_names.add((String) groups.getJSONObject(i).getString("name"));
                 friend_percents.add((String) groups.getJSONObject(i).getString("percent"));
-                friend_colors.add(colors[i%colors.length]); // TODO 色卡
+                friend_colors.add(colors[i%colors.length]);
             }
-            return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -89,19 +91,19 @@ public class Ranking extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_GroupList:
                     //进到小组页
                     Intent intent1 = new Intent(mContext,GroupList.class);
                     startActivity(intent1);
                     finish();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_showDDL:
                     //进到个人页
                     Intent intent2 = new Intent(mContext,showDDL.class);
                     startActivity(intent2);
                     finish();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_Ranking:
                     //进到好友页
                     return true;
             }
@@ -109,22 +111,12 @@ public class Ranking extends AppCompatActivity {
         }
     };
 
-    private ImageButton.OnClickListener mOnSeeFriendsClickedListerner =
-            new ImageButton.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(mContext,friends.class));
-                    finish();
-                }
-            };
-
     private void setMyRank(){
-        int myRank = 2; // TODO: get id from cookie; match rank by myId
         ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(
-                ContextCompat.getColor(mContext, friend_colors.get(myRank-1)));
-        ((TextView)findViewById(R.id.my_name)).setText(friend_names.get(myRank-1));
-        ((TextView)findViewById(R.id.my_rank)).setText("Rank "+Integer.toString(myRank));
-        ((TextView)findViewById(R.id.my_percent)).setText(friend_percents.get(myRank-1)+"%");
+                ContextCompat.getColor(mContext, friend_colors.get(my_rank-1)));
+        ((TextView)findViewById(R.id.my_name)).setText(friend_names.get(my_rank-1));
+        ((TextView)findViewById(R.id.my_rank)).setText("Rank "+Integer.toString(my_rank));
+        ((TextView)findViewById(R.id.my_percent)).setText(friend_percents.get(my_rank-1)+"%");
     }
 
     @Override
@@ -134,9 +126,15 @@ public class Ranking extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_notifications);
+        navigation.setSelectedItemId(R.id.navigation_Ranking);
 
-        findViewById(R.id.add_friend).setOnClickListener(mOnSeeFriendsClickedListerner);
+        ((ImageButton) findViewById(R.id.add_friend)).setOnClickListener(new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, friends.class));
+                finish();
+            }
+        });
 
         updateData();
         setMyRank();

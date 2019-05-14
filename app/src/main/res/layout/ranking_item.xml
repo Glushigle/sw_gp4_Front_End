@@ -22,7 +22,7 @@
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/ic_group" />
+        android:background="@drawable/ic_color_round" />
 
     <TextView
         android:id="@+id/friend_name"

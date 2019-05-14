@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- The color of this icon CHANGES whenever created and set-->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners android:radius="32dp"/>
+    <size
+        android:width="64dp"
+        android:height="64dp"/>
+    <solid android:color="#f00056"/>
+
+</shape>
