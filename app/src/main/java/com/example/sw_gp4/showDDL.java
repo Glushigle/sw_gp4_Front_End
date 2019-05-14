@@ -52,6 +52,7 @@ public class showDDL extends AppCompatActivity {
         // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_dashboard);
 
         setTitle("show_ddl_view");
         show_ddl_view();

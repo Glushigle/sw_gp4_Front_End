@@ -21,24 +21,22 @@ import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.ArrayList;
 
-public class ListViewAdapter extends BaseSwipeAdapter {
+public class GroupListAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
 
-    // TODO: colors?
-    private int num_colors = 5;
-    private int colors[] = {R.color.gp_1, R.color.gp_2, R.color.gp_3, R.color.gp_4, R.color.gp_5};
-
     // TODO: populate group_names with post
     private ArrayList<String> group_names;
+    private ArrayList<Integer> group_colors;
 
-    public ListViewAdapter(Context mContext, ArrayList<String> group_names) {
+    public GroupListAdapter(Context mContext, ArrayList<Integer> group_colors, ArrayList<String> group_names) {
         this.mContext = mContext;
-        this.group_names = group_names;
+        resetData(group_colors,group_names);
     }
 
-    public void resetData( ArrayList<String> group_names){
+    public void resetData( ArrayList<Integer> group_colors, ArrayList<String> group_names){
         this.group_names = group_names;
+        this.group_colors = group_colors;
         notifyDataSetChanged();
         closeAllItems();
     }
@@ -68,7 +66,7 @@ public class ListViewAdapter extends BaseSwipeAdapter {
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
 
         ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,colors[position%num_colors]));
+                ContextCompat.getColor(mContext,group_colors.get(position)));
         text_button.setText(group_names.get(position));
 
         // TODO: where do the buttons lead to?
