@@ -86,7 +86,7 @@ public class GroupList extends AppCompatActivity {
                 "                 {\"id\":\"2\", \"name\":\"2019软件工程\"},\n" +
                 "                 {\"id\":\"3\", \"name\":\"Multi-Document Processing小组\"},\n" +
                 "                 {\"id\":\"4\", \"name\":\"北京大学山鹰社\"},\n" +
-                "                 {\"id\":\"5\", \"name\":\"北京大学健美操队-普通生代表队\"}]\n" +
+                "                 {\"id\":\"5\", \"name\":\"北京大学珍珠奶茶研究社\"}]\n" +
                 "            }";
         try {
             JSONObject responseObj = new JSONObject(response);
@@ -114,6 +114,7 @@ public class GroupList extends AppCompatActivity {
         // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_home);
 
         // Group List
         updateData();
