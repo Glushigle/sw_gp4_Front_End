@@ -140,7 +140,6 @@ public class Ranking extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
                 OnAddClicked(v);
             }
         });
