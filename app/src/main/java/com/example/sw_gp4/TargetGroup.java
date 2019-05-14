@@ -132,17 +132,7 @@ public class TargetGroup extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
-                OnAddClicked(v);
-            }
-        });
-        addButton2 = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        addButton2.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "button1 click", Toast.LENGTH_SHORT).show();
                 OnAddClicked(v);
             }
         });

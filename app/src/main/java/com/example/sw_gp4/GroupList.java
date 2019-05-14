@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GroupList extends AppCompatActivity {
     public static String currUserName;
@@ -40,6 +41,12 @@ public class GroupList extends AppCompatActivity {
     private ArrayList<String> group_names;
     private ArrayList<Integer> group_colors;
 
+    private int colors[] = { // TODO 色卡
+            R.color.gp_1,
+            R.color.gp_2,
+            R.color.gp_3,
+            R.color.gp_4,
+            R.color.gp_5};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -76,11 +83,7 @@ public class GroupList extends AppCompatActivity {
                  {"id":"n", "name":"Group Name n"}]
             }
         */
-        int colors[] = {R.color.gp_1,
-                R.color.gp_2,
-                R.color.gp_3,
-                R.color.gp_4,
-                R.color.gp_5};
+
         // TODO: programmatically get response (後端API實現了嗎？)
         //String[] keys = {"username"};
         //String[] values = {"user1"}; // TODO: username cookie
@@ -104,7 +107,7 @@ public class GroupList extends AppCompatActivity {
             for(int i=0; i<groups.length(); ++i){
                 group_ids.add((String) groups.getJSONObject(i).getString("id"));
                 group_names.add((String) groups.getJSONObject(i).getString("name"));
-                group_colors.add(colors[i%colors.length]); // TODO 色卡
+                group_colors.add(colors[(Integer.parseInt(group_ids.get(i))-1)%colors.length]);
                 group_.add
                 (new Group
                         (
@@ -142,8 +145,6 @@ public class GroupList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
-                // open SwipeLayout第?個小孩
-                //((SwipeLayout)(mListView.getChildAt(position - mListView.getFirstVisiblePosition()))).open(true);
                 TargetGroup.currGroup = group_.get(position);
                 //System.out.println("POSITION="+position);
                 TargetGroup.userNames = new ArrayList<String>();//TODO:应从服务器获取数据
@@ -190,10 +191,12 @@ public class GroupList extends AppCompatActivity {
         group_ids.add(Integer.toString(tempId));
         //group_ids.add((String) groups.getJSONObject(0).getString("id"));
         group_names.add("New Group "+tempId);
+        group_colors.add(colors[(tempId-1)%colors.length]);
         group_.add(new Group(tempId,"New Group "+tempId));
         //group_.get(1).member.add(currUserName);//第一个成员是自己
         //group_names.add((String) groups.getJSONObject(0).getString("name"));
         mAdapter.resetData(group_colors,group_names);
+
     }
     public int getId()
     {

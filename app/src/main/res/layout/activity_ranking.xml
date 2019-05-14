@@ -11,14 +11,14 @@
         android:id="@+id/add_friend"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:padding="1dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/round"
+        android:onClick="OnAddClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/ic_add_btn"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.design.widget.BottomNavigationView
