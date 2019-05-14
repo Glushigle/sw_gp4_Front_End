@@ -27,6 +27,7 @@ public class MultipartUtility {
     private String charset;
     private OutputStream outputStream;
     private PrintWriter writer;
+    private boolean post;
 
     // Create a trust manager that does not validate certificate chains
     private static final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -67,9 +68,10 @@ public class MultipartUtility {
      * @param charset
      * @throws IOException
      */
-    public MultipartUtility(String requestURL, String charset)
+    public MultipartUtility(String requestURL, String charset, boolean post)
             throws IOException {
         this.charset = charset;
+        this.post = post;
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String arg0, SSLSession arg1) {
@@ -82,14 +84,14 @@ public class MultipartUtility {
         URL url = new URL(requestURL);
         httpConn = (HttpsURLConnection) url.openConnection();
         httpConn.setConnectTimeout(15000);
-        httpConn.setDoOutput(true);    // indicates POST method
-        httpConn.setDoInput(true);
         HttpsURLConnection.setDefaultSSLSocketFactory(trustAllHosts(httpConn));
-        httpConn.setRequestProperty("Content-Type",
-                "multipart/form-data; boundary=" + boundary);
-        outputStream = httpConn.getOutputStream();
-        writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),
-                true);
+        if(post){
+            httpConn.setDoOutput(true);    // true indicates POST method
+            httpConn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            outputStream = httpConn.getOutputStream();
+            writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),
+                    true);
+        }
     }
 
     /**
@@ -110,17 +112,6 @@ public class MultipartUtility {
     }
 
     /**
-     * Adds a header field to the request.
-     *
-     * @param name  - name of the header field
-     * @param value - value of the header field
-     */
-    public void addHeaderField(String name, String value) {
-        writer.append(name + ": " + value).append(LINE_FEED);
-        writer.flush();
-    }
-
-    /**
      * Completes the request and receives response from the server.
      *
      * @return a list of Strings as response in case the server returned
@@ -129,9 +120,11 @@ public class MultipartUtility {
      */
     public List<String> finish() throws IOException {
         List<String> response = new ArrayList<String>();
-        writer.append(LINE_FEED).flush();
-        writer.append("--" + boundary + "--").append(LINE_FEED);
-        writer.close();
+        if(post){
+            writer.append(LINE_FEED).flush();
+            writer.append("--" + boundary + "--").append(LINE_FEED);
+            writer.close();
+        }
 
         // checks server's status code first
         int status = httpConn.getResponseCode();

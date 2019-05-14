@@ -25,18 +25,15 @@ public class GroupListAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
 
-    // TODO: populate group_names with post
-    private ArrayList<String> group_names;
-    private ArrayList<Integer> group_colors;
+    private ArrayList<Group> groups;
 
-    public GroupListAdapter(Context mContext, ArrayList<Integer> group_colors, ArrayList<String> group_names) {
+    public GroupListAdapter(Context mContext, ArrayList<Group> groups) {
         this.mContext = mContext;
-        resetData(group_colors,group_names);
+        resetData(groups);
     }
 
-    public void resetData( ArrayList<Integer> group_colors, ArrayList<String> group_names){
-        this.group_names = group_names;
-        this.group_colors = group_colors;
+    public void resetData( ArrayList<Group> groups){
+        this.groups = groups;
         notifyDataSetChanged();
         closeAllItems();
     }
@@ -65,16 +62,18 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
 
+        Group group = groups.get(position);
         ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,group_colors.get(position%5)));//防止颜色越界
-        text_button.setText(group_names.get(position));
+                ContextCompat.getColor(mContext,group.color_id));
+        text_button.setText(group.group_name);
 
         // TODO: click button -> show group DDL
     }
 
     @Override
     public int getCount() {
-        return group_names.size();
+        if(groups==null) return 0;
+        return groups.size();
     }
 
     @Override
