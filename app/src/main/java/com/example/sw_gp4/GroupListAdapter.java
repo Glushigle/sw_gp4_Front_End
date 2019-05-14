@@ -66,7 +66,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
 
         ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,group_colors.get(position)));
+                ContextCompat.getColor(mContext,group_colors.get(position%5)));//防止颜色越界
         text_button.setText(group_names.get(position));
 
         // TODO: click button -> show group DDL

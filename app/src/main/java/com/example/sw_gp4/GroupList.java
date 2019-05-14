@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,14 +29,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class GroupList extends AppCompatActivity {
-
+    public static String currUserName;
+    public static ArrayList<Group> group_;
+    public static int maxId;
     private ListView mListView;
     private GroupListAdapter mAdapter;
     private Context mContext=this;
-
-    private ArrayList<Integer> group_colors;
+    private ImageButton addButton;
     private ArrayList<String> group_ids;
     private ArrayList<String> group_names;
+    private ArrayList<Integer> group_colors;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -88,15 +93,27 @@ public class GroupList extends AppCompatActivity {
                 "                 {\"id\":\"5\", \"name\":\"北京大学珍珠奶茶研究社\"}]\n" +
                 "            }";
         try {
+            maxId = 5;
+
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("groups");
             group_ids = new ArrayList<String>();
             group_names = new ArrayList<String>();
             group_colors = new ArrayList<Integer>();
+            group_ = new ArrayList<Group>();
             for(int i=0; i<groups.length(); ++i){
                 group_ids.add((String) groups.getJSONObject(i).getString("id"));
                 group_names.add((String) groups.getJSONObject(i).getString("name"));
                 group_colors.add(colors[i%colors.length]); // TODO 色卡
+                group_.add
+                (new Group
+                        (
+                                (String) groups.getJSONObject(i).getString("id"),
+                                (String) groups.getJSONObject(i).getString("name")
+
+                        )
+
+                );
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -127,6 +144,26 @@ public class GroupList extends AppCompatActivity {
                 Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
                 // open SwipeLayout第?個小孩
                 //((SwipeLayout)(mListView.getChildAt(position - mListView.getFirstVisiblePosition()))).open(true);
+                TargetGroup.currGroup = group_.get(position);
+                //System.out.println("POSITION="+position);
+                TargetGroup.userNames = new ArrayList<String>();//TODO:应从服务器获取数据
+                //System.out.println("CURRUSERNAME="+currUserName);
+                TargetGroup.userNames.add(currUserName);
+                TargetGroup.currPosition = position;
+                //System.out.println("CURRGROUP="+TargetGroup.currGroup.id + " " + TargetGroup.currGroup.group_name);
+                Intent intent = new Intent(mContext,TargetGroup.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        addButton = (ImageButton) findViewById(R.id.imageButton);
+        addButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
+                OnAddClicked(v);
             }
         });
 
@@ -142,12 +179,32 @@ public class GroupList extends AppCompatActivity {
             group_ids.remove(position);
             group_colors.remove(position);
             group_names.remove(position);
+            group_.remove(position);
             mAdapter.resetData(group_colors, group_names);
         }
         return valid;
     }
 
     public void OnAddClicked(View view){
-        // Todo: open add activity
+        int tempId = getId();
+        group_ids.add(Integer.toString(tempId));
+        //group_ids.add((String) groups.getJSONObject(0).getString("id"));
+        group_names.add("New Group "+tempId);
+        group_.add(new Group(tempId,"New Group "+tempId));
+        //group_.get(1).member.add(currUserName);//第一个成员是自己
+        //group_names.add((String) groups.getJSONObject(0).getString("name"));
+        mAdapter.resetData(group_colors,group_names);
+    }
+    public int getId()
+    {
+        for(int i = 1; i <= maxId;++i)
+        {
+            if(!group_ids.contains(Integer.toString(i)))
+            {
+                return i;
+            }
+        }
+        maxId++;
+        return maxId;
     }
 }

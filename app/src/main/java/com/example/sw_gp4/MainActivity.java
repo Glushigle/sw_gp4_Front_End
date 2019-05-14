@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject responseObj = new JSONObject(response);
             boolean success = responseObj.getBoolean("valid");
             if (success){
+                GroupList.currUserName = username.getText().toString();//用currUserName记录当前用户名
                 Intent intent = new Intent(this,showDDL.class);
                 startActivity(intent);
             }else{

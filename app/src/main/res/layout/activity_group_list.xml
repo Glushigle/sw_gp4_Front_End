@@ -7,22 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".GroupList">
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/round"
-        android:onClick="OnAddClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
@@ -50,6 +34,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:clickable="true"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice" >
+    </ListView>
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round"
+            android:onClick="OnAddClicked"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
 
 </android.support.constraint.ConstraintLayout>
