@@ -170,15 +170,6 @@ public class GroupList extends AppCompatActivity {
     }
 
     public void OnAddClicked(View view){
-        //int tempId = getId();
-        //group_ids.add(Integer.toString(tempId));
-        //group_ids.add((String) groups.getJSONObject(0).getString("id"));
-        //group_names.add("New Group "+tempId);
-        //group_colors.add(colors[(tempId-1)%colors.length]);
-        //group_.add(new Group(tempId,"New Group "+tempId));
-        //group_.get(1).member.add(currUserName);//第一个成员是自己
-        //group_names.add((String) groups.getJSONObject(0).getString("name"));
-
         // {"group_id": 4, "info": "", "name": "Group 3", "owner_id": 3, "valid": true}
         String[] keys = {"name"};
         String[] values = {"New Group"};

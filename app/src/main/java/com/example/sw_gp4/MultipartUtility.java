@@ -1,11 +1,17 @@
 package com.example.sw_gp4;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.HttpCookie;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -60,6 +66,7 @@ public class MultipartUtility {
         }
         return oldFactory;
     }
+
     /**
      * This constructor initializes a new HTTP POST request with content type
      * is set to multipart/form-data
@@ -68,7 +75,7 @@ public class MultipartUtility {
      * @param charset
      * @throws IOException
      */
-    public MultipartUtility(String requestURL, String charset, boolean post)
+    public MultipartUtility(String requestURL, String charset, boolean post, CookieManager cookieManager)
             throws IOException {
         this.charset = charset;
         this.post = post;
@@ -85,6 +92,20 @@ public class MultipartUtility {
         httpConn = (HttpsURLConnection) url.openConnection();
         httpConn.setConnectTimeout(15000);
         HttpsURLConnection.setDefaultSSLSocketFactory(trustAllHosts(httpConn));
+
+        // Cookies
+        //cookieManager = new java.net.CookieManager();
+        CookieHandler.setDefault(cookieManager);
+        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        if (cookieManager.getCookieStore().getCookies().size() > 0) {
+            List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
+            if (cookies != null) {
+                for (HttpCookie cookie : cookies) {
+                    httpConn.setRequestProperty("Cookie", cookie.getName() + "=" + cookie.getValue());
+                }
+            }
+        }
+
         if(post){
             httpConn.setDoOutput(true);    // true indicates POST method
             httpConn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);

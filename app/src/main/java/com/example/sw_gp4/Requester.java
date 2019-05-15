@@ -8,10 +8,11 @@ public class Requester {
 
     /**
      * Intended to be used for other POST & GET requests.
-     * See https://github.com/Glushigle/sw_gp4_Front_End#postrequester-用法 for usage.
+     * See https://github.com/Glushigle/sw_gp4_Front_End#requester用法 for usage.
      */
     private static final String TAG = Requester.class.getSimpleName();
     private static final String charset = "UTF8";
+    private static final java.net.CookieManager cookieManager = new java.net.CookieManager();
 
     public static String get(String full_url, String[] keys, String[] values) {
 
@@ -30,7 +31,7 @@ public class Requester {
 
         String rtn = "";
         try {
-            MultipartUtility multipart = new MultipartUtility(full_url, charset, post);
+            MultipartUtility multipart = new MultipartUtility(full_url, charset, post, cookieManager);
 
             if(post){
                 for (int i = 0; i < keys.length; i++) {
