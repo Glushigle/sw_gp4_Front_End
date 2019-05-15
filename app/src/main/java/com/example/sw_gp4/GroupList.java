@@ -2,6 +2,9 @@ package com.example.sw_gp4;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GroupList extends AppCompatActivity {
     public static String currUserName;
@@ -36,10 +40,13 @@ public class GroupList extends AppCompatActivity {
     private GroupListAdapter mAdapter;
     private Context mContext=this;
     private ImageButton addButton;
-    private ArrayList<String> group_ids;
-    private ArrayList<String> group_names;
-    private ArrayList<Integer> group_colors;
 
+    private int colors[] = { // TODO 色卡
+            R.color.gp_1,
+            R.color.gp_2,
+            R.color.gp_3,
+            R.color.gp_4,
+            R.color.gp_5};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,49 +75,31 @@ public class GroupList extends AppCompatActivity {
     };
 
     private void updateData(){
-        /* Suppose the return format is
-            {"groups":[
-                 {"id":"1", "name":"Group Name 1"},
-                 {"id":"2", "name":"Group Name 2"},
-                 ...
-                 {"id":"n", "name":"Group Name n"}]
-            }
+        /*String response = {"group list":
+                [{"group_id": 1, "info": "", "name": "2019软件工程第四组", "owner_id": 3},
+                 {"group_id": 2, "info": "", "name": "2019软件工程", "owner_id": 3},
+                 {"group_id": 3, "info": "", "name": "Multi-Document Processing小组", "owner_id": 3},
+                 {"group_id": 4, "info": "", "name": "北京大学珍珠奶茶研究社", "owner_id": 3}],
+            "valid": true}
         */
-        int colors[] = {R.color.gp_1,
-                R.color.gp_2,
-                R.color.gp_3,
-                R.color.gp_4,
-                R.color.gp_5};
-        // TODO: programmatically get response (後端API實現了嗎？)
-        //String[] keys = {"username"};
-        //String[] values = {"user1"}; // TODO: username cookie
-        //String response = PostRequester.request("full_url", keys, values);
-        String response = "{\"groups\":[\n" +
-                "                 {\"id\":\"1\", \"name\":\"2019软件工程第四组\"},\n" +
-                "                 {\"id\":\"2\", \"name\":\"2019软件工程\"},\n" +
-                "                 {\"id\":\"3\", \"name\":\"Multi-Document Processing小组\"},\n" +
-                "                 {\"id\":\"4\", \"name\":\"北京大学山鹰社\"},\n" +
-                "                 {\"id\":\"5\", \"name\":\"北京大学珍珠奶茶研究社\"}]\n" +
-                "            }";
+        String[] keys = {"username"};
+        String[] values = {currUserName};
+        String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
         try {
             maxId = 5;
 
             JSONObject responseObj = new JSONObject(response);
-            JSONArray groups = (JSONArray) responseObj.getJSONArray("groups");
-            group_ids = new ArrayList<String>();
-            group_names = new ArrayList<String>();
-            group_colors = new ArrayList<Integer>();
+            JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
             group_ = new ArrayList<Group>();
             for(int i=0; i<groups.length(); ++i){
-                group_ids.add((String) groups.getJSONObject(i).getString("id"));
-                group_names.add((String) groups.getJSONObject(i).getString("name"));
-                group_colors.add(colors[i%colors.length]); // TODO 色卡
                 group_.add
-                (new Group
+                (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
                         (
-                                (String) groups.getJSONObject(i).getString("id"),
-                                (String) groups.getJSONObject(i).getString("name")
-
+                                (String) groups.getJSONObject(i).getString("group_id"),
+                                (String) groups.getJSONObject(i).getString("name"),
+                                (String) groups.getJSONObject(i).getString("owner_id"),
+                                (String) groups.getJSONObject(i).getString("info"),
+                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length]
                         )
 
                 );
@@ -135,15 +124,13 @@ public class GroupList extends AppCompatActivity {
         // Group List
         updateData();
         mListView = (ListView) findViewById(R.id.group_list);
-        mAdapter = new GroupListAdapter(this,group_colors, group_names);
+        mAdapter = new GroupListAdapter(this,group_);
         mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
-                // open SwipeLayout第?個小孩
-                //((SwipeLayout)(mListView.getChildAt(position - mListView.getFirstVisiblePosition()))).open(true);
                 TargetGroup.currGroup = group_.get(position);
                 //System.out.println("POSITION="+position);
                 TargetGroup.userNames = new ArrayList<String>();//TODO:应从服务器获取数据
@@ -176,35 +163,38 @@ public class GroupList extends AppCompatActivity {
         boolean valid = true;
         // Toast the returns; update if successful
         if(valid){
-            group_ids.remove(position);
-            //group_colors.remove(position%5);
-            group_names.remove(position);
             group_.remove(position);
-            mAdapter.resetData(group_colors, group_names);
+            mAdapter.resetData(group_);
         }
         return valid;
     }
 
     public void OnAddClicked(View view){
-        int tempId = getId();
-        group_ids.add(Integer.toString(tempId));
-        //group_ids.add((String) groups.getJSONObject(0).getString("id"));
-        group_names.add("New Group "+tempId);
-        group_.add(new Group(tempId,"New Group "+tempId));
-        //group_.get(1).member.add(currUserName);//第一个成员是自己
-        //group_names.add((String) groups.getJSONObject(0).getString("name"));
-        mAdapter.resetData(group_colors,group_names);
-    }
-    public int getId()
-    {
-        for(int i = 1; i <= maxId;++i)
-        {
-            if(!group_ids.contains(Integer.toString(i)))
-            {
-                return i;
+        startActivity(new Intent(mContext, TargetGroup.class));
+        finish();
+
+        // {"group_id": 4, "info": "", "name": "Group 3", "owner_id": 3, "valid": true}
+        String[] keys = {"name"};
+        String[] values = {"New Group"};
+        String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if(valid){
+                group_.add(new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
+                    (
+                        (String) responseObj.getString("group_id"),
+                        (String) responseObj.getString("name"),
+                        (String) responseObj.getString("owner_id"),
+                        (String) responseObj.getString("info"),
+                        colors[(responseObj.getInt("group_id")-1)%colors.length]
+                    )
+                );
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        maxId++;
-        return maxId;
+        //updateData();
+        mAdapter.resetData(group_);
     }
 }

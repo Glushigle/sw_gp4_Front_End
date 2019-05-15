@@ -6,6 +6,9 @@ public class Group
 {
     String group_name;
     String group_id;
+    String owner_id;
+    String info;
+    int color_id;
     int id;
     ArrayList<String> member;
     Group(String i, String n)
@@ -40,5 +43,14 @@ public class Group
         id = i;
         group_id = Integer.toString(i);
         member.add(name);
+    }
+    Group(String group_id, String group_name, String owner_id, String info, int color_id)
+    {
+        this.group_name = group_name;
+        this.group_id = group_id;
+        this.id = Integer.parseInt(group_id);
+        this.owner_id = owner_id;
+        this.info = info;
+        this.color_id = color_id;
     }
 }
