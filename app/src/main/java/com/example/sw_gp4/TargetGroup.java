@@ -33,7 +33,6 @@ public class TargetGroup extends AppCompatActivity
     private ListViewAdapterForTargetGroup mAdapter;
     private Context mContext=this;
     private ImageButton addButton;
-    private FloatingActionButton addButton2;
     private EditText targetGroupName;
     private Button changeButton;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -123,9 +122,6 @@ public class TargetGroup extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
-                // open SwipeLayout第?個小孩
-                //((SwipeLayout)(mListView.getChildAt(position - mListView.getFirstVisiblePosition()))).open(true);
-
             }
         });
         mListView = (ListView) findViewById(R.id.user_list);
@@ -139,7 +135,7 @@ public class TargetGroup extends AppCompatActivity
                 OnAddClicked(v);
             }
         });
-        changeButton = (Button)findViewById(R.id.button);
+        changeButton = (Button)findViewById(R.id.btn_add_member);
         changeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -153,7 +149,7 @@ public class TargetGroup extends AppCompatActivity
             }
         });
 
-        targetGroupName = (EditText) findViewById(R.id.target_group_name);
+        targetGroupName = (EditText) findViewById(R.id.text_member_name);
         targetGroupName.setText(currGroup.group_name);
 
 
@@ -175,7 +171,7 @@ public class TargetGroup extends AppCompatActivity
         // Todo: 设计一个带输入的弹出框
         final EditText et = new EditText(this);
         et.setGravity(Gravity.CENTER);
-        et.setBackground(null);
+
         new AlertDialog.Builder(this).setTitle("请输入组员名称")
                 .setIcon(android.R.drawable.sym_def_app_icon)
                 .setView(et)

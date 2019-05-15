@@ -156,17 +156,20 @@ public class GroupList extends AppCompatActivity {
 
     }
 
-    public boolean OnDeleteClicked(View view, int position){
-        // Todo: delete/leave group request
-        // Confirmation
-        // POST to database
-        boolean valid = true;
-        // Toast the returns; update if successful
-        if(valid){
-            group_.remove(position);
-            mAdapter.resetData(group_);
+    public void OnDeleteClicked(View view, int position){
+        // TODO: confirmation
+        String[] keys = {"group_id"};
+        String[] values = {group_.get(position).group_id};
+        String response = Requester.post("https://222.29.159.164:10016/delete_group", keys, values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if(valid){
+                Toast.makeText(mContext, "Group deleted", Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return valid;
     }
 
     public void OnAddClicked(View view){

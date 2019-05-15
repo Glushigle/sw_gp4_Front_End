@@ -84,7 +84,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:layout_paddTop="40dp"
             android:gravity="bottom"
             android:orientation="horizontal">
 
