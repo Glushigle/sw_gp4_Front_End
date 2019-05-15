@@ -1,30 +1,34 @@
 # sw_gp4_Front_End
 
 内容：
-* [PostRequester 用法](#postrequester-用法)
+* [Requester用法](#requester用法)
 * [如何加上Navigator](#加上navigator)
 
-## PostRequester 用法
+## Requester用法
 ```
 String full_url = "full_url";
 String[] keys = {"key1"};
 String[] values = {"value1"};
-String response = PostRequester.request(full_url, keys, values);
+```
+* 寄'POST'
+```
+String response = Requester.post(full_url, keys, values);
+```
+* 寄'GET'
+```
+String response = Requester.get(full_url, keys, values);
 ```
 ### 输入
 * full_url: 见[后端API](https://github.com/sunyuqi148/sw-backstage)的 *route:*
-* keys: 根据该api，"username"
+* keys: 根据该api，如"username"
 * values: 根据该api，如"Glushigle"
+* 用post还是用get: 见该api！
 
 ### 输出、处理输出
-输出String，应该转为JSONObject使用。例如：对于以下string
-（以下皆为string的**内容**。具体后端反传值见其API)
+输出String，应该转为JSONObject使用。例如：对于以下```response```
+（以下皆为```response```string的内容。具体后端反传值见其API)
 ```
-{"groups":[
-     {"id":"1", "name":"Group Name 1"},
-     {"id":"2", "name":"Group Name 2"},
-     {"id":"3", "name":"Group Name 3"}]
-}
+{"group_id": 4, "info": "", "name": "Group 3", "owner_id": 3, "valid": true}
 ```
 存出数据的code可以是
 ```
@@ -32,19 +36,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 try {
-    JSONObject responseObj = new JSONObject(response);
-    JSONArray groups = (JSONArray) responseObj.getJSONArray("groups");
-    
-    num_groups = groups.length();
-    group_ids = new String[num_groups];
-    group_names = new String[num_groups];
-    
-    for(int i=0; i<num_groups; ++i){
-        group_ids[i] = (String) groups.getJSONObject(i).getString("id");
-        group_names[i] = (String) groups.getJSONObject(i).getString("name");
-    }
+     JSONObject responseObj = new JSONObject(response);
+     boolean valid = responseObj.getBoolean("valid");
+     if(valid){
+          group_.add(new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
+          (
+              (String) responseObj.getString("group_id"),
+              (String) responseObj.getString("name"),
+              (String) responseObj.getString("owner_id"),
+              (String) responseObj.getString("info"),
+              colors[(responseObj.getInt("group_id")-1)%colors.length]
+          )
+          );
+     }
 } catch (JSONException e) {
-    e.printStackTrace();
+  e.printStackTrace();
 }
 ```
 
@@ -54,7 +60,7 @@ try {
 String full_url = "http://222.29.159.164:10006/login";
 String[] keys = {"username","password"};
 String[] values = {"Glushigle", "mima"};
-String response = PostRequester.request(full_url, keys, values);
+String response = Requester.post(full_url, keys, values);
 ```
 
 ## 加上Navigator

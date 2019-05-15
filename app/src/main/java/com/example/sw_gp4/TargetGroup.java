@@ -2,12 +2,15 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -170,6 +173,28 @@ public class TargetGroup extends AppCompatActivity
     public void OnAddClicked(View view)
     {
         // Todo: 设计一个带输入的弹出框
+        final EditText et = new EditText(this);
+        et.setGravity(Gravity.CENTER);
+        et.setBackground(null);
+        new AlertDialog.Builder(this).setTitle("请输入组员名称")
+                .setIcon(android.R.drawable.sym_def_app_icon)
+                .setView(et)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        //按下确定键后的事件 Todo:给后端发送一个只有用户名的请求，返回该用户名是否存在
+                        Toast.makeText(getApplicationContext(), et.getText().toString(),Toast.LENGTH_LONG).show();
+                        boolean success = true;
+                        if(success)
+                        {
+                            userNames.add(et.getText().toString());
+                            currGroup.member.add(et.getText().toString());
+                            mAdapter.resetData(userNames);
+
+                        }
+                    }
+                }).setNegativeButton("取消",null).show();
 
     }
 

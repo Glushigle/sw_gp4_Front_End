@@ -13,18 +13,23 @@ public class Group
     ArrayList<String> member;
     Group(String i, String n)
     {
+        member = new ArrayList<String>();
         group_name = n;
         group_id = i;
         id = Integer.parseInt(i);
     }
     Group(int i, String n)
     {
+        member = new ArrayList<String>();
+
         group_name = n;
         id = i;
         group_id = Integer.toString(i);
     }
     Group(String i, String n, String name)
     {
+        member = new ArrayList<String>();
+
         group_name = n;
         group_id = i;
         id = Integer.parseInt(i);
@@ -32,6 +37,8 @@ public class Group
     }
     Group(int i, String n, String name)
     {
+        member = new ArrayList<String>();
+
         group_name = n;
         id = i;
         group_id = Integer.toString(i);
