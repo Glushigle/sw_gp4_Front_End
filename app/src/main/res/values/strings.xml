@@ -17,6 +17,11 @@
     <string name="title_home">小组</string>
     <string name="title_dashboard">个人</string>
     <string name="title_notifications">好友</string>
-    <string name="ddlAddBtn">addBtn</string>
     <string name="title_activity_ranking">Ranking</string>
+    <string name="lsa_edit">编辑</string>
+    <string name="lsa_delete">删除</string>
+    <string name="lsEdtBtn">编辑</string>
+    <string name="lsDelBtn">删除</string>
+    <string name="ddlAddBtn">添加</string>
+    <string name="exitBtn">退出</string>
 </resources>

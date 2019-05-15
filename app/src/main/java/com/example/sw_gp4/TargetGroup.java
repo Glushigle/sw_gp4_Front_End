@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,34 +31,46 @@ public class TargetGroup extends AppCompatActivity
     public static ArrayList<String> userNames;
     public static Group currGroup;
     public static int currPosition;
+    public static boolean isAdding;
     private ListView mListView;
     private ListViewAdapterForTargetGroup mAdapter;
-    private Context mContext=this;
-    private ImageButton addButton;
-    private EditText targetGroupName;
+    private Context mContext = this;
+    private Button addButton;
+    //private EditText targetGroupName;
     private Button changeButton;
+    private EditText userAwaiting;
+    private ImageButton closeButton;
+    private int colors[] = {
+            R.color.gp_1,
+            R.color.gp_2,
+            R.color.gp_3,
+            R.color.gp_4,
+            R.color.gp_5};
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener()
     {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
+        public boolean onNavigationItemSelected(@NonNull MenuItem item)
+        {
+            switch (item.getItemId())
+            {
                 case R.id.navigation_GroupList:
                     //进到小组页
-                    Intent intent1 = new Intent(mContext,GroupList.class);
+                    Intent intent1 = new Intent(mContext, GroupList.class);
                     startActivity(intent1);
                     finish();
                     return true;
                 case R.id.navigation_showDDL:
                     //进到个人页
-                    Intent intent2 = new Intent(mContext,showDDL.class);
+                    Intent intent2 = new Intent(mContext, showDDL.class);
                     startActivity(intent2);
                     finish();
                     return true;
                 case R.id.navigation_Ranking:
                     //进到好友页
-                    Intent intent3 = new Intent(mContext,Ranking.class);
+                    Intent intent3 = new Intent(mContext, Ranking.class);
                     startActivity(intent3);
                     finish();
                     return true;
@@ -66,42 +80,60 @@ public class TargetGroup extends AppCompatActivity
     };
     private JSONObject responseObj;
 
-    private void updateData(){
-        /* Suppose the return format is
-            {"groups":[
-                 {"id":"1", "name":"Group Name 1"},
-                 {"id":"2", "name":"Group Name 2"},
-                 ...
-                 {"id":"n", "name":"Group Name n"}]
+    private void updateData()
+    {
+        if(isAdding)
+        {
+            String[] keys = {"name"};
+            String[] values = {"New Group"};
+            String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
+            try
+            {
+                //JSONObject responseObj = new JSONObject(response);
+                JSONObject responseObj = new JSONObject(response);
+                boolean valid = responseObj.getBoolean("valid");
+                if(valid){
+                    currGroup = (new Group
+                    (
+                            (String) responseObj.getString("group_id"),
+                            (String) responseObj.getString("name"),
+                            (String) responseObj.getString("owner_id"),
+                            (String) responseObj.getString("info"),
+                            colors[(responseObj.getInt("group_id")-1)%colors.length]
+                        )
+                    );
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        */
-        //String[] keys = {"username"};
-        //String[] values = {"user1"}; //
-        //String response = PostRequester.request("full_url", keys, values);
-        //String response = "{\"groups\":[\n" +
-        //        "                 {\"id\":\"1\", \"name\":\"Group Name 1\"},\n" +
-        //        "                 {\"id\":\"2\", \"name\":\"Group Name 2\"},\n" +
-        //        "                 {\"id\":\"3\", \"name\":\"Group Name 3\"},\n" +
-        //        "                 {\"id\":\"4\", \"name\":\"Group Name 44\"}]\n" +
-        //        "            }";
-        //try {
-        //    JSONObject responseObj = new JSONObject(response);
-        //    JSONArray groups = (JSONArray) responseObj.getJSONArray("groups");
-        //    userNames = new ArrayList<String>();
-        //    userNames.add(currUserName);
-
-            currGroup.group_id = GroupList.group_.get(currPosition).group_id;
-            currGroup.group_name = GroupList.group_.get(currPosition).group_name;
-            currGroup.member = GroupList.group_.get(currPosition).member;
-        //    }
-        //} catch (JSONException e) {
-        //    e.printStackTrace();
-        //}
-
+        }
+        else
+        {
+            currGroup = GroupList.group_.get(currPosition);
+        }
+        //获取组员列表
+        System.out.println("currGroup = "+currGroup);
+        String[] keys = {"group_id"};
+        String[] values = {currGroup.group_id};
+        String response = Requester.post("https://222.29.159.164:10016/get_group_member", keys, values);
+        try
+        {
+            JSONArray memberList = new JSONArray(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if(valid){
+                for(int i = 0;i < memberList.length();++i)
+                {
+                    userNames.add((String)memberList.get(i));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_target_group);
 
@@ -125,41 +157,48 @@ public class TargetGroup extends AppCompatActivity
             }
         });
         mListView = (ListView) findViewById(R.id.user_list);
-        addButton = (ImageButton) findViewById(R.id.imageButton);
+        addButton = (Button) findViewById(R.id.btn_add_member);
         addButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(mContext, "button1 click", Toast.LENGTH_SHORT).show();
                 OnAddClicked(v);
             }
         });
-        changeButton = (Button)findViewById(R.id.btn_add_member);
+        /*changeButton = (Button) findViewById(R.id.btn_add_member);
         changeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
-                //EditText username = (EditText) findViewById(R.id.target_group_name) ;
                 currGroup.group_name = targetGroupName.getText().toString();
                 GroupList.group_.get(currPosition).group_name = currGroup.group_name;
                 //TODO: 虽然改了group_，但是group_name改不了，显示不会变
             }
+        });*/
+        closeButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(mContext, GroupList.class));
+                finish();
+            }
         });
 
-        targetGroupName = (EditText) findViewById(R.id.text_member_name);
-        targetGroupName.setText(currGroup.group_name);
 
+        userAwaiting = (EditText) findViewById(R.id.text_member_name);
 
 
     }
 
-    public boolean OnDeleteClicked(View view, int position){
+    public boolean OnDeleteClicked(View view, int position)
+    {
         boolean valid = true;
         // Toast the returns; update if successful
-        if(valid){
+        if (valid)
+        {
             userNames.remove(position);
             mAdapter.resetData(userNames);
         }
@@ -168,30 +207,31 @@ public class TargetGroup extends AppCompatActivity
 
     public void OnAddClicked(View view)
     {
-        // Todo: 设计一个带输入的弹出框
-        final EditText et = new EditText(this);
-        et.setGravity(Gravity.CENTER);
+        String[] keys = {"group_id", "user_id"};
+        String[] values = {
+                currGroup.group_id,
+                userAwaiting.getText().toString()
+        };
+        String response = Requester.post("https://222.29.159.164:10016/add_member", keys, values);
 
-        new AlertDialog.Builder(this).setTitle("请输入组员名称")
-                .setIcon(android.R.drawable.sym_def_app_icon)
-                .setView(et)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-                    {
-                        //按下确定键后的事件 Todo:给后端发送一个只有用户名的请求，返回该用户名是否存在
-                        Toast.makeText(getApplicationContext(), et.getText().toString(),Toast.LENGTH_LONG).show();
-                        boolean success = true;
-                        if(success)
-                        {
-                            userNames.add(et.getText().toString());
-                            currGroup.member.add(et.getText().toString());
-                            mAdapter.resetData(userNames);
+        try
+        {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if (valid)
+            {
+                Toast.makeText(mContext, "Member added", Toast.LENGTH_SHORT).show();
+                mAdapter.resetData(userNames);
 
-                        }
-                    }
-                }).setNegativeButton("取消",null).show();
+            }
+            else
+            {
+                Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
-
 }

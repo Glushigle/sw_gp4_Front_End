@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.sw_gp4.leftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- 显示DDL内容 标题+描述 -->
+        <LinearLayout
+            android:id="@+id/lsLilayoutText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lsTvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="23sp"
+                android:background="#282f39"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:gravity="center_vertical|left"
+                android:textSize="19sp"
+                android:textColor="#ffffff"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/lsTvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="66sp"
+                android:background="#282f39"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:gravity="center_vertical|left"
+                android:textSize="18sp"
+                android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+        <!-- 编辑按钮 -->
+        <!--<TextView
+            android:id="@+id/lsTvEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#d9df63"
+            android:gravity="center"
+            android:textSize="19sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="@string/lsa_edit"/>
+        替换前一个textview-->
+        <ImageButton
+            android:id="@+id/lsBtnEdit"
+            android:layout_width="40sp"
+            android:layout_height="match_parent"
+            android:background="#ffe929"
+            android:contentDescription="@string/lsEdtBtn"
+            app:srcCompat="@drawable/ic_edit_ddl"/>
+
+        <!-- 删除按钮 -->
+        <!--<TextView
+            android:id="@+id/lsTvDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#df0059"
+            android:gravity="center"
+            android:textSize="19sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="@string/lsa_delete"/>
+        替换前一个textview-->
+        <ImageButton
+            android:id="@+id/lsBtnDelete"
+            android:layout_width="40sp"
+            android:layout_height="match_parent"
+            android:background="#ff2c0c"
+            android:contentDescription="@string/lsDelBtn"
+            app:srcCompat="@drawable/ic_delete_ddl"/>
+
+    </LinearLayout>
+
+</com.example.sw_gp4.leftSlideView>
