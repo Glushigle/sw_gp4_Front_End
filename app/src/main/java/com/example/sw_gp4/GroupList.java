@@ -173,6 +173,7 @@ public class GroupList extends AppCompatActivity {
     }
 
     public void OnAddClicked(View view){
+        TargetGroup.isAdding = true;//代表是添加
         startActivity(new Intent(mContext, TargetGroup.class));
         finish();
 
