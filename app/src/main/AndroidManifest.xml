@@ -25,10 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".showDDL" />
+        <activity
+            android:name=".showDDL"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".GroupList" />
         <activity android:name=".TargetGroup" />
-        <activity android:name=".friends" />
+        <activity android:name=".friends"/>
     </application>
 
 </manifest>
