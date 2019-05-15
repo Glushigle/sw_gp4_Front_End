@@ -10,12 +10,11 @@ public class Requester {
      * Intended to be used for other POST & GET requests.
      * See https://github.com/Glushigle/sw_gp4_Front_End#postrequester-用法 for usage.
      */
-
+    private static final String TAG = Requester.class.getSimpleName();
     private static final String charset = "UTF8";
 
     public static String get(String full_url, String[] keys, String[] values) {
 
-        final String TAG = "get";
         full_url = URLBuilder.build(full_url, keys, values);
         Log.i(TAG, "get "+full_url);
         return request(full_url, new String[0], new String[0], false);
@@ -23,14 +22,12 @@ public class Requester {
 
     public static String post(String full_url, String[] keys, String[] values){
 
-        final String TAG = "post";
-        Log.i(TAG, "post "+keys.toString()+" "+values.toString());
+        Log.i(TAG, "post "+full_url+" keys_len="+Integer.toString(keys.length));
         return request(full_url, keys, values, true);
     }
 
     private static String request(String full_url, String[] keys, String[] values, boolean post){
 
-        final String TAG = "request";
         String rtn = "";
         try {
             MultipartUtility multipart = new MultipartUtility(full_url, charset, post);
