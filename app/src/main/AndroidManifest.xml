@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".addDDL"></activity>
+        <activity android:name=".WriteDDL"></activity>
         <activity android:name=".Ranking" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -30,7 +30,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".GroupList" />
         <activity android:name=".TargetGroup" />
-        <activity android:name=".friends"></activity>
+        <activity android:name=".friends"/>
     </application>
 
 </manifest>

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         String full_url = "https://222.29.159.164:10016/login";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
-        String response = PostRequester.request(full_url, keys, values);
+        String response = Requester.post(full_url, keys, values);
         try {
             JSONObject responseObj = new JSONObject(response);
             boolean success = responseObj.getBoolean("valid");
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         String full_url = "https://222.29.159.164:10016/register";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
-        String response = PostRequester.request(full_url, keys, values);
+        String response = Requester.post(full_url, keys, values);
         try {
             Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
             JSONObject responseObj = new JSONObject(response);

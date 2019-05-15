@@ -162,8 +162,10 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     }
     public void onClickAddBtn(View view) {
         //切换到添加页
-        Intent intent = new Intent(this,addDDL.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this,WriteDDL.class);
+        //startActivity(intent);
+        startActivity(new Intent(mContext, WriteDDL.class));
+        finish();
     }
     public void onClickExitBtn(View view) {
         //登出

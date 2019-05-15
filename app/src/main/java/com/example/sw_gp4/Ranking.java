@@ -32,6 +32,7 @@ public class Ranking extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
 
     private Context mContext=this;
+    private ImageButton addButton;
 
     private int my_rank;
     private ArrayList<Integer> friend_colors;
@@ -119,6 +120,11 @@ public class Ranking extends AppCompatActivity {
         ((TextView)findViewById(R.id.my_percent)).setText(friend_percents.get(my_rank-1)+"%");
     }
 
+    public void OnAddClicked(View view){
+        startActivity(new Intent(mContext, friends.class));
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,11 +134,13 @@ public class Ranking extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_Ranking);
 
-        ((ImageButton) findViewById(R.id.add_friend)).setOnClickListener(new ImageButton.OnClickListener() {
+        addButton = (ImageButton) findViewById(R.id.imageButton);
+        addButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext, friends.class));
-                finish();
+            public void onClick(View v)
+            {
+                OnAddClicked(v);
             }
         });
 
