@@ -73,19 +73,19 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        tools:layout_editor_absoluteX="8dp">
+        app:layout_constraintTop_toBottomOf="@+id/top_bar">
 
         <LinearLayout
-            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_paddTop="40dp"
+            android:gravity="bottom"
             android:orientation="horizontal">
 
             <EditText
@@ -112,25 +112,32 @@
         <EditText
             android:id="@+id/ddl_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:ems="14"
+            android:gravity="bottom"
             android:hint="名称"
+            android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <EditText
             android:id="@+id/ddl_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:ems="14"
+            android:gravity="top"
             android:hint="附注（可选）"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <Switch
             android:id="@+id/ddl_reminder_switch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:text="提醒" />
     </LinearLayout>

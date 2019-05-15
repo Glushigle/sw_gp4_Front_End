@@ -170,6 +170,9 @@ public class GroupList extends AppCompatActivity {
     }
 
     public void OnAddClicked(View view){
+        startActivity(new Intent(mContext, TargetGroup.class));
+        finish();
+
         // {"group_id": 4, "info": "", "name": "Group 3", "owner_id": 3, "valid": true}
         String[] keys = {"name"};
         String[] values = {"New Group"};

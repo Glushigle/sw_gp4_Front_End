@@ -7,22 +7,112 @@
     android:layout_height="match_parent"
     tools:context=".GroupList">
 
-    <EditText
-        android:id="@+id/target_group_name"
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:drawablePadding="10dp"
-        android:gravity="center_vertical"
-        android:inputType="text"
-        android:singleLine="true"
-        android:textColor="#000000"
-        android:textColorHint="#a3a3a3"
-        android:textSize="14sp"
+
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:visibility="visible">
+            <ImageButton
+                android:id="@+id/btn_cross"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="false"
+                android:background="@color/colorPrimaryDark"
+                android:cropToPadding="false"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_cross" />
+
+            <ImageView
+                android:id="@+id/top_padding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible"
+                app:srcCompat="@color/colorPrimaryDark" />
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="230dp"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="false"
+                android:background="@color/colorPrimaryDark"
+                android:cropToPadding="false"
+                android:paddingLeft="10dp"
+                android:paddingRight="17dp"
+                android:scaleType="fitCenter"
+                android:text="SAVE"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_ddl_save" />
+
+
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/group_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:ems="10"
+            android:gravity="bottom"
+            android:inputType="textPersonName"
+            android:paddingLeft="25dp"
+            android:paddingBottom="25dp"
+            android:text="Name"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_member_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/user_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_bar">
+
+        <EditText
+            android:id="@+id/text_member_name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#a3a3a3"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_add_member"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="Change" />
+    </LinearLayout>
+
 
 
     <android.support.design.widget.BottomNavigationView
@@ -42,18 +132,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
         android:choiceMode="singleChoice"
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/add_member_panel" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -72,12 +158,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
