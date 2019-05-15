@@ -36,6 +36,7 @@ public class TargetGroup extends AppCompatActivity
     private ListViewAdapterForTargetGroup mAdapter;
     private Context mContext = this;
     private Button addButton;
+    private Button saveButton;
     //private EditText targetGroupName;
     private Button changeButton;
     private EditText userAwaiting;
@@ -84,6 +85,7 @@ public class TargetGroup extends AppCompatActivity
     {
         if(isAdding)
         {
+            /*
             String[] keys = {"name"};
             String[] values = {"New Group"};
             String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
@@ -105,13 +107,18 @@ public class TargetGroup extends AppCompatActivity
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
+            //Todo:临时改成前端显示，记得改回来
+            userNames = new ArrayList<>();
+            GroupList.maxId++;
+            currGroup = new Group(String.valueOf(GroupList.maxId),"New Group",GroupList.currUserName,"",(GroupList.maxId-1)%colors.length);
         }
         else
         {
             currGroup = GroupList.group_.get(currPosition);
         }
         //获取组员列表
+        /*
         System.out.println("currGroup = "+currGroup);
         String[] keys = {"group_id"};
         String[] values = {currGroup.group_id};
@@ -128,7 +135,9 @@ public class TargetGroup extends AppCompatActivity
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
+        //TOdo:同理
+        userNames.add(GroupList.currUserName);
     }
 
     @Override
@@ -177,6 +186,7 @@ public class TargetGroup extends AppCompatActivity
                 //TODO: 虽然改了group_，但是group_name改不了，显示不会变
             }
         });*/
+        closeButton = (ImageButton) findViewById(R.id.btn_cross);
         closeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -186,7 +196,17 @@ public class TargetGroup extends AppCompatActivity
                 finish();
             }
         });
-
+        saveButton = findViewById(R.id.btn_save);
+        saveButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //TODO:~
+                startActivity(new Intent(mContext, GroupList.class));
+                finish();
+            }
+        });
 
         userAwaiting = (EditText) findViewById(R.id.text_member_name);
 
@@ -207,6 +227,7 @@ public class TargetGroup extends AppCompatActivity
 
     public void OnAddClicked(View view)
     {
+        /*
         String[] keys = {"group_id", "user_id"};
         String[] values = {
                 currGroup.group_id,
@@ -231,7 +252,8 @@ public class TargetGroup extends AppCompatActivity
         } catch (Exception e)
         {
             e.printStackTrace();
-        }
-
+        }*/
+userNames.add(userAwaiting.getText().toString());
+mAdapter.resetData(userNames);
     }
 }
