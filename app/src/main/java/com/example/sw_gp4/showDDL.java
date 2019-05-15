@@ -114,6 +114,7 @@ public class showDDL extends AppCompatActivity {
         li_parent.addView(li_date);//加入布局li_parent
     }
     public void click_addBtn(View view) {
-        //
+        startActivity(new Intent(mContext, WriteDDL.class));
+        finish();
     }
 }

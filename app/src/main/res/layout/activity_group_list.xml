@@ -51,7 +51,7 @@
         app:layout_constraintBottom_toTopOf="@+id/navigation"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
+        app:srcCompat="@android:drawable/ic_input_add"
+         />
 
 </android.support.constraint.ConstraintLayout>
