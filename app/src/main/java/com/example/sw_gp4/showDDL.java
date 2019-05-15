@@ -3,18 +3,30 @@ package com.example.sw_gp4;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class showDDL extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+public class showDDL extends AppCompatActivity implements leftSlideAdapter.slideViewClickListener {
 
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -54,66 +66,128 @@ public class showDDL extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_showDDL);
 
-        setTitle("show_ddl_view");
-        show_ddl_view();
-    }
+        //设置顶部标题栏
+        Calendar cal = Calendar.getInstance();
+        final int initYear = cal.get(Calendar.YEAR);
+        final int initMonth = cal.get(Calendar.MONTH);
+        String initDate = String.format("%d年%d月",initYear,initMonth+1);
+        final TextView tv_date = findViewById(R.id.showddlTvDate);
+        tv_date.setText(initDate);
+        tv_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new datePickerDialog(showDDL.this, 0, new datePickerDialog.dateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker dp, int year, int month) {
+                        String date = String.format("%d年%d月",year,month+1);
+                        tv_date.setText(date);
+                        //更新ddl
+                    }
+                },initYear,initMonth).show();
+            }
+        });
+        Toolbar toolbar = findViewById(R.id.showddlTbar);
+        toolbar.setTitle("我的DDL");
+        setSupportActionBar(toolbar);
 
-    private void show_ddl_view() {
+        //显示DDL内容
+        show_ddl_view(initYear,initMonth);
+    }
+    private void show_ddl_view(int year, int month) {
         LinearLayout li_parent = findViewById(R.id.li_ddl_disp);//父布局
         //get_ddl_info();
-        String date = "2019-05-01";
-        String[] texts = new String[10];
-        for (int i = 0; i < 10; ++i) {
-            texts[i] = "hello world "+String.valueOf(i);
+        String[] date = {"01","02","03"};
+        String[] week = {"Mon","Tue","Wed"};
+        DDLText ddl = new DDLText("My DDL","hello world");
+        List<DDLText> data = new ArrayList<>();
+        for (int i = 0; i < 8; ++i) {
+            data.add(ddl);
         }
-        for (int i = 0; i < 5; ++i) {
-            add_ddl_view(li_parent,date,texts);
+        data.add(new DDLText("My DDL"));
+        data.add(new DDLText("My DDL","my code works but why"));
+        for (int i = 0; i < 3; ++i) {
+            add_ddl_view(li_parent,date[i],week[i],data);
         }
     }
-    private void add_ddl_view(LinearLayout li_parent, String date, String[] texts) {
+    private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data) {
         //布局参数
-        LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams para0 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        para.setMargins(0,0,0,5);
+        para0.setMargins(0,0,0,5);
         //新建一个布局来显示日期和ddl
-        LinearLayout li_date = new LinearLayout(this);
-        li_date.setOrientation(LinearLayout.HORIZONTAL);//横向
-        li_date.setLayoutParams(para);
+        LinearLayout li_date_ddl = new LinearLayout(this);
+        li_date_ddl.setOrientation(LinearLayout.HORIZONTAL);//横向
+        li_date_ddl.setLayoutParams(para0);
         //显示日期
-        LinearLayout.LayoutParams para_date = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.MATCH_PARENT);//参数
+        int ftmp = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,45,getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams para1 = new LinearLayout.LayoutParams(
+                ftmp,ViewGroup.LayoutParams.MATCH_PARENT);//参数
+        LinearLayout li_date = new LinearLayout(this);
+        li_date.setOrientation(LinearLayout.VERTICAL);
+        li_date.setLayoutParams(para1);
+        //li_date.setGravity(Gravity.CENTER_HORIZONTAL);
+        li_date.setBackgroundColor(Color.rgb(125,125,125));
+        LinearLayout.LayoutParams para2 = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         TextView tv_date = new TextView(this);
-        tv_date.setLayoutParams(para_date);
+        tv_date.setLayoutParams(para2);
         tv_date.setGravity(Gravity.CENTER);//文本居中
         tv_date.setBackgroundColor(Color.rgb(125,125,125));//背景颜色
         tv_date.setTextColor(Color.rgb(255,255,255));//文本颜色
+        tv_date.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        tv_date.setTypeface(Typeface.DEFAULT_BOLD);
         tv_date.setText(date);//设置显示的文本
         li_date.addView(tv_date);//加入布局li_date
-        //新建一个布局来显示ddl
-        LinearLayout li_text = new LinearLayout(this);
-        li_text.setOrientation(LinearLayout.VERTICAL);//纵向
-        LinearLayout.LayoutParams para1 = new LinearLayout.LayoutParams(
+        TextView tv_week = new TextView(this);
+        tv_week.setLayoutParams(para2);
+        tv_week.setGravity(Gravity.CENTER);//文本居中
+        tv_week.setBackgroundColor(Color.rgb(125,125,125));//背景颜色
+        tv_week.setTextColor(Color.rgb(255,255,255));//文本颜色
+        tv_week.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+        tv_week.setTypeface(Typeface.DEFAULT_BOLD);
+        tv_week.setText(week);//设置显示的文本
+        li_date.addView(tv_week);//加入布局li_date
+        li_date_ddl.addView(li_date);
+        //显示ddl
+        LinearLayout.LayoutParams para3 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        para1.setMargins(0,0,0,0);
-        li_text.setLayoutParams(para1);
-        //显示ddl文本
-        int amt = texts.length;//数量
-        for (int i = 0; i < amt; ++i) {
-            TextView tv_text = new TextView(this);
-            tv_text.setLayoutParams(para1);
-            tv_text.setGravity(Gravity.CENTER);//文本居中
-            if (i % 2 == 0)//背景颜色
-                tv_text.setBackgroundColor(Color.rgb(22,133,169));
-            else
-                tv_text.setBackgroundColor(Color.rgb(219,90,107));
-            tv_text.setTextColor(Color.rgb(255,255,255));//文本颜色
-            tv_text.setText(texts[i]);//设置显示的文本
-            li_text.addView(tv_text);//加入布局li_text
+        RecyclerView re_ddl = new RecyclerView(this);
+        re_ddl.setLayoutParams(para3);
+        re_ddl.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        leftSlideAdapter adapter = new leftSlideAdapter(this,data);
+        re_ddl.setAdapter(adapter);
+        re_ddl.setItemAnimator(new DefaultItemAnimator());
+        li_date_ddl.addView(re_ddl);
+        li_parent.addView(li_date_ddl);//加入布局li_parent
+    }
+    public void onClickAddBtn(View view) {
+        //切换到添加页
+        Intent intent = new Intent(this,addDDL.class);
+        startActivity(intent);
+    }
+    public void onClickExitBtn(View view) {
+        //登出
+    }
+    public void onItemClick(View v, int position, leftSlideAdapter adapter) {
+        Log.d("disp","onItemClick");
+        //return;
+    }
+    public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
+        Log.d("disp","onDeleteClick");
+        adapter.removeData(position);
+    }
+    public void onEditClick(View v, int position, leftSlideAdapter adapter) {
+        Log.d("disp","onEditClick");
+        /*DDLText ddl = adapter.getData(position);
+        Intent intent = new Intent(this,editDDL.class);
+        intent.putExtra("title",ddl.title);
+        intent.putExtra("description",ddl.description);
+        startActivityForResult(intent,0);*/
+    }/*
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            String title = data.getStringExtra("title");
+            String description = data.getStringExtra("description");
         }
-        li_date.addView(li_text);//加入布局li_date
-        li_parent.addView(li_date);//加入布局li_parent
-    }
-    public void click_addBtn(View view) {
-        //
-    }
+    }*/
 }
