@@ -25,6 +25,7 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
         public ImageButton deleteBtn;   //删除按钮
         public TextView tv_title;   //标题
         public TextView tv_description; //描述
+        public TextView tv_time;    //时间
         public LinearLayout ll_text;    //DDL文本部分的父布局，包括标题和描述
 
         public VH(View v) {
@@ -35,6 +36,7 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
             deleteBtn = v.findViewById(R.id.lsBtnDelete);
             tv_title = v.findViewById(R.id.lsTvTitle);
             tv_description = v.findViewById(R.id.lsTvDescription);
+            tv_time = v.findViewById(R.id.lsTvTime);
             ll_text = v.findViewById(R.id.lsLilayoutText);
             ((leftSlideView)v).setListener(leftSlideAdapter.this);
         }
@@ -64,18 +66,18 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
     @Override
     public void onBindViewHolder(@NonNull final VH holder, final int position) {
         Log.d("adapter","onBindViewHolder"+String.valueOf(position));
-        //if (position+1 != dsize) {
-            LinearLayout ll_tmp = (LinearLayout)holder.ll_text.getParent();
-            ll_tmp.setBackground(context.getDrawable(R.drawable.border));
-        //}
-        /*else {
-            Log.d("adapter","INININ!!!!!!!!!!!");
-            LinearLayout ll_tmp = (LinearLayout)holder.ll_text.getParent();
-            ll_tmp.setBackgroundResource(0);
-        }*/
+        LinearLayout ll_tmp = (LinearLayout)holder.ll_text.getParent();
+        ll_tmp.setBackground(context.getDrawable(R.drawable.border));
+        //ll_tmp.setBackgroundResource(0);
         DDLText ddl = data.get(position);
+        String str = "截止时间："+ ddl.time;
+        holder.tv_time.setText(str);
         holder.tv_title.setText(ddl.title);
-        holder.tv_description.setText(ddl.description);
+        str = ddl.description;
+        if (str == null)
+            holder.tv_description.setVisibility(View.GONE);
+        else
+            holder.tv_description.setText(str);
         final leftSlideView lsview = (leftSlideView) holder.ll_text.getParent().getParent();
         final ViewTreeObserver observer = lsview.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -89,18 +91,7 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
                 lsview.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-        /*observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                int tmp = lsview.getWidth();
-                Log.d("adapter","set width = "+String.valueOf(tmp)+","+String.valueOf(position));
-                holder.ll_text.getLayoutParams().width = tmp;
-                holder.ll_text.requestLayout();
-                lsview.getViewTreeObserver().removeOnPreDrawListener(this);
-                return true;
-            }
-        });*/
-        holder.tv_title.setOnClickListener(new View.OnClickListener() {
+        /*holder.tv_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isMenuOpen()) {
@@ -111,7 +102,7 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
                     clickListener.onItemClick(v,pos,leftSlideAdapter.this);
                 }
             }
-        });
+        });*/
         holder.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

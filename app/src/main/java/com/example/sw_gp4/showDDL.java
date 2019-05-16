@@ -3,6 +3,7 @@ package com.example.sw_gp4;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -72,6 +73,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         final int initMonth = cal.get(Calendar.MONTH);
         String initDate = String.format("%d年%d月",initYear,initMonth+1);
         final TextView tv_date = findViewById(R.id.showddlTvDate);
+        //tv_date.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         tv_date.setText(initDate);
         tv_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +89,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             }
         });
         Toolbar toolbar = findViewById(R.id.showddlTbar);
-        toolbar.setTitle("我的DDL");
+        //toolbar.setTitle("我的Deadline");
         setSupportActionBar(toolbar);
 
         //显示DDL内容
@@ -98,16 +100,19 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         //get_ddl_info();
         String[] date = {"01","02","03"};
         String[] week = {"Mon","Tue","Wed"};
-        DDLText ddl = new DDLText("My DDL","hello world");
+        DDLText ddl = new DDLText("12:00","My DDL","hello world");
         List<DDLText> data = new ArrayList<>();
         for (int i = 0; i < 8; ++i) {
             data.add(ddl);
         }
-        data.add(new DDLText("My DDL"));
-        data.add(new DDLText("My DDL","my code works but why"));
+        data.add(new DDLText("11:00","My DDL"));
+        data.add(new DDLText("13:00","My DDL","my code works but why"));
         for (int i = 0; i < 3; ++i) {
             add_ddl_view(li_parent,date[i],week[i],data);
         }
+    }
+    private List<DDLOfDay> getDataOfDate(int year, int month) {
+        return null;
     }
     private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data) {
         //布局参数

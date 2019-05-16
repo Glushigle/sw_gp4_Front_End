@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- 显示DDL内容 标题+描述 -->
+        <!-- 显示DDL内容 时间+标题+描述 -->
         <LinearLayout
             android:id="@+id/lsLilayoutText"
             android:layout_width="match_parent"
@@ -30,15 +30,28 @@
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/lsTvTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="23sp"
+                android:background="#282f39"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:gravity="center_vertical|left"
+                android:textSize="16sp"
+                android:textColor="#ffffff"
+                android:textStyle="bold"/>
+
+            <TextView
                 android:id="@+id/lsTvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="66sp"
+                android:maxHeight="60sp"
                 android:background="#282f39"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:gravity="center_vertical|left"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="#ffffff"/>
 
         </LinearLayout>
