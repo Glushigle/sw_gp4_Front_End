@@ -166,6 +166,7 @@ public class GroupList extends AppCompatActivity {
             boolean valid = responseObj.getBoolean("valid");
             if(valid){
                 Toast.makeText(mContext, "Group deleted", Toast.LENGTH_SHORT).show();
+                updateData();
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -42,7 +42,6 @@ public class Requester {
             List<String> response = multipart.finish();
             for (String line : response) {
                 Log.i(TAG, "Request Response:::" + line);
-                //responseString = line;
             }
             rtn = response.get(0);
         } catch (Exception e) {
