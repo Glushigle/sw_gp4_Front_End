@@ -79,7 +79,6 @@ public class TargetGroup extends AppCompatActivity
             return false;
         }
     };
-    private JSONObject responseObj;
 
     private void updateData()
     {
@@ -91,7 +90,6 @@ public class TargetGroup extends AppCompatActivity
             String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
             try
             {
-                //JSONObject responseObj = new JSONObject(response);
                 JSONObject responseObj = new JSONObject(response);
                 boolean valid = responseObj.getBoolean("valid");
                 if(valid){
@@ -125,12 +123,14 @@ public class TargetGroup extends AppCompatActivity
         String response = Requester.post("https://222.29.159.164:10016/get_group_member", keys, values);
         try
         {
-            JSONArray memberList = new JSONArray(response);
+            JSONObject responseObj = new JSONObject(response);
             boolean valid = responseObj.getBoolean("valid");
             if(valid){
+                JSONArray memberList = responseObj.getJSONArray("member list");
+                userNames = new ArrayList<String>();
                 for(int i = 0;i < memberList.length();++i)
                 {
-                    userNames.add((String)memberList.get(i));
+                    userNames.add(memberList.getJSONObject(i).getString("username"));
                 }
             }
         } catch (JSONException e) {
@@ -175,17 +175,7 @@ public class TargetGroup extends AppCompatActivity
                 OnAddClicked(v);
             }
         });
-        /*changeButton = (Button) findViewById(R.id.btn_add_member);
-        changeButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                currGroup.group_name = targetGroupName.getText().toString();
-                GroupList.group_.get(currPosition).group_name = currGroup.group_name;
-                //TODO: 虽然改了group_，但是group_name改不了，显示不会变
-            }
-        });*/
+        
         closeButton = (ImageButton) findViewById(R.id.btn_cross);
         closeButton.setOnClickListener(new View.OnClickListener()
         {

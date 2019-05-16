@@ -10,7 +10,7 @@ public class Requester {
      * Intended to be used for other POST & GET requests.
      * See https://github.com/Glushigle/sw_gp4_Front_End#requester用法 for usage.
      */
-    private static final String TAG = Requester.class.getSimpleName();
+    private static final String TAG = "Requester";
     private static final String charset = "UTF8";
     private static final java.net.CookieManager cookieManager = new java.net.CookieManager();
 
@@ -40,7 +40,6 @@ public class Requester {
             }
 
             List<String> response = multipart.finish();
-            Log.i(TAG, "SERVER REPLIED:");
             for (String line : response) {
                 Log.i(TAG, "Request Response:::" + line);
                 //responseString = line;

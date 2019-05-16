@@ -175,30 +175,6 @@ public class GroupList extends AppCompatActivity {
     public void OnAddClicked(View view){
         TargetGroup.isAdding = true;//代表是添加
         startActivity(new Intent(mContext, TargetGroup.class));
-        finish();
-
-        // {"group_id": 4, "info": "", "name": "Group 3", "owner_id": 3, "valid": true}
-        String[] keys = {"name"};
-        String[] values = {"New Group"};
-        String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if(valid){
-                group_.add(new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
-                    (
-                        (String) responseObj.getString("group_id"),
-                        (String) responseObj.getString("name"),
-                        (String) responseObj.getString("owner_id"),
-                        (String) responseObj.getString("info"),
-                        colors[(responseObj.getInt("group_id")-1)%colors.length]
-                    )
-                );
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //updateData();
-        mAdapter.resetData(group_);
+        //finish();
     }
 }

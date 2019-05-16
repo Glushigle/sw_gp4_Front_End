@@ -74,10 +74,12 @@
             android:background="@color/colorPrimaryDark"
             android:ems="10"
             android:gravity="bottom"
+            android:hint="小组名"
             android:inputType="textPersonName"
             android:paddingLeft="25dp"
             android:paddingBottom="25dp"
-            android:text="Group Name"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:visibility="visible" />
@@ -141,23 +143,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_member_panel" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/round"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="OnAddClicked"
-        android:visibility="invisible"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
 
 
 
