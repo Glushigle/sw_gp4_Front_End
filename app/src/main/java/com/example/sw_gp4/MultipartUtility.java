@@ -101,6 +101,7 @@ public class MultipartUtility {
             List<HttpCookie> cookies = cookieManager.getCookieStore().getCookies();
             if (cookies != null) {
                 for (HttpCookie cookie : cookies) {
+                    Log.e("Cookie", cookie.getName() + "=" + cookie.getValue());
                     httpConn.setRequestProperty("Cookie", cookie.getName() + "=" + cookie.getValue());
                 }
             }
