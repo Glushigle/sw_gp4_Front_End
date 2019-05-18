@@ -63,8 +63,8 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         // Navigation bar
         // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_showDDL);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //设置顶部标题栏
         Calendar cal = Calendar.getInstance();

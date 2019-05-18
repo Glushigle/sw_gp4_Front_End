@@ -49,8 +49,8 @@ public class friends extends AppCompatActivity {
         setContentView(R.layout.activity_friends);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_Ranking);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //navigation.setSelectedItemId(R.id.navigation_Ranking);
 
     }
     public void add_friends(View v){
