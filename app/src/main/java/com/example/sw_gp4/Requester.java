@@ -1,5 +1,6 @@
 package com.example.sw_gp4;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.List;
@@ -49,35 +50,23 @@ public class Requester {
         }
         return rtn;
     }
-    /**
-    private class GetJSONTask extends AsyncTask<String, Void, String> {
-        //private ProgressDialog pd;
 
-        // onPreExecute called before the doInBackgroud start for display
-        // progress dialog.
+    // The following code is for async request, but we don't need it for now.
+    private static String full_url;
+    private static String[] keys;
+    private static String[] values;
+    private static boolean post;
+    private static void construct(String full_url, String[] keys, String[] values, boolean post){
+        Requester.full_url = full_url;
+        Requester.keys = keys;
+        Requester.values = values;
+        Requester.post = post;
+    }
+    private static class HttpRequestTask extends AsyncTask<Void, Void, String> {
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //pd = ProgressDialog.show(MainActivity.this, "", "Loading", true,
-                    false); // Create and show Progress dialog
+        protected String doInBackground(Void... voids) {
+            return null;
+            //return request();
         }
-
-        @Override
-        protected String doInBackground(String... urls) {
-
-            try {
-                return Utility.downloadDataFromUrl(urls[0]);
-            } catch (IOException e) {
-                return "Unable to retrieve data. URL may be invalid.";
-            }
-        }
-
-        // onPostExecute displays the results of the doInBackgroud and also we
-        // can hide progress dialog.
-        @Override
-        protected void onPostExecute(String result) {
-            pd.dismiss();
-            tvData.setText(result);
-        }
-    }*/
+    }
 }
