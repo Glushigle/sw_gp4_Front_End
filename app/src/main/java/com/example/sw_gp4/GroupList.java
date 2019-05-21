@@ -29,13 +29,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GroupList extends AppCompatActivity {
     public static String currUserName;
     public static ArrayList<Group> group_;
-    public static int maxId;
     private ListView mListView;
     private GroupListAdapter mAdapter;
     private Context mContext=this;
@@ -75,23 +75,24 @@ public class GroupList extends AppCompatActivity {
     };
 
     private void updateData(){
-        /*String response = {"group list":
-                [{"group_id": 1, "info": "", "name": "2019软件工程第四组", "owner_id": 3},
-                 {"group_id": 2, "info": "", "name": "2019软件工程", "owner_id": 3},
-                 {"group_id": 3, "info": "", "name": "Multi-Document Processing小组", "owner_id": 3},
-                 {"group_id": 4, "info": "", "name": "北京大学珍珠奶茶研究社", "owner_id": 3}],
-            "valid": true}
-        */
         String[] keys = {"username"};
         String[] values = {currUserName};
         String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
-        try {
-            maxId = 5;
 
+
+        try {
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
             group_ = new ArrayList<Group>();
-            for(int i=0; i<groups.length(); ++i){
+            for(int i=0; i<groups.length(); ++i)
+            {  String[] keys2 = {"group_id"};
+                String[] values2 = {(String) groups.getJSONObject(i).getString("group_id")};//group是刚找到的
+                String response2 = Requester.get("https://222.29.159.164:10016/get_group_task", keys2, values2);
+                JSONObject responseObj2 = new JSONObject(response2);
+                JSONArray taskList = (JSONArray) responseObj.getJSONArray("task list");
+                //接下来提取第一个信息扔进去
+                String title = taskList.getJSONObject(0).getString("title");
+                String time = taskList.getJSONObject(0).getString("finish_time");
                 group_.add
                 (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
                         (
@@ -99,7 +100,8 @@ public class GroupList extends AppCompatActivity {
                                 (String) groups.getJSONObject(i).getString("name"),
                                 (String) groups.getJSONObject(i).getString("owner_id"),
                                 (String) groups.getJSONObject(i).getString("info"),
-                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length]
+                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length],
+                                new DDLText(time,title)
                         )
 
                 );
@@ -138,6 +140,7 @@ public class GroupList extends AppCompatActivity {
                 TargetGroup.userNames.add(currUserName);
                 TargetGroup.currPosition = position;
                 //System.out.println("CURRGROUP="+TargetGroup.currGroup.id + " " + TargetGroup.currGroup.group_name);
+                TargetGroup.isAdding = false;
                 Intent intent = new Intent(mContext,TargetGroup.class);
                 startActivity(intent);
                 finish();
