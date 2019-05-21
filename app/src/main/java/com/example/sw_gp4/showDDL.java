@@ -22,6 +22,10 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -173,7 +177,24 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         finish();
     }
     public void onClickExitBtn(View view) {
-        //登出
+        String full_url = "https://222.29.159.164:10016/logout";
+        String[] keys = {};
+        String[] values = {};
+        String response = Requester.get(full_url, keys, values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean success = responseObj.getBoolean("valid");
+            if (success){
+                Toast.makeText(this, "退出成功", Toast.LENGTH_SHORT).show();
+                finish();
+            }else{
+                Toast.makeText(this, "退出失败", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            Toast.makeText(this, "bug", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }//登出
     }
     public void onItemClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onItemClick");
