@@ -104,6 +104,8 @@ public class GroupList extends AppCompatActivity {
 
                 );
             }
+            mAdapter.resetData(group_);
+            mAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -123,22 +125,19 @@ public class GroupList extends AppCompatActivity {
 
 
         // Group List
-        updateData();
         mListView = (ListView) findViewById(R.id.group_list);
         mAdapter = new GroupListAdapter(this,group_);
         mListView.setAdapter(mAdapter);
+        updateData();
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
                 TargetGroup.currGroup = group_.get(position);
-                //System.out.println("POSITION="+position);
-                TargetGroup.userNames = new ArrayList<String>();//TODO:应从服务器获取数据
-                //System.out.println("CURRUSERNAME="+currUserName);
+                TargetGroup.userNames = new ArrayList<String>();
                 TargetGroup.userNames.add(currUserName);
                 TargetGroup.currPosition = position;
-                //System.out.println("CURRGROUP="+TargetGroup.currGroup.id + " " + TargetGroup.currGroup.group_name);
                 Intent intent = new Intent(mContext,TargetGroup.class);
                 startActivity(intent);
                 finish();
@@ -177,6 +176,6 @@ public class GroupList extends AppCompatActivity {
     public void OnAddClicked(View view){
         TargetGroup.isAdding = true;//代表是添加
         startActivity(new Intent(mContext, TargetGroup.class));
-        //finish();
+        finish();
     }
 }
