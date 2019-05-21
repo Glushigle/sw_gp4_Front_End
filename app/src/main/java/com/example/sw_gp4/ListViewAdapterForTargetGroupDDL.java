@@ -1,41 +1,37 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.support.v4.content.ContextCompat;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.swipe.SimpleSwipeListener;
-import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.ArrayList;
 
-public class GroupListAdapter extends BaseSwipeAdapter {
+public class ListViewAdapterForTargetGroupDDL extends BaseSwipeAdapter {
 
     private Context mContext;
 
-    private ArrayList<Group> groups;
+    private int num_colors = 5;
+    private int colors[] = {R.color.gp_1, R.color.gp_2, R.color.gp_3, R.color.gp_4, R.color.gp_5};
 
-    public GroupListAdapter(Context mContext, ArrayList<Group> groups) {
+    //private ArrayList<String> group_names;
+
+    public ListViewAdapterForTargetGroupDDL(Context mContext
+                                            //,ArrayList<String> group_names
+    ) {
         this.mContext = mContext;
-        resetData(groups);
+        //this.group_names = group_names;
     }
 
-    public void resetData( ArrayList<Group> groups){
-        this.groups = groups;
+    public void resetData( ArrayList<DDLForGroup> group_names){
+        //this.group_names = group_names;
         notifyDataSetChanged();
         closeAllItems();
     }
@@ -53,7 +49,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
-                ((GroupList) mContext).OnDeleteClicked(view, position);
+                ((TargetGroup) mContext).OnDeleteClicked(view, position);
             }
         });
         return v;
@@ -64,19 +60,17 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
 
-        Group group = groups.get(position);
         ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,group.color_id));
-        String tempString = "<font color='#00FF00'>"+group.firstTask.time+"</font>";
-        text_button.setText(group.group_name+"\n"+Html.fromHtml(tempString));
-        //todo:想改颜色失败了，再说
-        // TODO: click button -> show group DDL
+                ContextCompat.getColor(mContext,colors[position%num_colors]));
+        text_button.setText(
+                TargetGroupDDL.ddls.get(position).title + "\n" +
+                        TargetGroupDDL.ddls.get(position).time
+                );
     }
 
     @Override
     public int getCount() {
-        if(groups==null) return 0;
-        return groups.size();
+        return TargetGroupDDL.ddls.size();
     }
 
     @Override

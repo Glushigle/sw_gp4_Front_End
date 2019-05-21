@@ -86,36 +86,18 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/add_member_panel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/ddl_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_bar">
-
-        <EditText
-            android:id="@+id/text_member_name"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColor="#000000"
-            android:textColorHint="#a3a3a3"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/btn_add_member"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="ADD" />
-    </LinearLayout>
-
-
+        app:layout_constraintTop_toBottomOf="@id/top_bar"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -141,8 +123,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_member_panel" />
+        app:layout_constraintTop_toBottomOf="@id/add_member_panel" >
 
+
+    </ListView>
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round"
+        android:onClick="OnAddClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 
 

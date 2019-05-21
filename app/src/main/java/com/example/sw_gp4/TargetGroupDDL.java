@@ -14,27 +14,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class TargetGroup extends AppCompatActivity
+public class TargetGroupDDL extends AppCompatActivity
 {
-    public static ArrayList<String> userNames;
+    public static ArrayList<DDLForGroup> ddls;
     public static Group currGroup;
     public static int currPosition;
     public static boolean isAdding;
     private ListView mListView;
-    private ListViewAdapterForTargetGroup mAdapter;
+    private ListViewAdapterForTargetGroupDDL mAdapter;
     private Context mContext = this;
-    private Button addButton;
-    //private EditText targetGroupName;
-    private Button changeButton;
-    private EditText userAwaiting;
+    private TextView nameText;
+    private ImageButton addButton;
     private ImageButton closeButton;
     private int colors[] = {
             R.color.gp_1,
@@ -94,36 +94,45 @@ public class TargetGroup extends AppCompatActivity
                             (String) responseObj.getString("owner_id"),
                             (String) responseObj.getString("info"),
                             colors[(responseObj.getInt("group_id")-1)%colors.length],
-                            new DDLForGroup("13:00","Test 3")
+                            //new DDLForGroup("13:00","Test 3")
+                            null
                         )
                     );
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String[] keys2 = {"group_id","title","deadline"};
-            String[] values2 = {currGroup.group_id,"Test 2","2018-09-09 12:00"};
-            String response2 = Requester.post("https://222.29.159.164:10016/create_group_task", keys2, values2);
+            //String[] keys2 = {"group_id","title","deadline"};
+            //String[] values2 = {currGroup.group_id,"Test 2","2018-09-09 12:00"};
+            //String response2 = Requester.post("https://222.29.159.164:10016/create_group_task", keys2, values2);
         }
         else
         {
             currGroup = GroupList.group_.get(currPosition);
         }
-        //获取组员列表
-        System.out.println("currGroup = "+currGroup);
+        //获取DDL列表
         String[] keys = {"group_id"};
         String[] values = {currGroup.group_id};
-        String response = Requester.post("https://222.29.159.164:10016/get_group_member", keys, values);
+        String response = Requester.post("https://222.29.159.164:10016/get_group_task", keys, values);
         try
         {
             JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if(valid){
-                JSONArray memberList = responseObj.getJSONArray("member list");
-                userNames = new ArrayList<String>();
-                for(int i = 0;i < memberList.length();++i)
+            JSONArray tasks = (JSONArray) responseObj.getJSONArray("task list");
+            ddls = new ArrayList<DDLForGroup>();
+            if(!tasks.isNull(0))
+            {
+                currGroup.firstTask = new DDLForGroup
+                        (
+                                tasks.getJSONObject(0).getString("finish_time"),
+                                tasks.getJSONObject(0).getString("title")
+                        );
+                for(int i = 0; i < tasks.length();++i)
                 {
-                    userNames.add(memberList.getJSONObject(i).getString("username"));
+                    ddls.add(new DDLForGroup
+                    (
+                            tasks.getJSONObject(i).getString("finish_time"),
+                            tasks.getJSONObject(0).getString("title"))
+                    );
                 }
             }
         } catch (JSONException e) {
@@ -135,7 +144,7 @@ public class TargetGroup extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_target_group);
+        setContentView(R.layout.activity_target_group_ddl);
 
         // Navigation bar
         // Every activity with a navigation bar should add these lines
@@ -146,7 +155,7 @@ public class TargetGroup extends AppCompatActivity
         // Group List
         updateData();
         mListView = (ListView) findViewById(R.id.ddl_list);
-        mAdapter = new ListViewAdapterForTargetGroup(this);
+        mAdapter = new ListViewAdapterForTargetGroupDDL(this);
         mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -158,7 +167,7 @@ public class TargetGroup extends AppCompatActivity
             }
         });
         mListView = (ListView) findViewById(R.id.ddl_list);
-        addButton = (Button) findViewById(R.id.btn_add_member);
+        addButton = (ImageButton) findViewById(R.id.imageButton2);
         addButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -179,10 +188,8 @@ public class TargetGroup extends AppCompatActivity
             }
         });
 
-
-        userAwaiting = (EditText) findViewById(R.id.text_member_name);
-
-
+        nameText = (TextView) findViewById(R.id.group_name);
+        nameText.setText(currGroup.group_name);
     }
 
     public boolean OnDeleteClicked(View view, int position)
@@ -191,40 +198,13 @@ public class TargetGroup extends AppCompatActivity
         // Toast the returns; update if successful
         if (valid)
         {
-            userNames.remove(position);
-            mAdapter.resetData(userNames);
+            ddls.remove(position);
+            mAdapter.resetData(ddls);
         }
         return valid;
     }
-
     public void OnAddClicked(View view)
     {
-        String[] keys = {"group_id", "user_id"};
-        String[] values = {
-                currGroup.group_id,
-                userAwaiting.getText().toString()
-        };
-        String response = Requester.post("https://222.29.159.164:10016/add_member", keys, values);
-
-        try
-        {
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if (valid)
-            {
-                Toast.makeText(mContext, "Member added", Toast.LENGTH_SHORT).show();
-                mAdapter.resetData(userNames);
-
-            }
-            else
-            {
-                String error_info = responseObj.getString("error_info");
-                Toast.makeText(mContext, error_info, Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
 
     }
 }

@@ -84,25 +84,52 @@ public class GroupList extends AppCompatActivity {
         */
         String[] keys = {"username"};
         String[] values = {currUserName};
-        String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
         try {
-            maxId = 5;
-
+            String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
             group_ = new ArrayList<Group>();
             for(int i=0; i<groups.length(); ++i){
-                group_.add
-                (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
-                        (
-                                (String) groups.getJSONObject(i).getString("group_id"),
-                                (String) groups.getJSONObject(i).getString("name"),
-                                (String) groups.getJSONObject(i).getString("owner_id"),
-                                (String) groups.getJSONObject(i).getString("info"),
-                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length]
-                        )
+                String[] keys2 = {"group_id"};
+                String[] values2 = {(String)groups.getJSONObject(i).getString("group_id")};
+                String response2 = Requester.post("https://222.29.159.164:10016/get_group_task", keys2, values2);
+                    JSONObject responseObj2 = new JSONObject(response2);
+                    JSONArray tasks = (JSONArray) responseObj2.getJSONArray("task list");
+                    if(!tasks.isNull(0)) //todo:允许无任务
+                    {
+                        group_.add
+                                (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
+                                        (
+                                                (String) groups.getJSONObject(i).getString("group_id"),
+                                                (String) groups.getJSONObject(i).getString("name"),
+                                                (String) groups.getJSONObject(i).getString("owner_id"),
+                                                (String) groups.getJSONObject(i).getString("info"),
+                                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length],
+                                                new DDLForGroup
+                                                        (
+                                                                tasks.getJSONObject(0).getString("finish_time"),
+                                                                tasks.getJSONObject(0).getString("title")
+                                                        )
+                                        )
 
-                );
+                                );
+                    }
+                    else
+                    {
+                        group_.add
+                                (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
+                                        (
+                                                (String) groups.getJSONObject(i).getString("group_id"),
+                                                (String) groups.getJSONObject(i).getString("name"),
+                                                (String) groups.getJSONObject(i).getString("owner_id"),
+                                                (String) groups.getJSONObject(i).getString("info"),
+                                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length],
+                                                null
+                                        )
+
+                                );
+                    }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -175,8 +202,8 @@ public class GroupList extends AppCompatActivity {
     }
 
     public void OnAddClicked(View view){
-        TargetGroup.isAdding = true;//代表是添加
-        startActivity(new Intent(mContext, TargetGroup.class));
+        TargetGroupDDL.isAdding = true;//代表是添加
+        startActivity(new Intent(mContext, TargetGroupDDL.class));
         //finish();
     }
 }
