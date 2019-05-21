@@ -81,7 +81,6 @@ public class TargetGroup extends AppCompatActivity
 
     private void updateData()
     {
-        System.out.println(isAdding);
         if(isAdding)
         {
             String[] keys = {"name"};
@@ -91,8 +90,6 @@ public class TargetGroup extends AppCompatActivity
             {
                 JSONObject responseObj = new JSONObject(response);
                 boolean valid = responseObj.getBoolean("valid");
-                System.out.println("ゆっくりしていってね"+valid);
-                System.out.println("回应"+response);
                 if(valid){
                     currGroup = (new Group
                     (
@@ -100,39 +97,20 @@ public class TargetGroup extends AppCompatActivity
                             (String) responseObj.getString("name"),
                             (String) responseObj.getString("owner_id"),
                             (String) responseObj.getString("info"),
-                            colors[(responseObj.getInt("group_id")-1)%colors.length],
-                            new DDLText("12:00","Test DDL")
+                            colors[(responseObj.getInt("group_id")-1)%colors.length]
                         )
                     );
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            String[] keys2 = {"group_id","title","deadline"};
-            String[] values2 = {currGroup.group_id,"Test DDL","2018-08-08 12:00"};
-            String response2 = Requester.post("https://222.29.159.164:10016/create_group_task", keys2, values2);
-            try
-            {
-                JSONObject responseObj2 =new JSONObject(response2);
-                boolean valid2 = responseObj2.getBoolean("valid");
-                System.out.println("回应"+response2);
-                System.out.println("ゆっくり"+currGroup.group_name+"~~~"+currGroup.firstTask.time);
-                System.out.println("~~~"+values2);
-            }
-            catch(JSONException e)
-            {
-                e.printStackTrace();
-
-            }
-
-
         }
         else
         {
             currGroup = GroupList.group_.get(currPosition);
         }
         //获取组员列表
+        System.out.println("currGroup = "+currGroup);
         String[] keys = {"group_id"};
         String[] values = {currGroup.group_id};
         String response = Requester.post("https://222.29.159.164:10016/get_group_member", keys, values);
