@@ -1,5 +1,6 @@
 package com.example.sw_gp4;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -34,6 +35,7 @@ public class MultipartUtility {
     private OutputStream outputStream;
     private PrintWriter writer;
     private boolean post;
+    private CookieManager cookieManager;
 
     // Create a trust manager that does not validate certificate chains
     private static final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -51,7 +53,11 @@ public class MultipartUtility {
     } };
 
     /**
-     * This function will install a trust manager that will blindly trust all SSL certificates.  The reason this code is being added is to enable developers to do development using self signed SSL certificates on their web server. The standard HttpsURLConnection class will throw an exception on self signed certificates if this code is not run.
+     * Install a trust manager that blindly trustS all SSL certificates.
+     * The reason this code is being added is to enable developers to
+     * do development using self signed SSL certificates on their web server.
+     * The standard HttpsURLConnection class will throw an exception on
+     * self signed certificates if this code is not run.
      */
     private static SSLSocketFactory trustAllHosts(HttpsURLConnection connection){
         SSLSocketFactory oldFactory=connection.getSSLSocketFactory();
@@ -79,6 +85,7 @@ public class MultipartUtility {
             throws IOException {
         this.charset = charset;
         this.post = post;
+        this.cookieManager = cookieManager;
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String arg0, SSLSession arg1) {
@@ -94,7 +101,6 @@ public class MultipartUtility {
         HttpsURLConnection.setDefaultSSLSocketFactory(trustAllHosts(httpConn));
 
         // Cookies
-        //cookieManager = new java.net.CookieManager();
         CookieHandler.setDefault(cookieManager);
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         if (cookieManager.getCookieStore().getCookies().size() > 0) {
@@ -151,6 +157,15 @@ public class MultipartUtility {
         // checks server's status code first
         int status = httpConn.getResponseCode();
         if (status == HttpsURLConnection.HTTP_OK) {
+
+            // Set cookies
+            List<String> cookiesHeader = httpConn.getHeaderFields().get("Set-Cookie");
+            if (cookiesHeader != null) {
+                for (String cookie : cookiesHeader) {
+                    cookieManager.getCookieStore().add(null,HttpCookie.parse(cookie).get(0));
+                }
+            }
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     httpConn.getInputStream()));
             String line = null;

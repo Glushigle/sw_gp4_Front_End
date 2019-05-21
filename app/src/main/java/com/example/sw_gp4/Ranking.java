@@ -131,8 +131,8 @@ public class Ranking extends AppCompatActivity {
         setContentView(R.layout.activity_ranking);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_Ranking);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         addButton = (ImageButton) findViewById(R.id.imageButton);
         addButton.setOnClickListener(new View.OnClickListener()
