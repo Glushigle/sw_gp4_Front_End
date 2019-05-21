@@ -140,6 +140,7 @@ public class TargetGroup extends AppCompatActivity
         // Navigation bar
         // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_GroupList);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Group List
@@ -217,7 +218,8 @@ public class TargetGroup extends AppCompatActivity
             }
             else
             {
-                Toast.makeText(mContext, "Error", Toast.LENGTH_SHORT).show();
+                String error_info = responseObj.getString("error_info");
+                Toast.makeText(mContext, error_info, Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e)
         {

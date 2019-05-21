@@ -91,10 +91,8 @@ public class WriteDDL extends AppCompatActivity {
         setContentView(R.layout.activity_write_ddl);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_showDDL);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        /* TODO: 避免navigation无穷回圈
-        这setSelected(id)+disable那个id的navigation listener,
-        还是不改selected? 查一下别人怎么做*/
 
         ((ImageButton)findViewById(R.id.btn_cross)).setOnClickListener(mOnCrossClickedListener);
         ((Button)findViewById(R.id.btn_save)).setOnClickListener(mOnSaveClickedListener);

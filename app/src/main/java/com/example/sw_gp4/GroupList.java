@@ -118,8 +118,9 @@ public class GroupList extends AppCompatActivity {
         // Navigation bar
         // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_GroupList);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
         // Group List
         updateData();
