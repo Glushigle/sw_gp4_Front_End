@@ -7,7 +7,8 @@ public class Group
     String group_name;
     String group_id;
     String owner_id; // todo: should be owner_username
-    boolean i_am_leader; // todo: fill this
+    boolean im_leader; // todo: fill this
+    boolean request; // todo: fill this
     String info;
     int color_id;
     int id;

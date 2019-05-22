@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +25,12 @@ import java.util.ArrayList;
 public class GroupListAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
-
+    private ListView mListView;
     private ArrayList<Group> groups;
 
-    public GroupListAdapter(Context mContext, ArrayList<Group> groups) {
+    public GroupListAdapter(Context mContext, ArrayList<Group> groups, ListView mListView) {
         this.mContext = mContext;
+        this.mListView = mListView;
         resetData(groups);
     }
 
@@ -58,7 +60,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
     }
 
     @Override
-    public void fillValues(int position, View convertView) {
+    public void fillValues(final int position, View convertView) {
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
 
@@ -67,8 +69,23 @@ public class GroupListAdapter extends BaseSwipeAdapter {
                 ContextCompat.getColor(mContext,group.color_id));
         text_button.setText(group.group_name);
 
-        //todo: mark group leader
-        // TODO: click button -> show group DDL
+        //todo: mark group leader:
+        //if(group.im_leader)
+        //    ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
+
+        // TODO: click button -> adapter perform click
+        ImageButton.OnClickListener fakeItemClick = new ImageButton.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mListView.performItemClick(
+                        mListView.getAdapter().getView(position, null, null),
+                        position,
+                        mListView.getAdapter().getItemId(position)
+                );
+            }
+        };
+        color_button.setOnClickListener(fakeItemClick);
+        text_button.setOnClickListener(fakeItemClick);
     }
 
     @Override

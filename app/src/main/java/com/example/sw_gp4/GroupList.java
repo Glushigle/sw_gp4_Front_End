@@ -75,16 +75,15 @@ public class GroupList extends AppCompatActivity {
     };
 
     private void updateData(){
-        /*String response = {"group list":
-                [{"group_id": 1, "info": "", "name": "2019软件工程第四组", "owner_id": 3},
-                 {"group_id": 2, "info": "", "name": "2019软件工程", "owner_id": 3},
-                 {"group_id": 3, "info": "", "name": "Multi-Document Processing小组", "owner_id": 3},
-                 {"group_id": 4, "info": "", "name": "北京大学珍珠奶茶研究社", "owner_id": 3}],
-            "valid": true}
-        */
         String[] keys = {"username"};
         String[] values = {currUserName};
-        String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
+        //String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
+        String response = "{\"group list\":\n" +
+                "    [{\"group_id\": 1, \"info\": \"\", \"name\": \"2019软件工程第四组\", \"owner_id\": 3},\n" +
+                "    {\"group_id\": 2, \"info\": \"\", \"name\": \"2019软件工程\", \"owner_id\": 3},\n" +
+                "    {\"group_id\": 3, \"info\": \"\", \"name\": \"Multi-Document Processing小组\", \"owner_id\": 3},\n" +
+                "    {\"group_id\": 4, \"info\": \"\", \"name\": \"北京大学珍珠奶茶研究社\", \"owner_id\": 3}],\n" +
+                "    \"valid\": true}";
         try {
             maxId = 5;
 
@@ -100,6 +99,8 @@ public class GroupList extends AppCompatActivity {
 
                                 //todo: change owner_id to owner_username (ask for api from backend)
                                 (String) groups.getJSONObject(i).getString("owner_id"),
+
+                                //todo: get "whether it is a request"
 
                                 (String) groups.getJSONObject(i).getString("info"),
                                 colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length]
@@ -129,7 +130,7 @@ public class GroupList extends AppCompatActivity {
 
         // Group List
         mListView = (ListView) findViewById(R.id.group_list);
-        mAdapter = new GroupListAdapter(this,group_);
+        mAdapter = new GroupListAdapter(this,group_, mListView);
         mListView.setAdapter(mAdapter);
         updateData();
 
