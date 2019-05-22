@@ -67,6 +67,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
                 ContextCompat.getColor(mContext,group.color_id));
         text_button.setText(group.group_name);
 
+        //todo: mark group leader
         // TODO: click button -> show group DDL
     }
 

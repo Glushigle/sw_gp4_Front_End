@@ -97,7 +97,10 @@ public class GroupList extends AppCompatActivity {
                         (
                                 (String) groups.getJSONObject(i).getString("group_id"),
                                 (String) groups.getJSONObject(i).getString("name"),
+
+                                //todo: change owner_id to owner_username (ask for api from backend)
                                 (String) groups.getJSONObject(i).getString("owner_id"),
+
                                 (String) groups.getJSONObject(i).getString("info"),
                                 colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length]
                         )
