@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -75,6 +76,7 @@ public class GroupList extends AppCompatActivity {
     };
 
     private void updateData(){
+
         String[] keys = {"username"};
         String[] values = {currUserName};
         //String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
@@ -84,6 +86,7 @@ public class GroupList extends AppCompatActivity {
                 "    {\"group_id\": 3, \"info\": \"\", \"name\": \"Multi-Document Processing小组\", \"owner_id\": 3},\n" +
                 "    {\"group_id\": 4, \"info\": \"\", \"name\": \"北京大学珍珠奶茶研究社\", \"owner_id\": 3}],\n" +
                 "    \"valid\": true}";
+
         try {
             maxId = 5;
 
@@ -137,6 +140,9 @@ public class GroupList extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // Todo: check invitation: if it is, don't do anything
+
                 Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
                 TargetGroup.currGroup = group_.get(position);
                 TargetGroup.userNames = new ArrayList<String>();

@@ -39,10 +39,10 @@
             android:id="@+id/group_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="15dp"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
             android:background="@drawable/ic_color_round" />
 
         <Button
@@ -54,5 +54,22 @@
             android:text="Lorem ipsum dolor sit"
             android:textAlignment="2"
             android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        <Button
+            android:id="@+id/btn_deny"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_deny"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/btn_accept"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_accept"
+            android:visibility="invisible" />
+
     </LinearLayout>
 </com.daimajia.swipe.SwipeLayout>
