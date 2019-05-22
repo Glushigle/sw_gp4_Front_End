@@ -57,8 +57,27 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
 
         ((Button)convertView.findViewById(R.id.group_text)).setWidth(450);
-        ((Button)convertView.findViewById(R.id.btn_deny)).setVisibility(View.VISIBLE);
-        ((Button)convertView.findViewById(R.id.btn_accept)).setVisibility(View.VISIBLE);
+
+        Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
+        Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);
+        btn_deny.setVisibility(View.VISIBLE);
+        btn_accept.setVisibility(View.VISIBLE);
+        btn_deny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "deny invitation", Toast.LENGTH_SHORT).show();
+                // todo deny group invitation request
+                // update ui
+            }
+        });
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "accept invitation", Toast.LENGTH_SHORT).show();
+                // todo accept group invitation request
+                //update ui
+            }
+        });
     }
 
     @Override
