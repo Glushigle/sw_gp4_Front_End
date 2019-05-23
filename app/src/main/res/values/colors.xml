@@ -11,4 +11,6 @@
     <color name="gp_3">#b2db4a</color>
     <color name="gp_4">#4fbc79</color>
     <color name="gp_5">#54cbd8</color>
+
+    <color name="textbox_bg">#EEEEEE</color>
 </resources>

@@ -74,7 +74,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="25dp"
+        android:padding="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar">
@@ -82,29 +82,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:gravity="bottom"
+            android:layout_marginTop="15dp"
+            android:padding="2dp"
             android:orientation="horizontal">
 
-            <EditText
+            <Button
                 android:id="@+id/ddl_date"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:ems="14"
-                android:hint="日期"
-                android:inputType="date"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:gravity="start|left"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@android:color/tertiary_text_light"
+                android:textSize="14sp" />
 
-            <EditText
+            <Button
                 android:id="@+id/ddl_time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:ems="14"
-                android:hint="时间"
-                android:inputType="time"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:gravity="right|end"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@android:color/tertiary_text_light"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <EditText
@@ -113,23 +117,26 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:background="@color/textbox_bg"
             android:ems="14"
-            android:gravity="bottom"
-            android:hint="DDL名称"
+            android:hint="DDL标题"
+            android:padding="15dp"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <EditText
             android:id="@+id/ddl_info"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="180dp"
             android:layout_gravity="top"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:background="@color/textbox_bg"
             android:ems="14"
             android:gravity="top"
             android:hint="DDL内容"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:padding="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <Switch
             android:id="@+id/ddl_reminder_switch"
@@ -138,7 +145,8 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:checked="true"
-            android:text="设为公开"
+            android:text="公开"
+            android:textAppearance="@style/TextAppearance.AppCompat"
             tools:checked="true" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
