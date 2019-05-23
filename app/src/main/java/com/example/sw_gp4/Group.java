@@ -6,7 +6,9 @@ public class Group
 {
     String group_name;
     String group_id;
-    String owner_id;
+    String owner_id; // todo: should be owner_username
+    boolean im_leader; // todo: I'm Leader -> mark leader_sign
+    boolean invitation; // todo: if it's an invitation
     String info;
     int color_id;
     int id;

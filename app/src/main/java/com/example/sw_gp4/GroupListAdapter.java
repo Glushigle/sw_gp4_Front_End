@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,18 +28,18 @@ import java.util.ArrayList;
 public class GroupListAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
-
+    private ListView mListView;
     private ArrayList<Group> groups;
 
-    public GroupListAdapter(Context mContext, ArrayList<Group> groups) {
+    public GroupListAdapter(Context mContext, ArrayList<Group> groups, ListView mListView) {
         this.mContext = mContext;
+        this.mListView = mListView;
         resetData(groups);
     }
 
     public void resetData( ArrayList<Group> groups){
         this.groups = groups;
         notifyDataSetChanged();
-        closeAllItems();
     }
 
     @Override
@@ -48,29 +50,82 @@ public class GroupListAdapter extends BaseSwipeAdapter {
     @Override
     public View generateView(final int position, ViewGroup parent) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.group_list_item, null);
-
-        v.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
-                ((GroupList) mContext).OnDeleteClicked(view, position);
-            }
-        });
         return v;
     }
 
+    private void markInvitation(View convertView){
+        convertView.findViewById(R.id.group_text).setAlpha((float)0.5);//.setBackgroundColor(bg_color);
+        convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
+
+        ((Button)convertView.findViewById(R.id.group_text)).setWidth(450);
+
+        Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
+        Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);
+        btn_deny.setVisibility(View.VISIBLE);
+        btn_accept.setVisibility(View.VISIBLE);
+        btn_deny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "deny invitation", Toast.LENGTH_SHORT).show();
+                // todo deny group invitation request
+                // update ui
+            }
+        });
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "accept invitation", Toast.LENGTH_SHORT).show();
+                // todo accept group invitation request
+                //update ui
+            }
+        });
+    }
+
     @Override
-    public void fillValues(int position, View convertView) {
+    public void fillValues(final int position, View convertView) {
+        Group group = groups.get(position);
+
+        // Appearance of group item
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
-
-        Group group = groups.get(position);
         ((GradientDrawable) color_button.getBackground()).setColor(
                 ContextCompat.getColor(mContext,group.color_id));
-        String tempString = "<font color='#00FF00'>"+group.firstTask.time+"</font>";
-        text_button.setText(group.group_name+"\n"+Html.fromHtml(tempString));
+
+        //String tempString = "<font color='#00FF00'>"+group.firstTask.time+"</font>";
+        //text_button.setText(group.group_name+"\n"+Html.fromHtml(tempString));
         //todo:想改颜色失败了，再说
         // TODO: click button -> show group DDL
+        text_button.setText(group.group_name);
+
+        // Group item clicked: share the listener with mListView
+        ImageButton.OnClickListener fakeItemClick = new ImageButton.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mListView.performItemClick(
+                        mListView.getAdapter().getView(position, null, null),
+                        position,
+                        mListView.getAdapter().getItemId(position)
+                );
+            }
+        };
+        color_button.setOnClickListener(fakeItemClick);
+        text_button.setOnClickListener(fakeItemClick);
+
+        //todo: Mark group leader
+        //if(group.im_leader)
+        //    ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
+
+        //todo: Mark group invitation
+        //if(group.invitation)
+            markInvitation(convertView);
+
+        // Delete
+        convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((GroupList) mContext).OnDeleteClicked(view, position);
+            }
+        });
     }
 
     @Override
