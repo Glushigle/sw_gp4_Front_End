@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:title="我的DDL"
+        app:title="我的Deadline"
         app:titleTextColor="#ffffff"
         app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/Base.Theme.AppCompat.Light">
@@ -39,13 +39,17 @@
                 android:id="@+id/showddlTvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:gravity="center"
+                android:background="@drawable/border_all"
+                android:paddingStart="5sp"
+                android:paddingLeft="5sp"
+                android:paddingEnd="5sp"
+                android:paddingRight="5sp"
+                android:gravity="center_vertical"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginEnd="25sp"
-                android:layout_marginRight="25sp"
+                android:layout_marginEnd="23sp"
+                android:layout_marginRight="23sp"
                 app:layout_constraintEnd_toStartOf="@+id/showddlAddBtn"/>
             <ImageButton
                 android:id="@+id/showddlAddBtn"
@@ -54,8 +58,8 @@
                 android:contentDescription="@string/ddlAddBtn"
                 android:onClick="onClickAddBtn"
                 android:background="@color/colorPrimary"
-                android:layout_marginEnd="25sp"
-                android:layout_marginRight="25sp"
+                android:layout_marginEnd="23sp"
+                android:layout_marginRight="23sp"
                 app:srcCompat="@drawable/ic_add_ddl"
                 app:layout_constraintEnd_toStartOf="@+id/showddlExitBtn"/>
             <ImageButton
@@ -89,18 +93,5 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
-
-    <!--<ImageButton
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/round"
-        android:contentDescription="@string/ddlAddBtn"
-        android:onClick="click_addBtn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />-->
 
 </android.support.constraint.ConstraintLayout>

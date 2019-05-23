@@ -28,7 +28,8 @@
             android:name=".showDDL"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".GroupList" />
-        <activity android:name=".TargetGroup" />
+        <activity android:name=".TargetGroup"/>
+        <activity android:name=".TargetGroupDDL" />
         <activity android:name=".friends"/>
     </application>
 

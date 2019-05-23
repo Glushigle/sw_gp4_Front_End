@@ -1,10 +1,12 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +90,11 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         Button text_button = (Button) convertView.findViewById(R.id.group_text);
         ((GradientDrawable) color_button.getBackground()).setColor(
                 ContextCompat.getColor(mContext,group.color_id));
+
+        //String tempString = "<font color='#00FF00'>"+group.firstTask.time+"</font>";
+        //text_button.setText(group.group_name+"\n"+Html.fromHtml(tempString));
+        //todo:想改颜色失败了，再说
+        // TODO: click button -> show group DDL
         text_button.setText(group.group_name);
 
         // Group item clicked: share the listener with mListView
