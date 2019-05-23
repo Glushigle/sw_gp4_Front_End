@@ -186,7 +186,7 @@ public class GroupList extends AppCompatActivity {
                                 updateData();
                             }
                             else{
-                                // todo: check api
+                                // todo: delete group error: check api
                                 //String error_info = responseObj.getString("error_info");
                                 //Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
                             }

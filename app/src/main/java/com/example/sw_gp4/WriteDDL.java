@@ -59,6 +59,7 @@ public class WriteDDL extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+            // Todo: check with api and send "make public" as well
             String[] keys = {"title","deadline","info"};
             String[] values = {
                     fetchInput(R.id.ddl_title),
