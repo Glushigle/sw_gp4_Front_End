@@ -1,6 +1,7 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -10,6 +11,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -143,7 +145,7 @@ public class GroupList extends AppCompatActivity {
 
                 // Todo: check invitation: if it is, don't do anything
 
-                Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "点选小组", Toast.LENGTH_SHORT).show();
                 TargetGroup.currGroup = group_.get(position);
                 TargetGroup.userNames = new ArrayList<String>();
                 TargetGroup.userNames.add(currUserName);
@@ -159,28 +161,43 @@ public class GroupList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(mContext, "item click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "添加小组", Toast.LENGTH_SHORT).show();
                 OnAddClicked(v);
             }
         });
 
     }
 
-    public void OnDeleteClicked(View view, int position){
-        // TODO: confirmation
-        String[] keys = {"group_id"};
-        String[] values = {group_.get(position).group_id};
-        String response = Requester.post("https://222.29.159.164:10016/delete_group", keys, values);
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if(valid){
-                Toast.makeText(mContext, "Group deleted", Toast.LENGTH_SHORT).show();
-                updateData();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void OnDeleteClicked(View view, final int position){
+
+        new AlertDialog.Builder(this)
+                .setMessage("确定要删除小组吗？")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String[] keys = {"group_id"};
+                        String[] values = {group_.get(position).group_id};
+                        String response = Requester.post("https://222.29.159.164:10016/delete_group", keys, values);
+                        try {
+                            JSONObject responseObj = new JSONObject(response);
+                            boolean valid = responseObj.getBoolean("valid");
+                            if(valid){
+                                Toast.makeText(mContext, "已删除小组", Toast.LENGTH_SHORT).show();
+                                updateData();
+                            }
+                            else{
+                                // todo: check api
+                                //String error_info = responseObj.getString("error_info");
+                                //Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
+        mAdapter.closeAllItems();
     }
 
     public void OnAddClicked(View view){

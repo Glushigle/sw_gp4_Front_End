@@ -38,7 +38,6 @@ public class GroupListAdapter extends BaseSwipeAdapter {
     public void resetData( ArrayList<Group> groups){
         this.groups = groups;
         notifyDataSetChanged();
-        closeAllItems();
     }
 
     @Override
@@ -117,7 +116,6 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
                 ((GroupList) mContext).OnDeleteClicked(view, position);
             }
         });
