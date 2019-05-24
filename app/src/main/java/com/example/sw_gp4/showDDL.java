@@ -135,14 +135,14 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         li_date.setOrientation(LinearLayout.VERTICAL);
         li_date.setLayoutParams(para1);
         //li_date.setGravity(Gravity.CENTER_HORIZONTAL);
-        li_date.setBackgroundColor(Color.rgb(125,125,125));
+        li_date.setBackgroundColor(Color.rgb(255,255,255));
         LinearLayout.LayoutParams para2 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         TextView tv_date = new TextView(this);
         tv_date.setLayoutParams(para2);
         tv_date.setGravity(Gravity.CENTER);//文本居中
-        tv_date.setBackgroundColor(Color.rgb(125,125,125));//背景颜色
-        tv_date.setTextColor(Color.rgb(255,255,255));//文本颜色
+        tv_date.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
+        tv_date.setTextColor(Color.rgb(0,0,0));//文本颜色
         tv_date.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         tv_date.setTypeface(Typeface.DEFAULT_BOLD);
         tv_date.setText(date);//设置显示的文本
@@ -150,8 +150,8 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         TextView tv_week = new TextView(this);
         tv_week.setLayoutParams(para2);
         tv_week.setGravity(Gravity.CENTER);//文本居中
-        tv_week.setBackgroundColor(Color.rgb(125,125,125));//背景颜色
-        tv_week.setTextColor(Color.rgb(255,255,255));//文本颜色
+        tv_week.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
+        tv_week.setTextColor(Color.rgb(0,0,0));//文本颜色
         tv_week.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
         tv_week.setTypeface(Typeface.DEFAULT_BOLD);
         tv_week.setText(week);//设置显示的文本

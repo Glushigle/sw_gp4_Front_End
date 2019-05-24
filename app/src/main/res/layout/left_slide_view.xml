@@ -21,12 +21,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxHeight="23sp"
-                android:background="#282f39"
+                android:background="#ffffff"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:gravity="center_vertical|left"
                 android:textSize="19sp"
-                android:textColor="#ffffff"
+                android:textColor="#000000"
                 android:textStyle="bold"/>
 
             <TextView
@@ -34,12 +34,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxHeight="23sp"
-                android:background="#282f39"
+                android:background="#ffffff"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:gravity="center_vertical|left"
                 android:textSize="16sp"
-                android:textColor="#ffffff"
+                android:textColor="#000000"
                 android:textStyle="bold"/>
 
             <TextView
@@ -47,12 +47,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxHeight="60sp"
-                android:background="#282f39"
+                android:background="#ffffff"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:gravity="center_vertical|left"
                 android:textSize="16sp"
-                android:textColor="#ffffff"/>
+                android:textColor="#000000"/>
 
         </LinearLayout>
 
