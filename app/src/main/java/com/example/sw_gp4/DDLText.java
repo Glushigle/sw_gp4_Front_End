@@ -6,20 +6,33 @@ import java.util.List;
 
 public class DDLText implements Comparable {
     private Date dtime;
-    public String time;
-    public String title;
-    public String description;
-    public DDLText(String tm, String tt) {
-        time = tm;
-        title = tt;
-        description = null;
-        dtime = strToDate(tm);
+    public String ddl_id;
+    public String ddl_time;
+    public String ddl_title;
+    public String ddl_description;
+    public String ddl_status;
+    public DDLText(String id, String time, String status, String title) {
+        ddl_id = id;
+        ddl_time = time;
+        ddl_title = title;
+        ddl_status = status;
+        ddl_description = null;
+        dtime = strToDate(time);
     }
-    public DDLText(String tm, String tt, String d) {
-        time = tm;
-        title = tt;
-        description = d;
-        dtime = strToDate(tm);
+    public DDLText(String id, String time, String status, String title, String description) {
+        ddl_id = id;
+        ddl_time = time;
+        ddl_title = title;
+        ddl_description = description;
+        ddl_status = status;
+        dtime = strToDate(time);
+    }
+    public void copyFrom(DDLText ddl) {
+        ddl_title = ddl.ddl_title;
+        ddl_time = ddl.ddl_time;
+        ddl_description = ddl.ddl_description;
+        ddl_status = ddl.ddl_status;
+        dtime = strToDate(ddl_time);
     }
     private Date strToDate(String t) {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");

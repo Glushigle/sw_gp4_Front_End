@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/show_ddl_scroll"
+        app:layout_constraintTop_toBottomOf="@+id/showddlScroll"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/navigation" />
 
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:title="我的Deadline"
+        app:title="个人DDL"
         app:titleTextColor="#ffffff"
         app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/Base.Theme.AppCompat.Light">
@@ -48,8 +48,8 @@
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginEnd="23sp"
-                android:layout_marginRight="23sp"
+                android:layout_marginEnd="20sp"
+                android:layout_marginRight="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/showddlAddBtn"/>
             <ImageButton
                 android:id="@+id/showddlAddBtn"
@@ -58,8 +58,8 @@
                 android:contentDescription="@string/ddlAddBtn"
                 android:onClick="onClickAddBtn"
                 android:background="@color/colorPrimary"
-                android:layout_marginEnd="23sp"
-                android:layout_marginRight="23sp"
+                android:layout_marginEnd="20sp"
+                android:layout_marginRight="20sp"
                 app:srcCompat="@drawable/ic_add_ddl"
                 app:layout_constraintEnd_toStartOf="@+id/showddlExitBtn"/>
             <ImageButton
@@ -69,17 +69,18 @@
                 android:contentDescription="@string/exitBtn"
                 android:onClick="onClickExitBtn"
                 android:background="@color/colorPrimary"
-                android:layout_marginEnd="20sp"
-                android:layout_marginRight="20sp"
+                android:layout_marginEnd="15sp"
+                android:layout_marginRight="15sp"
                 app:srcCompat="@drawable/ic_exitbtn"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
-        android:id="@+id/show_ddl_scroll"
+        android:id="@+id/showddlScroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#ffffff"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

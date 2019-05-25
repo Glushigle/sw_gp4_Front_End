@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 public class leftSlideView extends HorizontalScrollView {
     private int scroll_width;   //滑动宽度
-    //private TextView tv_edit;
     private ImageButton editBtn;    //编辑按钮
-    //private TextView tv_delete;
     private ImageButton deleteBtn;  //删除按钮
     private boolean isonce = false;
     private boolean isopen = false;
@@ -36,8 +34,6 @@ public class leftSlideView extends HorizontalScrollView {
         super.onMeasure(widthMeasureSpec,heightMeasureSpec);
         Log.d("view","onMeasure");
         if (!isonce) {
-            //tv_edit = findViewById(R.id.lsTvEdit);
-            //tv_delete = findViewById(R.id.lsTvDelete);
             editBtn = findViewById(R.id.lsBtnEdit);
             deleteBtn = findViewById(R.id.lsBtnDelete);
             isonce = true;
@@ -48,8 +44,6 @@ public class leftSlideView extends HorizontalScrollView {
         Log.d("view","onLayout");
         if (changed) {
             this.scrollTo(0,0);
-            //Log.d("view","width = "+String.valueOf(tv_edit.getMeasuredWidth()));
-            //scroll_width = tv_edit.getWidth()+tv_delete.getWidth();
             Log.d("view","width = "+String.valueOf(editBtn.getMeasuredWidth()));
             scroll_width = editBtn.getWidth()+deleteBtn.getWidth(); //计算滑动宽度
         }

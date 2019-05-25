@@ -74,7 +74,7 @@ public class WriteDDL extends AppCompatActivity {
                     fetchInput(R.id.ddl_date) + " " + fetchInput(R.id.ddl_time),
                     fetchInput(R.id.ddl_info)
             };
-            String response = Requester.post("https://222.29.159.164:10016/create_task",keys,values);
+            String response = Requester.post("https://222.29.159.164:10007/create_task",keys,values);
 
             try{
                 JSONObject responseObj = new JSONObject(response);
