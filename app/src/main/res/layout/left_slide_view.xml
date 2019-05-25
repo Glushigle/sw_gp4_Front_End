@@ -57,17 +57,6 @@
         </LinearLayout>
 
         <!-- 编辑按钮 -->
-        <!--<TextView
-            android:id="@+id/lsTvEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#d9df63"
-            android:gravity="center"
-            android:textSize="19sp"
-            android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:text="@string/lsa_edit"/>
-        替换前一个textview-->
         <ImageButton
             android:id="@+id/lsBtnEdit"
             android:layout_width="40sp"
@@ -77,17 +66,6 @@
             app:srcCompat="@drawable/ic_edit_ddl"/>
 
         <!-- 删除按钮 -->
-        <!--<TextView
-            android:id="@+id/lsTvDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#df0059"
-            android:gravity="center"
-            android:textSize="19sp"
-            android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:text="@string/lsa_delete"/>
-        替换前一个textview-->
         <ImageButton
             android:id="@+id/lsBtnDelete"
             android:layout_width="40sp"

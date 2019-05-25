@@ -2,6 +2,7 @@ package com.example.sw_gp4;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -13,6 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -21,12 +23,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -64,6 +69,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_ddl);
+        overridePendingTransition(0,0);//去掉滑入动画
 
         // Navigation bar
         // Every activity with a navigation bar should add these lines
@@ -88,6 +94,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                         String date = String.format("%d年%d月",year,month+1);
                         tv_date.setText(date);
                         //更新ddl
+                        show_ddl_view(year,month+1);
                     }
                 },initYear,initMonth).show();
             }
@@ -97,28 +104,116 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         setSupportActionBar(toolbar);
 
         //显示DDL内容
+        getDataOfDate(2019,5);
         show_ddl_view(initYear,initMonth);
     }
     private void show_ddl_view(int year, int month) {
         LinearLayout li_parent = findViewById(R.id.li_ddl_disp);//父布局
-        //get_ddl_info();
-        String[] date = {"01","02","03"};
+        if (li_parent.getChildCount() != 0) {
+            li_parent.removeAllViews();
+            ScrollView scrollView = findViewById(R.id.showddlScroll);
+            scrollView.smoothScrollTo(0,0);
+        }
+        List<DDLOfDay> ddlofmonth = getDataOfDate(year,month);
+        if (ddlofmonth == null || ddlofmonth.isEmpty()) {
+            Log.d("show_ddl_view","none");
+            if (ddlofmonth == null)
+                Log.d("show_ddl_view","null");
+            LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+            TextView tv_none = new TextView(this);
+            tv_none.setLayoutParams(para);
+            tv_none.setGravity(Gravity.CENTER);
+            tv_none.setBackgroundColor(Color.rgb(255,255,255));
+            tv_none.setTextColor(Color.rgb(132,133,135));
+            tv_none.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            //tv_none.setTypeface(Typeface.DEFAULT_BOLD);
+            tv_none.setText("暂无数据\n点击上方加号新建");//设置显示的文本
+            li_parent.addView(tv_none);
+        }
+        else {
+            int sz = ddlofmonth.size();
+            DDLOfDay ddlofday;
+            for (int i = 0; i < sz; ++i) {
+                ddlofday = ddlofmonth.get(i);
+                add_ddl_view(li_parent,ddlofday.day,ddlofday.week,ddlofday.data);
+            }
+        }
+        /*String[] date = {"01","02","03"};
         String[] week = {"Mon","Tue","Wed"};
-        DDLText ddl = new DDLText("12:00","My DDL","hello world");
+        DDLText ddl = new DDLText("12:00","My DDL","hello world",null);
         List<DDLText> data = new ArrayList<>();
         for (int i = 0; i < 8; ++i) {
             data.add(ddl);
         }
-        data.add(new DDLText("11:00","My DDL"));
-        data.add(new DDLText("13:00","My DDL","my code works but why"));
+        data.add(new DDLText("11:00","My DDL",null));
+        data.add(new DDLText("13:00","My DDL","my code works but why",null));
         for (int i = 0; i < 3; ++i) {
             add_ddl_view(li_parent,date[i],week[i],data);
-        }
+        }*/
     }
     private List<DDLOfDay> getDataOfDate(int year, int month) {
+        Log.d("getdataofdate","in");
+        String full_url = "https://222.29.159.164:10007/get_tasklist";
+        String[] keys = {};
+        String[] values = {};
+        String response = Requester.get(full_url,keys,values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if (valid){
+                JSONArray allData = responseObj.getJSONArray("task list");//所有数据
+                int size = allData.length();//数据长度
+                Log.d("data size = ",String.valueOf(size));
+                List<DDLOfDay> ddlofmonth = new ArrayList<>();//指定月份的所有ddl
+                int currentDay = 0;
+                String ym = String.format("%d-%02d",year,month);
+                DDLOfDay ddlofday = new DDLOfDay("00","None");//某一天的所有ddl
+                JSONObject tmpObj;
+                for (int i = 0; i < size; ++i) {//提取需要的数据
+                    tmpObj = allData.getJSONObject(i);
+                    Log.d("date = ",tmpObj.getString("deadline"));
+                    String deadline = tmpObj.getString("deadline");
+                    if (deadline.startsWith(ym)) {//指定月份的ddl
+                        String dy = deadline.substring(8,10);//该月的第几天
+                        int d = Integer.parseInt(dy);
+                        if (d != currentDay) {
+                            if (currentDay != 0) {
+                                ddlofmonth.add(ddlofday);//存储之前某一天的数据
+                                ddlofday.data.clear();
+                            }
+                            currentDay = d;
+                            ddlofday.day = dy;
+                            SimpleDateFormat format = new SimpleDateFormat("E");
+                            ddlofday.week = format.format(deadline);//星期几
+                        }
+                        String id = tmpObj.getString("id");//ddl信息
+                        String time = deadline.substring(11,16);
+                        String title = tmpObj.getString("title");
+                        String description = tmpObj.getString("info");
+                        String status = null;//tmpObj.getString("status");
+                        ddlofday.data.add(new DDLText(id,time,status,title,description));
+                    }
+                }
+                if (currentDay != 0)//最后出现的一天的ddl
+                    ddlofmonth.add(ddlofday);
+                return ddlofmonth;
+            }
+            else{
+                Toast.makeText(this, "获取DDL失败", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+        } catch(JSONException e) {
+            Toast.makeText(this, "bug in getDataOfDate()", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
         return null;
     }
     private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data) {
+        //屏幕宽度
+        Resources resources = this.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        int screenWidth = dm.widthPixels;
         //布局参数
         LinearLayout.LayoutParams para0 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -163,7 +258,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         RecyclerView re_ddl = new RecyclerView(this);
         re_ddl.setLayoutParams(para3);
         re_ddl.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        leftSlideAdapter adapter = new leftSlideAdapter(this,data);
+        leftSlideAdapter adapter = new leftSlideAdapter(this,data,screenWidth-ftmp );
         re_ddl.setAdapter(adapter);
         re_ddl.setItemAnimator(new DefaultItemAnimator());
         li_date_ddl.addView(re_ddl);
@@ -171,13 +266,11 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     }
     public void onClickAddBtn(View view) {
         //切换到添加页
-        //Intent intent = new Intent(this,WriteDDL.class);
-        //startActivity(intent);
         startActivity(new Intent(mContext, WriteDDL.class));
         finish();
     }
     public void onClickExitBtn(View view) {
-        String full_url = "https://222.29.159.164:10016/logout";
+        String full_url = "https://222.29.159.164:10007/logout";
         String[] keys = {};
         String[] values = {};
         String response = Requester.get(full_url, keys, values);
@@ -202,6 +295,24 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     }
     public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
+        DDLText ddl = adapter.getData(position);
+        String full_url = "https://222.29.159.164:10007/deletetask";
+        String[] keys = {"task_id"};
+        String[] values = {ddl.ddl_id};
+        String response = Requester.post(full_url,keys,values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if (valid){
+                Toast.makeText(this, "删除DDL成功", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, "删除DDL失败", Toast.LENGTH_SHORT).show();
+            }
+        } catch(JSONException e) {
+            Toast.makeText(this, "bug in onDeleteClick()", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
         adapter.removeData(position);
     }
     public void onEditClick(View v, int position, leftSlideAdapter adapter) {
