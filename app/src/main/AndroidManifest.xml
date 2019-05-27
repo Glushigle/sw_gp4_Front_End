@@ -16,11 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".registation"></activity>
         <activity android:name=".WriteDDL" />
         <activity android:name=".Ranking" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,9 +30,9 @@
             android:name=".showDDL"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".GroupList" />
-        <activity android:name=".TargetGroup"/>
+        <activity android:name=".TargetGroup" />
         <activity android:name=".TargetGroupDDL" />
-        <activity android:name=".friends"/>
+        <activity android:name=".friends" />
     </application>
 
 </manifest>
