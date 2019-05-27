@@ -178,9 +178,6 @@ public class WriteDDL extends AppCompatActivity {
                 boolean valid = responseObj.getBoolean("valid");
                 if(valid){
                     Toast.makeText(mContext, "DDL saved", Toast.LENGTH_SHORT).show();
-
-                    startActivity(new Intent(mContext, showDDL.class));
-                    finish();
                 }
                 else{
                     Toast.makeText(mContext, "Invalid DDL!", Toast.LENGTH_SHORT).show();
