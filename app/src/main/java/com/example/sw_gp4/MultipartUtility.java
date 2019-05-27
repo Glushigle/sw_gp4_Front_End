@@ -1,5 +1,6 @@
 package com.example.sw_gp4;
 
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -86,6 +87,10 @@ public class MultipartUtility {
         this.charset = charset;
         this.post = post;
         this.cookieManager = cookieManager;
+
+        // Bad practice with consequence: unresponsive screen
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String arg0, SSLSession arg1) {

@@ -79,8 +79,9 @@ public class FriendTask extends AppCompatActivity {
                         task.getString("task_id"),
                         task.getString("title"),
                         task.getString("finish_time"),
-                        Boolean.valueOf(task.getString("status")),
-                        task.getString("info")));
+                        task.getInt("status"),
+                        task.getString("info"),
+                        1));
             }
         } catch (JSONException e) {
             e.printStackTrace();

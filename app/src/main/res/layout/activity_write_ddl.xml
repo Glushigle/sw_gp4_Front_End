@@ -156,7 +156,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <Switch
-            android:id="@+id/ddl_reminder_switch"
+            android:id="@+id/ddl_public"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
