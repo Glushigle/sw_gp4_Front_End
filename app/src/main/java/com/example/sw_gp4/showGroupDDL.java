@@ -14,6 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -35,9 +36,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-public class showDDL extends AppCompatActivity implements leftSlideAdapter.slideViewClickListener {
-
+//跳到此页前需要先指明group id
+public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.slideViewClickListener {
+    private boolean isChangeable = false;
+    private String groupId = null;//todo: 前一页（GroupList）传入group id和name
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,6 +55,9 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                     return true;
                 case R.id.navigation_showDDL:
                     //进到个人页
+                    Intent intent2 = new Intent(mContext,showDDL.class);
+                    startActivity(intent2);
+                    finish();
                     return true;
                 case R.id.navigation_Ranking:
                     //进到好友页
@@ -68,49 +73,69 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_ddl);
+        setContentView(R.layout.activity_show_group_ddl);
         overridePendingTransition(0,0);//去掉滑入动画
 
         // Navigation bar
         // Every activity with a navigation bar should add these lines
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setSelectedItemId(R.id.navigation_showDDL);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        //获取小组信息（id、name）
+        Intent intent = getIntent();
+        String groupName = intent.getStringExtra("group_name");
+        groupId = intent.getStringExtra("group_id");
         //设置顶部标题栏
         Calendar cal = Calendar.getInstance();
         final int initYear = cal.get(Calendar.YEAR);
         final int initMonth = cal.get(Calendar.MONTH);
         String initDate = String.format("%d年%d月",initYear,initMonth+1);
-        final TextView tv_date = findViewById(R.id.showddlTvDate);
-        //tv_date.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        final TextView tv_date = findViewById(R.id.groupddlTvDate);
         tv_date.setText(initDate);
         tv_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new datePickerDialog(showDDL.this, 0, new datePickerDialog.dateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker dp, int year, int month) {
-                        String date = String.format("%d年%d月",year,month+1);
-                        tv_date.setText(date);
-                        //更新ddl
-                        show_ddl_view(year,month+1);
-                    }
-                },initYear,initMonth).show();
+                new datePickerDialog(showGroupDDL.this, 0,
+                        new datePickerDialog.dateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker dp, int year, int month) {
+                                String date = String.format("%d年%d月",year,month+1);
+                                tv_date.setText(date);
+                                //更新ddl
+                                show_ddl_view(year,month+1,isChangeable);
+                            }
+                        },initYear,initMonth).show();
             }
         });
-        Toolbar toolbar = findViewById(R.id.showddlTbar);
-        //toolbar.setTitle("我的Deadline");
+        Toolbar toolbar = findViewById(R.id.groupddlTbar);
+        toolbar.setTitle(groupName);
         setSupportActionBar(toolbar);
-
+        //判定权限
+        String full_url = "https://222.29.159.164:10007/check_ownership";
+        String[] keys = {"group_id"};
+        String[] values = {groupId};
+        String response = Requester.get(full_url,keys,values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if (valid) {
+                isChangeable = true;
+            }
+            else {
+                isChangeable = false;
+            }
+        } catch(JSONException e) {
+            Toast.makeText(this, "bug in onCreate()", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
         //显示DDL内容
-        show_ddl_view(initYear,initMonth);
+        show_ddl_view(initYear,initMonth,isChangeable);
     }
-    private void show_ddl_view(int year, int month) {
-        LinearLayout li_parent = findViewById(R.id.li_ddl_disp);//父布局
+    private void show_ddl_view(int year, int month, boolean changeable) {
+        LinearLayout li_parent = findViewById(R.id.groupddlDisp);//父布局
         if (li_parent.getChildCount() != 0) {
             li_parent.removeAllViews();
-            ScrollView scrollView = findViewById(R.id.showddlScroll);
+            ScrollView scrollView = findViewById(R.id.groupddlScroll);
             scrollView.smoothScrollTo(0,0);
         }
         List<DDLOfDay> ddlofmonth = getDataOfDate(year,month);
@@ -126,8 +151,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             tv_none.setBackgroundColor(Color.rgb(255,255,255));
             tv_none.setTextColor(Color.rgb(132,133,135));
             tv_none.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            //tv_none.setTypeface(Typeface.DEFAULT_BOLD);
-            tv_none.setText("暂无数据\n点击上方加号新建");//设置显示的文本
+            tv_none.setText("暂无数据\n点击上方加号新建");
             li_parent.addView(tv_none);
         }
         else {
@@ -135,27 +159,15 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             DDLOfDay ddlofday;
             for (int i = 0; i < sz; ++i) {
                 ddlofday = ddlofmonth.get(i);
-                add_ddl_view(li_parent,ddlofday.day,ddlofday.week,ddlofday.data);
+                add_ddl_view(li_parent,ddlofday.day,ddlofday.week,ddlofday.data,changeable);
             }
         }
-        /*String[] date = {"01","02","03"};
-        String[] week = {"Mon","Tue","Wed"};
-        DDLText ddl = new DDLText("12:00","My DDL","hello world",null);
-        List<DDLText> data = new ArrayList<>();
-        for (int i = 0; i < 8; ++i) {
-            data.add(ddl);
-        }
-        data.add(new DDLText("11:00","My DDL",null));
-        data.add(new DDLText("13:00","My DDL","my code works but why",null));
-        for (int i = 0; i < 3; ++i) {
-            add_ddl_view(li_parent,date[i],week[i],data);
-        }*/
     }
     private List<DDLOfDay> getDataOfDate(int year, int month) {
         Log.d("getdataofdate","in");
-        String full_url = "https://222.29.159.164:10007/get_tasklist";
-        String[] keys = {};
-        String[] values = {};
+        String full_url = "https://222.29.159.164:10007/get_group_task";
+        String[] keys = {"group_id"};
+        String[] values = {groupId};
         String response = Requester.get(full_url,keys,values);
         try {
             JSONObject responseObj = new JSONObject(response);
@@ -208,7 +220,8 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         }
         return null;
     }
-    private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data) {
+    private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data,
+                              boolean changeable) {
         //屏幕宽度
         Resources resources = this.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
@@ -222,13 +235,13 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         li_date_ddl.setOrientation(LinearLayout.HORIZONTAL);//横向
         li_date_ddl.setLayoutParams(para0);
         //显示日期
-        int ftmp = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,45,getResources().getDisplayMetrics());
+        int ftmp = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,45,
+                getResources().getDisplayMetrics());
         LinearLayout.LayoutParams para1 = new LinearLayout.LayoutParams(
                 ftmp,ViewGroup.LayoutParams.MATCH_PARENT);//参数
         LinearLayout li_date = new LinearLayout(this);
         li_date.setOrientation(LinearLayout.VERTICAL);
         li_date.setLayoutParams(para1);
-        //li_date.setGravity(Gravity.CENTER_HORIZONTAL);
         li_date.setBackgroundColor(Color.rgb(255,255,255));
         LinearLayout.LayoutParams para2 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -254,50 +267,112 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         //显示ddl
         LinearLayout.LayoutParams para3 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        RecyclerView re_ddl = new RecyclerView(this);
-        re_ddl.setLayoutParams(para3);
-        re_ddl.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        leftSlideAdapter adapter = new leftSlideAdapter(this,data,screenWidth-ftmp );
-        re_ddl.setAdapter(adapter);
-        re_ddl.setItemAnimator(new DefaultItemAnimator());
-        li_date_ddl.addView(re_ddl);
+        if (changeable) {
+            RecyclerView re_ddl = new RecyclerView(this);
+            re_ddl.setLayoutParams(para3);
+            re_ddl.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,
+                    false));
+            leftSlideAdapter adapter = new leftSlideAdapter(this,data,screenWidth-ftmp );
+            re_ddl.setAdapter(adapter);
+            re_ddl.setItemAnimator(new DefaultItemAnimator());
+            li_date_ddl.addView(re_ddl);
+        }
+        else {
+            onUnchangeable(li_date_ddl,data);
+        }
         li_parent.addView(li_date_ddl);//加入布局li_parent
     }
-    public void onClickAddBtn(View view) {
+    private void onUnchangeable(LinearLayout li_date_ddl, List<DDLText> data) {
+        LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout li_ddl = new LinearLayout(this);
+        li_ddl.setLayoutParams(para);
+        li_ddl.setOrientation(LinearLayout.VERTICAL);
+        li_ddl.setBackgroundColor(Color.rgb(255,255,255));
+
+        int sz = data.size();
+        for (int i = 0; i < sz; ++i) {
+            LinearLayout li_tmp = new LinearLayout(this);
+            li_tmp.setLayoutParams(para);
+            li_tmp.setOrientation(LinearLayout.VERTICAL);
+            li_tmp.setBackgroundColor(Color.rgb(255,255,255));
+            li_tmp.setBackground(this.getDrawable(R.drawable.border));
+            //标题
+            TextView tv_title = new TextView(this);
+            tv_title.setLayoutParams(para);
+            tv_title.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
+            tv_title.setMaxHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    23,getResources().getDisplayMetrics()));
+            tv_title.setEllipsize(TextUtils.TruncateAt.END);
+            tv_title.setSingleLine(true);
+            tv_title.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
+            tv_title.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP,19);
+            tv_title.setTypeface(Typeface.DEFAULT_BOLD);
+            //时间
+            TextView tv_time = new TextView(this);
+            tv_time.setLayoutParams(para);
+            tv_time.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
+            tv_time.setMaxHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    23,getResources().getDisplayMetrics()));
+            tv_time.setEllipsize(TextUtils.TruncateAt.END);
+            tv_time.setSingleLine(true);
+            tv_time.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
+            tv_time.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+            tv_time.setTypeface(Typeface.DEFAULT_BOLD);
+            //描述
+            TextView tv_description = new TextView(this);
+            tv_description.setLayoutParams(para);
+            tv_description.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
+            tv_description.setMaxHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    60,getResources().getDisplayMetrics()));
+            tv_description.setEllipsize(TextUtils.TruncateAt.END);
+            tv_description.setMaxLines(3);
+            tv_description.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
+            tv_description.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_description.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+            //设置内容
+            DDLText ddl = data.get(i);
+            String str = "截止时间："+ ddl.ddl_time;
+            tv_time.setText(str);
+            tv_title.setText(ddl.ddl_title);
+            str = ddl.ddl_description;
+            if (str == null)
+                tv_description.setVisibility(View.GONE);
+            else
+                tv_description.setText(str);
+            //加入布局
+            li_tmp.addView(tv_title);
+            li_tmp.addView(tv_time);
+            li_tmp.addView(tv_description);
+            li_ddl.addView(li_tmp);
+        }
+        li_date_ddl.addView(li_ddl);
+    }
+    public void onClickAddBtn(View view) {//todo: 跳转至添加小组ddl页
         //切换到添加页
-        startActivity(new Intent(mContext, WriteDDL.class));
+        //startActivity(new Intent(mContext, WriteDDL.class));
+        //finish();
+    }
+    public void onClickMemBtn(View view) {//todo: 跳转至小组成员页
+        //跳到成员页
+    }
+    public void onClickCloseBtn(View view) {
+        //关闭此页，返回列表页
+        startActivity(new Intent(this,GroupList.class));
         finish();
     }
-    public void onClickExitBtn(View view) {
-        String full_url = "https://222.29.159.164:10007/logout";
-        String[] keys = {};
-        String[] values = {};
-        String response = Requester.get(full_url, keys, values);
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            boolean success = responseObj.getBoolean("valid");
-            if (success){
-                Toast.makeText(this, "退出成功", Toast.LENGTH_SHORT).show();
-                finish();
-            }else{
-                Toast.makeText(this, "退出失败", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (JSONException e) {
-            Toast.makeText(this, "bug", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }//登出
-    }
+    //以下为leftSlideAdapter.slideViewClickListener
     public void onItemClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onItemClick");
-        //return;
     }
     public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
         DDLText ddl = adapter.getData(position);
-        String full_url = "https://222.29.159.164:10007/deletetask";
-        String[] keys = {"task_id"};
-        String[] values = {ddl.ddl_id};
+        String full_url = "https://222.29.159.164:10007/delete_group_task";
+        String[] keys = {"group_id","task_id"};
+        String[] values = {groupId,ddl.ddl_id};
         String response = Requester.post(full_url,keys,values);
         try {
             JSONObject responseObj = new JSONObject(response);
@@ -316,15 +391,5 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     }
     public void onEditClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onEditClick");
-        DDLText ddl = adapter.getData(position);
-        Intent intent = new Intent(this, WriteDDL.class);
-        intent.putExtra("task_id", ddl.ddl_id);
-        startActivityForResult(intent,0);
-    }/*
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 0 && resultCode == RESULT_OK) {
-            String title = data.getStringExtra("title");
-            String description = data.getStringExtra("description");
-        }
-    }*/
+    }
 }

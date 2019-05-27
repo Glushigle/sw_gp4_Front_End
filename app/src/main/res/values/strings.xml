@@ -25,4 +25,5 @@
     <string name="ddlAddBtn">添加</string>
     <string name="exitBtn">退出</string>
     <string name="server_uri">"https://222.29.159.164:10007/"</string>
+    <string name="memBtn">成员</string>
 </resources>

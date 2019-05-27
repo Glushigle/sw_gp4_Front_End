@@ -179,6 +179,12 @@ public class GroupList extends AppCompatActivity {
                 Intent intent = new Intent(mContext,TargetGroup.class);
                 startActivity(intent);
                 finish();
+                //todo：以下注释内容将取代上面的内容，只需要补充group id和group name
+                /*Intent intent = new Intent(mContext,showGroupDDL.class);
+                intent.putExtra("group_id",);
+                intent.putExtra("group_name",);
+                startActivity(intent);
+                finish();*/
             }
         });
         addButton = (ImageButton) findViewById(R.id.imageButton);
