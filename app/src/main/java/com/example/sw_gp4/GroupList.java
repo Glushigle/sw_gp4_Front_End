@@ -89,14 +89,14 @@ public class GroupList extends AppCompatActivity {
                 "    {\"group_id\": 4, \"info\": \"\", \"name\": \"北京大学珍珠奶茶研究社\", \"owner_id\": 3}],\n" +
                 "    \"valid\": true}";*/
         try {
-            String response = Requester.get("https://222.29.159.164:10016/get_grouplist", keys, values);
+            String response = Requester.get(R.string.server_uri+"get_grouplist", keys, values);
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
             group_ = new ArrayList<Group>();
             for(int i=0; i<groups.length(); ++i){
                 String[] keys2 = {"group_id"};
                 String[] values2 = {(String)groups.getJSONObject(i).getString("group_id")};
-                String response2 = Requester.post("https://222.29.159.164:10016/get_group_task", keys2, values2);
+                String response2 = Requester.post(R.string.server_uri+"get_group_task", keys2, values2);
                     JSONObject responseObj2 = new JSONObject(response2);
                     JSONArray tasks = (JSONArray) responseObj2.getJSONArray("task list");
                     if(!tasks.isNull(0)) //todo:允许无任务
@@ -203,7 +203,7 @@ public class GroupList extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String[] keys = {"group_id"};
                         String[] values = {group_.get(position).group_id};
-                        String response = Requester.post("https://222.29.159.164:10016/delete_group", keys, values);
+                        String response = Requester.post(R.string.server_uri+"delete_group", keys, values);
                         try {
                             JSONObject responseObj = new JSONObject(response);
                             boolean valid = responseObj.getBoolean("valid");

@@ -317,11 +317,10 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     }
     public void onEditClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onEditClick");
-        /*DDLText ddl = adapter.getData(position);
-        Intent intent = new Intent(this,editDDL.class);
-        intent.putExtra("title",ddl.title);
-        intent.putExtra("description",ddl.description);
-        startActivityForResult(intent,0);*/
+        DDLText ddl = adapter.getData(position);
+        Intent intent = new Intent(this, WriteDDL.class);
+        intent.putExtra("task_id", ddl.ddl_id);
+        startActivityForResult(intent,0);
     }/*
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == RESULT_OK) {
