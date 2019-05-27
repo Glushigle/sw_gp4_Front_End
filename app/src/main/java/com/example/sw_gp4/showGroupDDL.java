@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import java.util.List;
 public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.slideViewClickListener {
     private boolean isChangeable = false;
     private String groupId = null;//todo: 前一页（GroupList）传入group id和name
+    private String groupName = null;
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -83,8 +85,30 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //获取小组信息（id、name）
         Intent intent = getIntent();
-        String groupName = intent.getStringExtra("group_name");
+        groupName = intent.getStringExtra("group_name");
         groupId = intent.getStringExtra("group_id");
+        //判定权限
+        String full_url = "https://222.29.159.164:10007/check_ownership";
+        String[] keys = {"group_id"};
+        String[] values = {groupId};
+        String response = Requester.get(full_url,keys,values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if (valid) {
+                isChangeable = true;
+            }
+            else {
+                isChangeable = false;
+            }
+        } catch(JSONException e) {
+            Toast.makeText(this, "bug in onCreate()", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        if (!isChangeable) {//组员身份时，添加按钮不可见
+            ImageButton addBtn = findViewById(R.id.groupddlAddBtn);
+            addBtn.setVisibility(View.GONE);
+        }
         //设置顶部标题栏
         Calendar cal = Calendar.getInstance();
         final int initYear = cal.get(Calendar.YEAR);
@@ -110,24 +134,6 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         Toolbar toolbar = findViewById(R.id.groupddlTbar);
         toolbar.setTitle(groupName);
         setSupportActionBar(toolbar);
-        //判定权限
-        String full_url = "https://222.29.159.164:10007/check_ownership";
-        String[] keys = {"group_id"};
-        String[] values = {groupId};
-        String response = Requester.get(full_url,keys,values);
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if (valid) {
-                isChangeable = true;
-            }
-            else {
-                isChangeable = false;
-            }
-        } catch(JSONException e) {
-            Toast.makeText(this, "bug in onCreate()", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
         //显示DDL内容
         show_ddl_view(initYear,initMonth,isChangeable);
     }
@@ -357,6 +363,11 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
     }
     public void onClickMemBtn(View view) {//todo: 跳转至小组成员页
         //跳到成员页
+//        Intent intent = new Intent(this,group_member.class);
+//        intent.putExtra("group_id",groupId);
+//        intent.putExtra("group_name",groupName);
+//        startActivity(intent);
+//        finish();
     }
     public void onClickCloseBtn(View view) {
         //关闭此页，返回列表页
