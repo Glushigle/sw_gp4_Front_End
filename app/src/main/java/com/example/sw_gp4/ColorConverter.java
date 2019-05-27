@@ -5,7 +5,7 @@ import android.graphics.Color;
 import java.util.Random;
 
 public class ColorConverter {
-    public static int id2color(int id){
+    public static int fromId(int id){
         final int A = 201;
         final int B = 237;
             /* RGB: 1个255; 1个178; 1个178<x<255
@@ -22,10 +22,10 @@ public class ColorConverter {
 
         return Color.argb(255, RGB[0], RGB[1], RGB[2]);
     }
-    public static int id2color(String id_str){
-        return id2color(Integer.parseInt(id_str));
+    public static int fromId(String id_str){
+        return fromId(Integer.parseInt(id_str));
     }
-    public static int username2color(String username){
+    public static int fromName(String username){
         int fake_id = 0;
         Random random = new Random();
         for(char c:username.toCharArray()){
@@ -35,6 +35,6 @@ public class ColorConverter {
                 fake_id += (random.nextInt(127));
             }
         }
-        return id2color(fake_id);
+        return fromId(fake_id);
     }
 }

@@ -44,13 +44,6 @@ public class GroupList extends AppCompatActivity {
     private Context mContext=this;
     private ImageButton addButton;
 
-    private int colors[] = { // TODO 色卡
-            R.color.gp_1,
-            R.color.gp_2,
-            R.color.gp_3,
-            R.color.gp_4,
-            R.color.gp_5};
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -113,7 +106,7 @@ public class GroupList extends AppCompatActivity {
                                                 //todo: get "whether it is a request"
                                           
                                                 (String) groups.getJSONObject(i).getString("info"),
-                                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length],
+                                                ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
                                                 new DDLForGroup
                                                         (
                                                                 tasks.getJSONObject(0).getString("finish_time"),
@@ -132,7 +125,7 @@ public class GroupList extends AppCompatActivity {
                                                 (String) groups.getJSONObject(i).getString("name"),
                                                 (String) groups.getJSONObject(i).getString("owner_id"),
                                                 (String) groups.getJSONObject(i).getString("info"),
-                                                colors[(groups.getJSONObject(i).getInt("group_id")-1)%colors.length],
+                                                ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
                                                 null
                                         )
 
