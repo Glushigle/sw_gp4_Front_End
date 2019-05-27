@@ -84,7 +84,7 @@ public class WriteDDL extends AppCompatActivity {
                     formattedDDL(),
                     fetchInput(R.id.ddl_info)
             };
-            String response = Requester.post(R.string.server_uri+"create_task",keys,values);
+            String response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
 
             try{
                 JSONObject responseObj = new JSONObject(response);
@@ -172,7 +172,7 @@ public class WriteDDL extends AppCompatActivity {
             //get timeSet from backend
             String[] keys = {"task_id"};
             String[] values = {task_id};
-            String response = Requester.post(R.string.server_uri+"get_task",keys,values);
+            String response = Requester.post(getResources().getString(R.string.server_uri)+"get_task",keys,values);
             try{
                 JSONObject responseObj = new JSONObject(response);
                 boolean valid = responseObj.getBoolean("valid");
