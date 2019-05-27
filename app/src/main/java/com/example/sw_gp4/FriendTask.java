@@ -2,6 +2,11 @@ package com.example.sw_gp4;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.SweepGradient;
+import android.graphics.drawable.RotateDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -11,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -51,12 +57,14 @@ public class FriendTask extends AppCompatActivity {
         public final int[] finish_time; //{2019,5,20,13,0,0}
         public final boolean status;
         public final String info;
+        public final int color;
         public Task(String id, String  title, String finish_time, boolean status, String info){
             this.id = id;
             this.title = title;
             this.finish_time = timeParser(finish_time);
             this.status = status;
             this.info = info;
+            this.color = computeColor(id);
         }
         private int[] timeParser(String finish_time){
             String [] dt = finish_time.split(" ");  //"2019-05-20 13:00:00"
@@ -65,6 +73,24 @@ public class FriendTask extends AppCompatActivity {
             int[] rtn = {Integer.valueOf(d[0]),Integer.valueOf(d[1]),Integer.valueOf(d[2]),
                          Integer.valueOf(t[0]),Integer.valueOf(t[1]),Integer.valueOf(t[2])};
             return rtn;
+        }
+        private int computeColor(String idstr){
+            final int A = 201;
+            final int B = 237;
+            /* RGB: 1个255; 1个178; 1个178<x<255
+            =>  id%3 得255的位置,
+                id%2 得剩下2个位置里178的前后
+                id/6%77 map进[178, 255]间
+            */
+            int id = Integer.parseInt(idstr);
+            int[] RGB = {-1,-1,-1};
+
+            RGB[id%3] = B;
+            if(RGB[id%2]<0) RGB[id%2] = A;
+            else RGB[id%2+1] = A;
+            for(int i=0; i<3; ++i){ if(RGB[i]<0) RGB[i] = A+(id/6)%(B-A); }
+
+            return Color.argb(255, RGB[0], RGB[1], RGB[2]);
         }
     }
 
@@ -100,7 +126,7 @@ public class FriendTask extends AppCompatActivity {
                         task.getString("task_id"),
                         task.getString("title"),
                         task.getString("finish_time"),
-                        task.getBoolean("status"),
+                        Boolean.valueOf(task.getString("status")),
                         task.getString("info")));
             }
         } catch (JSONException e) {
@@ -135,10 +161,12 @@ public class FriendTask extends AppCompatActivity {
     };
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private int convertProgress(String rawPercentage){
-        int percent = Integer.parseInt(rawPercentage.replaceAll("[^\\d]", ""));
-        ProgressBar bar = (ProgressBar)findViewById(R.id.progress);
-        return bar.getMin() + (bar.getMax() - bar.getMin()) * (percent / 100);
+    private void setProgress(ProgressBar bar, String rawPercentage){
+        float percent = (float) (Float.parseFloat(rawPercentage.replaceAll("[^\\d]", ""))/100.0);
+        float degree = -90+360*percent;
+        RotateDrawable rd = ((RotateDrawable)getDrawable(R.drawable.progressbar_custom));
+        rd.setFromDegrees(degree);
+        rd.setToDegrees(degree);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -180,11 +208,10 @@ public class FriendTask extends AppCompatActivity {
         */
         this.friend = new Friend(1,R.color.gp_4,"Kate","75%");
         // Update this friends' panel
-        ((TextView)findViewById(R.id.rank)).setText(String.valueOf(this.friend.rank));
+        ((TextView)findViewById(R.id.rank)).setText("第"+String.valueOf(this.friend.rank)+"名");
         ((TextView)findViewById(R.id.name)).setText(this.friend.username);
-        ((ImageView)findViewById(R.id.friend_color)).setBackgroundColor(getResources().getColor(this.friend.color));
         ((TextView)findViewById(R.id.percent)).setText(this.friend.percentage);
-        ((ProgressBar)findViewById(R.id.progress)).setProgress(convertProgress(this.friend.percentage), false);
+        setProgress((ProgressBar)findViewById(R.id.progress), this.friend.percentage);
 
 
 

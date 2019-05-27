@@ -6,6 +6,104 @@
     android:layout_height="match_parent"
     tools:context=".FriendTask">
 
+    <FrameLayout
+        android:id="@+id/friend_panel"
+        android:layout_width="0dp"
+        android:layout_height="135dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gp_2"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:indeterminateDrawable="@drawable/progressbar_custom" />
+
+            <LinearLayout
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="Kate"
+                    android:textAlignment="2"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/rank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|center_vertical"
+                    android:text="第3名"
+                    android:textAlignment="2"
+                    android:textColor="@android:color/white"
+                    android:alpha="0.7"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/percent"
+                android:layout_width="40dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center_vertical"
+                android:text="95%"
+                android:textAlignment="3"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="395dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="120dp"
+        app:layout_constraintTop_toBottomOf="@id/friend_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/friend_tasks"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintVertical_bias="1.0" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
@@ -17,77 +115,4 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/navigation" />
 
-
-    <LinearLayout
-        android:id="@+id/content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:indeterminateDrawable="@drawable/progressbar_custom" />
-
-        <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="40dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:text="Kate"
-                android:textAlignment="2" />
-
-            <TextView
-                android:id="@+id/rank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top|center_vertical"
-                android:text="Rank 3"
-                android:textAlignment="2"
-                android:textColor="@android:color/darker_gray" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/percent"
-            android:layout_width="40dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="40dp"
-            android:gravity="center_vertical"
-            android:text="95%"
-            android:textAlignment="3" />
-    </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/friend_tasks"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content"
-        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

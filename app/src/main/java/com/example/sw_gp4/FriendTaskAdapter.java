@@ -32,16 +32,18 @@ public class FriendTaskAdapter extends RecyclerView.Adapter<FriendTaskAdapter.Ft
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class FtViewHolder extends RecyclerView.ViewHolder {
-        public TextView frank;
-        public ImageButton fcolor;
-        public TextView fname;
-        public TextView fpercent;
+        public TextView month;
+        public TextView day;
+        public View divider;
+        public TextView title;
+        public TextView info;
         public FtViewHolder(View v) {
             super(v);
-            frank = (TextView) v.findViewById(R.id.friend_rank);
-            fcolor = (ImageButton) v.findViewById(R.id.friend_color);
-            fname = (TextView) v.findViewById(R.id.friend_name);
-            fpercent = (TextView) v.findViewById(R.id.friend_percent);
+            month = (TextView) v.findViewById(R.id.tasklist_month);
+            day = (TextView) v.findViewById(R.id.tasklist_day);
+            divider = (View) v.findViewById(R.id.tasklist_divider);
+            title = (TextView) v.findViewById(R.id.tasklist_title);
+            info = (TextView) v.findViewById(R.id.tasklist_info);
         }
     }
 
@@ -60,7 +62,7 @@ public class FriendTaskAdapter extends RecyclerView.Adapter<FriendTaskAdapter.Ft
     @Override
     public FriendTaskAdapter.FtViewHolder onCreateViewHolder(ViewGroup parent, int viewType)  {
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ranking_item, parent, false);
+                .inflate(R.layout.friendtask_item, parent, false);
         FtViewHolder vh = new FtViewHolder(v);
         return vh;
     }
@@ -70,11 +72,16 @@ public class FriendTaskAdapter extends RecyclerView.Adapter<FriendTaskAdapter.Ft
     public void onBindViewHolder(FtViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.frank.setText(Integer.toString(position+1));
-        //((GradientDrawable) holder.fcolor.getBackground()).setColor(
-         //       ContextCompat.getColor(mContext, friend_colors.get(position)));
-        //holder.fname.setText(friend_names.get(position));
-        //holder.fpercent.setText(friend_percents.get(position)+"%");
+        FriendTask.Task task =  tasks.get(position);
+        holder.month.setText(String.valueOf(task.finish_time[1])+"月");
+        holder.day.setText(String.valueOf(task.finish_time[2]));
+        holder.divider.setBackgroundColor(task.color);
+        holder.title.setText(task.title);
+        holder.info.setText(task.info);
+
+        if(task.status){    //done
+
+        }
     }
 
     @Override
