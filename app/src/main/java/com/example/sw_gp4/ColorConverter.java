@@ -5,16 +5,15 @@ import android.graphics.Color;
 import java.util.Random;
 
 public class ColorConverter {
+    static final int A = 201;
+    static final int B = 237;
+    /* RGB: 1个B; 1个A; 1个A<x<B
+    =>  id%3 得B的位置,
+        id%2 得剩下2个位置里A的前后
+        id/6%77 map进[A, B]间
+    */
     public static int fromId(int id){
-        final int A = 201;
-        final int B = 237;
-            /* RGB: 1个255; 1个178; 1个178<x<255
-            =>  id%3 得255的位置,
-                id%2 得剩下2个位置里178的前后
-                id/6%77 map进[178, 255]间
-            */
         int[] RGB = {-1,-1,-1};
-
         RGB[id%3] = B;
         if(RGB[id%2]<0) RGB[id%2] = A;
         else RGB[id%2+1] = A;
@@ -30,7 +29,7 @@ public class ColorConverter {
         Random random = new Random();
         for(char c:username.toCharArray()){
             try{
-                fake_id += ((int)c)*19;
+                fake_id += ((int)c)*193;
             } catch (Exception e) {
                 fake_id += (random.nextInt(127));
             }

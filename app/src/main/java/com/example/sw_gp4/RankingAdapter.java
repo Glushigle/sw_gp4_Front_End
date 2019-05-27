@@ -75,8 +75,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.frank.setText(Integer.toString(position+1));
-        ((GradientDrawable) holder.fcolor.getBackground()).setColor(
-                ContextCompat.getColor(mContext, friend_colors.get(position)));
+        ((GradientDrawable) holder.fcolor.getBackground()).setColor(friend_colors.get(position));
         holder.fname.setText(friend_names.get(position));
         holder.fpercent.setText(friend_percents.get(position)+"%");
     }

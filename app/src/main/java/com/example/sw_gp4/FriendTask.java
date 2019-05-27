@@ -64,7 +64,7 @@ public class FriendTask extends AppCompatActivity {
             this.finish_time = timeParser(finish_time);
             this.status = status;
             this.info = info;
-            this.color = ColorConverter.id2color(id);
+            this.color = ColorConverter.fromId(id);
         }
         private int[] timeParser(String finish_time){
             String [] dt = finish_time.split(" ");  //"2019-05-20 13:00:00"

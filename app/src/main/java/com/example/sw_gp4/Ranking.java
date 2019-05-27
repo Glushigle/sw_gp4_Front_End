@@ -50,11 +50,7 @@ public class Ranking extends AppCompatActivity {
                  {"id":"n", "name":"Name n", "percent":"0"}]
             }
         */
-        int colors[] = {R.color.gp_1,
-                R.color.gp_2,
-                R.color.gp_3,
-                R.color.gp_4,
-                R.color.gp_5};
+
         // TODO: programmatically get response
         //String[] keys = {"username"};
         //String[] values = {"user1"};
@@ -79,7 +75,7 @@ public class Ranking extends AppCompatActivity {
                 friend_ids.add((String) groups.getJSONObject(i).getString("id"));
                 friend_names.add((String) groups.getJSONObject(i).getString("name"));
                 friend_percents.add((String) groups.getJSONObject(i).getString("percent"));
-                friend_colors.add(colors[i%colors.length]);
+                friend_colors.add(ColorConverter.fromName(friend_names.get(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -113,8 +109,7 @@ public class Ranking extends AppCompatActivity {
     };
 
     private void setMyRank(){
-        ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(
-                ContextCompat.getColor(mContext, friend_colors.get(my_rank-1)));
+        ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(friend_colors.get(my_rank-1));
         ((TextView)findViewById(R.id.my_name)).setText(friend_names.get(my_rank-1));
         ((TextView)findViewById(R.id.my_rank)).setText("Rank "+Integer.toString(my_rank));
         ((TextView)findViewById(R.id.my_percent)).setText(friend_percents.get(my_rank-1)+"%");
