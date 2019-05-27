@@ -20,9 +20,9 @@
         </activity>
         <activity android:name=".showGroupDDL"></activity>
         <activity android:name=".registation" />
-        <activity android:name=".WriteDDL" />
+        <activity android:name=".WriteDDL">
+        </activity>
         <activity android:name=".Ranking">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
