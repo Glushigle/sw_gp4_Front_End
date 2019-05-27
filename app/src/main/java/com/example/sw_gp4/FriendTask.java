@@ -85,11 +85,6 @@ public class FriendTask extends AppCompatActivity {
                  {"task_id":"3", "title":"Title 3", "finish_time":"2019-05-22 14:00:00", "status":"1", "info":"Info 3"}]
             }
         */
-        int colors[] = {R.color.gp_1,
-                R.color.gp_2,
-                R.color.gp_3,
-                R.color.gp_4,
-                R.color.gp_5};
         //String[] keys = {"friend_username"};
         //String[] values = {this.friend.username};
         //String response = PostRequester.request("full_url", keys, values);
@@ -163,7 +158,7 @@ public class FriendTask extends AppCompatActivity {
 
 
         // Get this friend's info
-        /*
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -187,12 +182,13 @@ public class FriendTask extends AppCompatActivity {
                 this.friend = null;
             }
         }
-        */
-        this.friend = new Friend(1,R.color.gp_4,"Kate","75%");
+
+        //this.friend = new Friend(1,0,"Kate","75%");
         // Update this friends' panel
+        ((ImageView)findViewById(R.id.friend_color)).setBackgroundColor(this.friend.color);
         ((TextView)findViewById(R.id.rank)).setText("第"+String.valueOf(this.friend.rank)+"名");
         ((TextView)findViewById(R.id.name)).setText(this.friend.username);
-        ((TextView)findViewById(R.id.percent)).setText(this.friend.percentage);
+        ((TextView)findViewById(R.id.percent)).setText(this.friend.percentage+"%");
         setProgress((ProgressBar)findViewById(R.id.progress), this.friend.percentage);
 
 

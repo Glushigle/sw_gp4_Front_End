@@ -152,7 +152,7 @@ public class WriteDDL extends AppCompatActivity {
         ((ImageButton)findViewById(R.id.btn_cross)).setOnClickListener(mOnCrossClickedListener);
         ((Button)findViewById(R.id.btn_save)).setOnClickListener(mOnSaveClickedListener);
 
-        // Get whether it's create/edit
+        // Get 1) it's create/edit  2) whether it's a group ddl
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {

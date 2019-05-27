@@ -14,6 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
+            android:id="@+id/friend_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/gp_2"/>
@@ -47,18 +48,18 @@
                     android:gravity="bottom"
                     android:text="Kate"
                     android:textAlignment="2"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/rank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:alpha="0.7"
                     android:gravity="top|center_vertical"
                     android:text="第3名"
                     android:textAlignment="2"
-                    android:textColor="@android:color/white"
-                    android:alpha="0.7"/>
+                    android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
 
             <TextView
@@ -69,7 +70,7 @@
                 android:gravity="center_vertical"
                 android:text="95%"
                 android:textAlignment="3"
-                android:textColor="@android:color/white"/>
+                android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
 
     </FrameLayout>
