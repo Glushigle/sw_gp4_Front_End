@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".registation"></activity>
+        <activity android:name=".showGroupDDL"></activity>
+        <activity android:name=".registation" />
         <activity android:name=".WriteDDL" />
         <activity android:name=".Ranking" />
         <activity android:name=".MainActivity">
