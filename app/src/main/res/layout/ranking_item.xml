@@ -43,4 +43,20 @@
         android:gravity="right|center_vertical"
         android:text="95%"
         android:textAlignment="3" />
+
+    <Button
+        android:id="@+id/btn_deny"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_deny"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_accept"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/ic_accept"
+        android:visibility="gone" />
+
 </LinearLayout>

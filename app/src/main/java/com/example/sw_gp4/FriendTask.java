@@ -44,6 +44,7 @@ public class FriendTask extends AppCompatActivity {
         public int color;
         public String username;
         public String percentage;
+        public boolean invitation;
         public Friend(int rank, int color, String username, String percentage){
             this.rank = rank;
             this.color = color;

@@ -54,7 +54,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
     }
 
     private void markInvitation(View convertView){
-        convertView.findViewById(R.id.group_text).setAlpha((float)0.5);//.setBackgroundColor(bg_color);
+        convertView.findViewById(R.id.group_text).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
 
         ((Button)convertView.findViewById(R.id.group_text)).setWidth(450);

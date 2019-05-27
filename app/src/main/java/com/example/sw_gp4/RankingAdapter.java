@@ -31,7 +31,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
     private ArrayList<String> friend_names;
     private ArrayList<String> friend_percents;
     private ArrayList<Integer> friend_colors;
-    private static View.OnClickListener onItemClickListener;
 
 
     // Provide a reference to the views for each data item
@@ -43,6 +42,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
         public ImageButton fcolor;
         public TextView fname;
         public TextView fpercent;
+        public View convertView;
         public MyViewHolder(View v) {
             super(v);
             fitem = (LinearLayout) v.findViewById(R.id.ranking_item);
@@ -50,15 +50,39 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
             fcolor = (ImageButton) v.findViewById(R.id.friend_color);
             fname = (TextView) v.findViewById(R.id.friend_name);
             fpercent = (TextView) v.findViewById(R.id.friend_percent);
-
-            v.setTag(this);
-            v.setOnClickListener(onItemClickListener);
+            convertView = v;
         }
     }
-    public void setItemClickListener(View.OnClickListener clickListener) {
-        onItemClickListener = clickListener;
-    }
 
+    private void markInvitation(MyViewHolder holder){
+        holder.fname.setAlpha((float)0.5);
+        holder.fname.setWidth(200);
+        holder.fcolor.setAlpha((float)0.5);
+        holder.frank.setVisibility(View.INVISIBLE);
+        holder.fpercent.setVisibility(View.GONE);
+
+        View convertView = holder.convertView;
+        Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
+        Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);
+        btn_deny.setVisibility(View.VISIBLE);
+        btn_accept.setVisibility(View.VISIBLE);
+        btn_deny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "deny invitation", Toast.LENGTH_SHORT).show();
+                // todo deny group invitation request
+                // update ui
+            }
+        });
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "accept invitation", Toast.LENGTH_SHORT).show();
+                // todo accept group invitation request
+                //update ui
+            }
+        });
+    }
 
     public RankingAdapter(Context mContext, ArrayList<Integer> friend_colors, ArrayList<String> friend_names,
                           ArrayList<String> friend_percents) {
@@ -97,13 +121,16 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
                 intent.putExtra("friend_username", friend_names.get(position));
                 intent.putExtra("percentage", friend_percents.get(position));
                 mContext.startActivity(intent);
-                //mContext. // todo: can't finish QwQ
+                //mContext. // todo: can't finish another activity la QwQ
             }
         });
         holder.frank.setText(Integer.toString(position+1));
         ((GradientDrawable) holder.fcolor.getBackground()).setColor(friend_colors.get(position));
         holder.fname.setText(friend_names.get(position));
         holder.fpercent.setText(friend_percents.get(position)+"%");
+
+        //todo if(invitation)
+        markInvitation(holder);
     }
 
     @Override
