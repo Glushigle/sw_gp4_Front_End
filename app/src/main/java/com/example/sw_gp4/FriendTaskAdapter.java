@@ -26,7 +26,7 @@ import java.util.Collections;
 public class FriendTaskAdapter extends RecyclerView.Adapter<FriendTaskAdapter.FtViewHolder> {
 
     private Context mContext;
-    private ArrayList<FriendTask.Task> tasks;
+    private ArrayList<Task> tasks;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -47,13 +47,13 @@ public class FriendTaskAdapter extends RecyclerView.Adapter<FriendTaskAdapter.Ft
         }
     }
 
-    public FriendTaskAdapter(Context mContext, ArrayList<FriendTask.Task> tasks) {
+    public FriendTaskAdapter(Context mContext, ArrayList<Task> tasks) {
         super();
         this.mContext = mContext;
         resetData(tasks);
     }
 
-    public void resetData( ArrayList<FriendTask.Task> tasks){
+    public void resetData( ArrayList<Task> tasks){
         this.tasks = tasks;
         notifyDataSetChanged();
     }
@@ -72,7 +72,7 @@ public class FriendTaskAdapter extends RecyclerView.Adapter<FriendTaskAdapter.Ft
     public void onBindViewHolder(FtViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        FriendTask.Task task =  tasks.get(position);
+        Task task =  tasks.get(position);
         holder.month.setText(String.valueOf(task.finish_time[1])+"月");
         holder.day.setText(String.valueOf(task.finish_time[2]));
         holder.divider.setBackgroundColor(task.color);

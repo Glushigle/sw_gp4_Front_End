@@ -20,53 +20,70 @@
     <LinearLayout
         android:id="@+id/top_bar"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_cross"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="false"
-            android:background="@color/colorPrimaryDark"
-            android:cropToPadding="false"
-            android:padding="20dp"
-            android:scaleType="fitCenter"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_cross" />
-
-        <ImageView
-            android:id="@+id/top_padding"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="visible"
-            app:srcCompat="@color/colorPrimaryDark" />
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/btn_cross"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="false"
+                android:background="@color/colorPrimaryDark"
+                android:cropToPadding="false"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_cross" />
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="230dp"
-            android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="false"
+            <ImageView
+                android:id="@+id/top_padding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible"
+                app:srcCompat="@color/colorPrimaryDark" />
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="230dp"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="false"
+                android:background="@color/colorPrimaryDark"
+                android:cropToPadding="false"
+                android:paddingLeft="10dp"
+                android:paddingRight="17dp"
+                android:scaleType="fitCenter"
+                android:text="SAVE"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_ddl_save" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
-            android:cropToPadding="false"
-            android:paddingLeft="10dp"
-            android:paddingRight="17dp"
-            android:scaleType="fitCenter"
-            android:text="SAVE"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_ddl_save" />
-
+            android:paddingLeft="25dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="Group Name 1"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

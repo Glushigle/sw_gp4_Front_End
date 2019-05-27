@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.sw_gp4.FriendTask.Task;
 
 import org.json.JSONObject;
 
@@ -27,8 +30,12 @@ import java.util.Locale;
 
 public class WriteDDL extends AppCompatActivity {
 
-    private boolean existing;
-    private String task_id;
+    private boolean existing;   // cf created
+    private boolean personal;   // cf group
+    //private String task_id;
+    private String group_id;
+    private String group_name;
+    private Task task;
 
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -77,14 +84,32 @@ public class WriteDDL extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            // Todo: check with api and send "make public" as well
-            String[] keys = {"title","deadline","info"};
-            String[] values = {
-                    fetchInput(R.id.ddl_title),
-                    formattedDDL(),
-                    fetchInput(R.id.ddl_info)
-            };
-            String response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
+            String response = null;
+
+            // Save New Personal DDL
+            if(((WriteDDL)mContext).personal){
+                String[] keys = {"title","deadline","info","publicity"};
+                String[] values = {
+                        fetchInput(R.id.ddl_title),
+                        formattedDDL(),
+                        fetchInput(R.id.ddl_info),
+                        ((Switch)findViewById(R.id.ddl_reminder_switch)).isChecked()? "1":"0"
+                };
+                response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
+            }
+
+            // Save New Group DDL
+            else{
+                String[] keys = {"title","deadline","info","publicity", "group_id"};
+                String[] values = {
+                        fetchInput(R.id.ddl_title),
+                        formattedDDL(),
+                        fetchInput(R.id.ddl_info),
+                        ((Switch)findViewById(R.id.ddl_reminder_switch)).isChecked()? "1":"0",
+                        ((WriteDDL)mContext).group_id
+                };
+                response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
+            }
 
             try{
                 JSONObject responseObj = new JSONObject(response);
@@ -156,31 +181,46 @@ public class WriteDDL extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                this.task_id = null;
+                this.task.id = null;
+                this.group_id = null;
+                this.group_name = null;
             } else {
-                this.task_id = extras.getString("task_id");
+                this.task.id = extras.getString("task_id");
+                this.group_id = extras.getString("group_id");
+                this.group_name = extras.getString("group_name");
             }
         } else {
-            this.task_id = (String) savedInstanceState.getSerializable("task_id");
+            this.task.id = (String) savedInstanceState.getSerializable("task_id");
+            this.group_id = (String) savedInstanceState.getSerializable("group_id");
+            this.group_name = (String) savedInstanceState.getSerializable("group_name");
         }
-        this.existing = (this.task_id != null);
+        this.existing = (this.task.id != null);
+        this.personal = (this.group_id == null);
 
         // Date/time picker initial value
         final TextView ddl_date = findViewById(R.id.ddl_date);
         final TextView ddl_time = findViewById(R.id.ddl_time);
         if(this.existing){
-            //get timeSet from backend
+            //get timeSet from backend. Same for personal/group-wise
             String[] keys = {"task_id"};
-            String[] values = {task_id};
+            String[] values = {task.id};
             String response = Requester.post(getResources().getString(R.string.server_uri)+"get_task",keys,values);
             try{
                 JSONObject responseObj = new JSONObject(response);
                 boolean valid = responseObj.getBoolean("valid");
                 if(valid){
-                    Toast.makeText(mContext, "DDL saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "DDL received", Toast.LENGTH_SHORT).show();
+                    JSONObject taskObj = responseObj.getJSONObject("task");
+                    // todo: check api with backend
+                    this.task = new Task(
+                            taskObj.getString("task_id"),
+                            taskObj.getString("title"),
+                            taskObj.getString("finish_time"),
+                            Boolean.valueOf(taskObj.getString("status")),
+                            taskObj.getString("info"));
                 }
                 else{
-                    Toast.makeText(mContext, "Invalid DDL!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "get_task: Invalid DDL!", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -215,6 +255,13 @@ public class WriteDDL extends AppCompatActivity {
                 },timeSet[3],timeSet[4],false).show();
             }
         });
+
+        // Group task: tune layout
+        if(!this.personal){
+            TextView groupname_view = findViewById(R.id.group_name);
+            groupname_view.setText(this.group_name);
+            groupname_view.setVisibility(View.VISIBLE);
+        }
 
     }
 }
