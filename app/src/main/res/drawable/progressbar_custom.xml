@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/progress_drawable"
+    android:duration="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:fromDegrees="220"
+    android:toDegrees="220" >
+
+    <shape
+        android:innerRadius="18dp"
+        android:shape="ring"
+        android:thickness="5dp"
+        android:useLevel="false" >
+        <size
+            android:height="60dp"
+            android:width="60dp" />
+
+        <gradient
+            android:id="@+id/progress_gradient"
+            android:endColor="#ff2A67AD"
+            android:startColor="#ffffff"
+            android:centerY="0.5"
+            android:type="sweep"
+            android:useLevel="false" />
+    </shape>
+
+</rotate>

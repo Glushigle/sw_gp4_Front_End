@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:paddingLeft="10dp"
+    android:paddingTop="7dp"
     android:paddingRight="10dp"
-    android:paddingTop="15dp">
+    android:paddingBottom="8dp">
 
     <TextView
         android:id="@+id/friend_rank"
@@ -31,6 +32,7 @@
         android:gravity="center_vertical"
         android:text="朋友"
         android:textAlignment="2" />
+
     <TextView
         android:id="@+id/friend_percent"
         android:layout_width="40dp"
