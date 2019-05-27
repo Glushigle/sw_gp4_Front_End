@@ -64,7 +64,7 @@ public class FriendTask extends AppCompatActivity {
             this.finish_time = timeParser(finish_time);
             this.status = status;
             this.info = info;
-            this.color = computeColor(id);
+            this.color = ColorConverter.id2color(id);
         }
         private int[] timeParser(String finish_time){
             String [] dt = finish_time.split(" ");  //"2019-05-20 13:00:00"
@@ -73,24 +73,6 @@ public class FriendTask extends AppCompatActivity {
             int[] rtn = {Integer.valueOf(d[0]),Integer.valueOf(d[1]),Integer.valueOf(d[2]),
                          Integer.valueOf(t[0]),Integer.valueOf(t[1]),Integer.valueOf(t[2])};
             return rtn;
-        }
-        private int computeColor(String idstr){
-            final int A = 201;
-            final int B = 237;
-            /* RGB: 1个255; 1个178; 1个178<x<255
-            =>  id%3 得255的位置,
-                id%2 得剩下2个位置里178的前后
-                id/6%77 map进[178, 255]间
-            */
-            int id = Integer.parseInt(idstr);
-            int[] RGB = {-1,-1,-1};
-
-            RGB[id%3] = B;
-            if(RGB[id%2]<0) RGB[id%2] = A;
-            else RGB[id%2+1] = A;
-            for(int i=0; i<3; ++i){ if(RGB[i]<0) RGB[i] = A+(id/6)%(B-A); }
-
-            return Color.argb(255, RGB[0], RGB[1], RGB[2]);
         }
     }
 
