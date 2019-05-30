@@ -1,11 +1,11 @@
 # sw_gp4_Front_End
 
 内容：
-* [ColorConverter用法](#colorconverter用法)
+* [ColorConverter用法](#colorconverter)
 * [Requester用法](#requester用法)
 * [如何加上Navigator](#加上navigator)
 
-## ColorConverter用法
+## ColorConverter
 ```
 int id_int = 100;
 int color = ColorConverter.fromId(id_int);
