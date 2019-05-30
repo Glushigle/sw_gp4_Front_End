@@ -1,8 +1,21 @@
 # sw_gp4_Front_End
 
 内容：
+* [ColorConverter用法](#color_converter用法)
 * [Requester用法](#requester用法)
 * [如何加上Navigator](#加上navigator)
+
+## ColorConverter用法
+```
+int id_int = 100;
+int color = ColorConverter.fromId(id_int);
+
+String id_str = "100";
+int color = ColorConverter.fromId(id_str);
+
+String name = "Some name";
+int color = ColorConverter.fromName(name);
+```
 
 ## Requester用法
 ```
