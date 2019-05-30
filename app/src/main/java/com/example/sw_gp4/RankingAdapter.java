@@ -70,7 +70,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "deny invitation", Toast.LENGTH_SHORT).show();
-                // todo deny group invitation request
+                // todo deny invitation request
                 // update ui
             }
         });
@@ -78,7 +78,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "accept invitation", Toast.LENGTH_SHORT).show();
-                // todo accept group invitation request
+                // todo accept invitation request
                 //update ui
             }
         });

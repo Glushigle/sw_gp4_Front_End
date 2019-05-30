@@ -63,8 +63,6 @@ public class ListViewAdapterForTargetGroup extends BaseSwipeAdapter {
         ((GradientDrawable) color_button.getBackground()).setColor(
                 ContextCompat.getColor(mContext,colors[position%num_colors]));
         text_button.setText(TargetGroup.userNames.get(position));
-
-        // TODO: where do the buttons lead to?
     }
 
     @Override
