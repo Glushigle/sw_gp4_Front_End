@@ -1,7 +1,7 @@
 # sw_gp4_Front_End
 
 内容：
-* [ColorConverter用法](#color_converter用法)
+* [ColorConverter用法](#colorconverter用法)
 * [Requester用法](#requester用法)
 * [如何加上Navigator](#加上navigator)
 
