@@ -6,7 +6,7 @@
 * [如何加上Navigator](#加上navigator)
 
 ## ColorConverter
-```
+```java
 int id_int = 100;
 int color = ColorConverter.fromId(id_int);
 
@@ -18,17 +18,17 @@ int color = ColorConverter.fromName(name);
 ```
 
 ## Requester用法
-```
+```java
 String full_url = "full_url";
 String[] keys = {"key1"};
 String[] values = {"value1"};
 ```
 * 寄'POST'
-```
+```java
 String response = Requester.post(full_url, keys, values);
 ```
 * 寄'GET'
-```
+```java
 String response = Requester.get(full_url, keys, values);
 ```
 ### 输入
@@ -69,7 +69,7 @@ try {
 
 ### 例子
 #### 登入
-```
+```java
 String full_url = "http://222.29.159.164:10006/login";
 String[] keys = {"username","password"};
 String[] values = {"Glushigle", "mima"};
@@ -78,7 +78,7 @@ String response = Requester.post(full_url, keys, values);
 
 ## 加上Navigator
 把activity_???.xml改成这个形式,就会有navigator
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
