@@ -83,7 +83,6 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         final int initMonth = cal.get(Calendar.MONTH);
         String initDate = String.format("%d年%d月",initYear,initMonth+1);
         final TextView tv_date = findViewById(R.id.showddlTvDate);
-        //tv_date.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         tv_date.setText(initDate);
         tv_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +99,6 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             }
         });
         Toolbar toolbar = findViewById(R.id.showddlTbar);
-        //toolbar.setTitle("我的Deadline");
         setSupportActionBar(toolbar);
 
         //显示DDL内容
@@ -138,18 +136,6 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                 add_ddl_view(li_parent,ddlofday.day,ddlofday.week,ddlofday.data);
             }
         }
-        /*String[] date = {"01","02","03"};
-        String[] week = {"Mon","Tue","Wed"};
-        DDLText ddl = new DDLText("12:00","My DDL","hello world",null);
-        List<DDLText> data = new ArrayList<>();
-        for (int i = 0; i < 8; ++i) {
-            data.add(ddl);
-        }
-        data.add(new DDLText("11:00","My DDL",null));
-        data.add(new DDLText("13:00","My DDL","my code works but why",null));
-        for (int i = 0; i < 3; ++i) {
-            add_ddl_view(li_parent,date[i],week[i],data);
-        }*/
     }
     private List<DDLOfDay> getDataOfDate(int year, int month) {
         Log.d("getdataofdate","in");
@@ -190,7 +176,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                         String time = deadline.substring(11,16);
                         String title = tmpObj.getString("title");
                         String description = tmpObj.getString("info");
-                        String status = null;//tmpObj.getString("status");
+                        String status = tmpObj.getString("status");
                         ddlofday.data.add(new DDLText(id,time,status,title,description));
                     }
                 }
@@ -228,7 +214,6 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         LinearLayout li_date = new LinearLayout(this);
         li_date.setOrientation(LinearLayout.VERTICAL);
         li_date.setLayoutParams(para1);
-        //li_date.setGravity(Gravity.CENTER_HORIZONTAL);
         li_date.setBackgroundColor(Color.rgb(255,255,255));
         LinearLayout.LayoutParams para2 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -263,8 +248,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         li_date_ddl.addView(re_ddl);
         li_parent.addView(li_date_ddl);//加入布局li_parent
     }
-    public void onClickAddBtn(View view) {
-        //切换到添加页
+    public void onClickAddBtn(View view) {//切换到添加页
         startActivity(new Intent(mContext, WriteDDL.class));
         finish();
     }
@@ -290,7 +274,24 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     }
     public void onItemClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onItemClick");
-        //return;
+        DDLText ddl = adapter.getData(position);
+        String full_url = "https://222.29.159.164:10007/finishtask";
+        String[] keys = {"task_id"};
+        String[] values = {ddl.ddl_id};
+        String response = Requester.post(full_url,keys,values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if (valid){
+                Toast.makeText(this, "已标记为完成", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, "标记失败", Toast.LENGTH_SHORT).show();
+            }
+        } catch(JSONException e) {
+            Toast.makeText(this, "bug in onItemClick()", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
     public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
@@ -319,12 +320,8 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         DDLText ddl = adapter.getData(position);
         Intent intent = new Intent(this, WriteDDL.class);
         intent.putExtra("task_id", ddl.ddl_id);
-        startActivityForResult(intent,0);
-    }/*
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 0 && resultCode == RESULT_OK) {
-            String title = data.getStringExtra("title");
-            String description = data.getStringExtra("description");
-        }
-    }*/
+        //startActivityForResult(intent,0);
+        startActivity(intent);
+        finish();
+    }
 }
