@@ -72,20 +72,44 @@ public class GroupList extends AppCompatActivity {
 
     private void updateData(){
 
-        String[] keys = {"username"};
-        String[] values = {currUserName};
+        group_ = new ArrayList<Group>();
+
+        // Invitation=Request
         try {
-            String response = Requester.get(getResources().getString(R.string.server_uri)+"get_grouplist", keys, values);
+            String[] keys = {};
+            String[] values = {};
+            String response = Requester.get(getResources().getString(R.string.server_uri)+"get_groupreq", keys, values);
             JSONObject responseObj = new JSONObject(response);
-            JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
-            group_ = new ArrayList<Group>();
+            JSONArray groups = (JSONArray) responseObj.getJSONArray("group invitations");
             for(int i=0; i<groups.length(); ++i){
                 group_.add(new Group(
                         (String) groups.getJSONObject(i).getString("group_id"),
                         (String) groups.getJSONObject(i).getString("name"),
                         (String) groups.getJSONObject(i).getString("info"),
                         ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
-                        null
+                        null,
+                        true
+                ));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Groups I'm already in
+        try {
+            String[] keys = {"username"};
+            String[] values = {currUserName};
+            String response = Requester.get(getResources().getString(R.string.server_uri)+"get_grouplist", keys, values);
+            JSONObject responseObj = new JSONObject(response);
+            JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
+            for(int i=0; i<groups.length(); ++i){
+                group_.add(new Group(
+                        (String) groups.getJSONObject(i).getString("group_id"),
+                        (String) groups.getJSONObject(i).getString("name"),
+                        (String) groups.getJSONObject(i).getString("info"),
+                        ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
+                        null,
+                        false
                 ));
                 //TODO  以下有Server returned non-OK status: 500，自己debug
                 /*String[] keys2 = {"group_id"};
@@ -130,12 +154,11 @@ public class GroupList extends AppCompatActivity {
                                 );
                     }*/
             }
-            mAdapter.resetData(group_);
-            mAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        mAdapter.resetData(group_);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

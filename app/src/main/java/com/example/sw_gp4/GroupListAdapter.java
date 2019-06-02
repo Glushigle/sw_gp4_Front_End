@@ -110,7 +110,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         //    ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
 
         //todo: Mark group invitation
-        //if(group.invitation)
+        if(group.invitation)
             markInvitation(convertView);
 
         // Delete

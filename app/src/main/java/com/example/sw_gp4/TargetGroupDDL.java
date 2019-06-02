@@ -94,7 +94,7 @@ public class TargetGroupDDL extends AppCompatActivity
                         (String) responseObj.getString("info"),
                         colors[(responseObj.getInt("group_id")-1)%colors.length],
                         //new DDLForGroup("13:00","Test 3")
-                        null
+                        null, false
                     );
                 }
             } catch (JSONException e) {
