@@ -29,7 +29,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
 
     private Context mContext;
     private ArrayList<String> friend_names;
-    private ArrayList<String> friend_percents;
     private ArrayList<Integer> friend_colors;
 
 
@@ -41,7 +40,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
         public TextView frank;
         public ImageButton fcolor;
         public TextView fname;
-        public TextView fpercent;
         public View convertView;
         public MyViewHolder(View v) {
             super(v);
@@ -49,7 +47,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
             frank = (TextView) v.findViewById(R.id.friend_rank);
             fcolor = (ImageButton) v.findViewById(R.id.friend_color);
             fname = (TextView) v.findViewById(R.id.friend_name);
-            fpercent = (TextView) v.findViewById(R.id.friend_percent);
             convertView = v;
         }
     }
@@ -59,7 +56,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
         holder.fname.setWidth(200);
         holder.fcolor.setAlpha((float)0.5);
         holder.frank.setVisibility(View.INVISIBLE);
-        holder.fpercent.setVisibility(View.GONE);
 
         View convertView = holder.convertView;
         Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
@@ -84,17 +80,15 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
         });
     }
 
-    public RankingAdapter(Context mContext, ArrayList<Integer> friend_colors, ArrayList<String> friend_names,
-                          ArrayList<String> friend_percents) {
+    public RankingAdapter(Context mContext, ArrayList<Integer> friend_colors, ArrayList<String> friend_names) {
         super();
         this.mContext = mContext;
-        resetData(friend_colors,friend_names,friend_percents);
+        resetData(friend_colors,friend_names);
     }
 
-    public void resetData( ArrayList<Integer> friend_colors, ArrayList<String> friend_names, ArrayList<String> friend_percents){
+    public void resetData( ArrayList<Integer> friend_colors, ArrayList<String> friend_names){
         this.friend_colors = friend_colors;
         this.friend_names = friend_names;
-        this.friend_percents = friend_percents;
         notifyDataSetChanged();
     }
 
@@ -119,7 +113,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
                 intent.putExtra("rank", position+1);
                 intent.putExtra("color", friend_colors.get(position));
                 intent.putExtra("friend_username", friend_names.get(position));
-                intent.putExtra("percentage", friend_percents.get(position));
                 mContext.startActivity(intent);
                 //mContext. // todo: can't finish another activity la QwQ
             }
@@ -127,10 +120,9 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
         holder.frank.setText(Integer.toString(position+1));
         ((GradientDrawable) holder.fcolor.getBackground()).setColor(friend_colors.get(position));
         holder.fname.setText(friend_names.get(position));
-        holder.fpercent.setText(friend_percents.get(position)+"%");
 
         //todo if(invitation)
-        markInvitation(holder);
+        //markInvitation(holder);
     }
 
     @Override

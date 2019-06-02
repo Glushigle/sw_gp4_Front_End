@@ -81,22 +81,20 @@ public class TargetGroupDDL extends AppCompatActivity
         {
             String[] keys = {"name"};
             String[] values = {"New Group"};
-            String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
+            String response = Requester.post(getResources().getString(R.string.server_uri)+"create_group", keys, values);
             try
             {
                 JSONObject responseObj = new JSONObject(response);
                 boolean valid = responseObj.getBoolean("valid");
                 if(valid){
-                    currGroup = (new Group
-                    (
-                            (String) responseObj.getString("group_id"),
-                            (String) responseObj.getString("name"),
-                            (String) responseObj.getString("owner_id"),
-                            (String) responseObj.getString("info"),
-                            colors[(responseObj.getInt("group_id")-1)%colors.length],
-                            //new DDLForGroup("13:00","Test 3")
-                            null
-                        )
+                    currGroup = new Group(
+                        (String) responseObj.getString("group_id"),
+                        (String) responseObj.getString("name"),
+                        //(String) responseObj.getString("owner_id"),
+                        (String) responseObj.getString("info"),
+                        colors[(responseObj.getInt("group_id")-1)%colors.length],
+                        //new DDLForGroup("13:00","Test 3")
+                        null
                     );
                 }
             } catch (JSONException e) {
@@ -104,7 +102,7 @@ public class TargetGroupDDL extends AppCompatActivity
             }
             //String[] keys2 = {"group_id","title","deadline"};
             //String[] values2 = {currGroup.group_id,"Test 2","2018-09-09 12:00"};
-            //String response2 = Requester.post("https://222.29.159.164:10016/create_group_task", keys2, values2);
+            //String response2 = Requester.post(getResources().getString(R.string.server_uri)+"create_group_task", keys2, values2);
         }
         else
         {
@@ -113,7 +111,7 @@ public class TargetGroupDDL extends AppCompatActivity
         //获取DDL列表
         String[] keys = {"group_id"};
         String[] values = {currGroup.group_id};
-        String response = Requester.post("https://222.29.159.164:10016/get_group_task", keys, values);
+        String response = Requester.get(getResources().getString(R.string.server_uri)+"get_group_task", keys, values);
         try
         {
             JSONObject responseObj = new JSONObject(response);

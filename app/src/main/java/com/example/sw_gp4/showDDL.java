@@ -153,7 +153,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     }
     private List<DDLOfDay> getDataOfDate(int year, int month) {
         Log.d("getdataofdate","in");
-        String full_url = "https://222.29.159.164:10007/get_tasklist";
+        String full_url = getResources().getString(R.string.server_uri)+"get_tasklist";
         String[] keys = {};
         String[] values = {};
         String response = Requester.get(full_url,keys,values);
@@ -203,7 +203,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                 return null;
             }
         } catch(JSONException e) {
-            Toast.makeText(this, "bug in getDataOfDate()", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "目前没有DDL～", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return null;
@@ -269,7 +269,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         finish();
     }
     public void onClickExitBtn(View view) {
-        String full_url = "https://222.29.159.164:10007/logout";
+        String full_url = getResources().getString(R.string.server_uri)+"logout";
         String[] keys = {};
         String[] values = {};
         String response = Requester.get(full_url, keys, values);
@@ -295,7 +295,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
         DDLText ddl = adapter.getData(position);
-        String full_url = "https://222.29.159.164:10007/deletetask";
+        String full_url = getResources().getString(R.string.server_uri)+"deletetask";
         String[] keys = {"task_id"};
         String[] values = {ddl.ddl_id};
         String response = Requester.post(full_url,keys,values);

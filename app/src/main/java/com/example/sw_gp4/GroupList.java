@@ -82,14 +82,14 @@ public class GroupList extends AppCompatActivity {
                 "    {\"group_id\": 4, \"info\": \"\", \"name\": \"北京大学珍珠奶茶研究社\", \"owner_id\": 3}],\n" +
                 "    \"valid\": true}";*/
         try {
-            String response = Requester.get(R.string.server_uri+"get_grouplist", keys, values);
+            String response = Requester.get(getResources().getString(R.string.server_uri)+"get_grouplist", keys, values);
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
             group_ = new ArrayList<Group>();
             for(int i=0; i<groups.length(); ++i){
                 String[] keys2 = {"group_id"};
                 String[] values2 = {(String)groups.getJSONObject(i).getString("group_id")};
-                String response2 = Requester.post(R.string.server_uri+"get_group_task", keys2, values2);
+                String response2 = Requester.get(getResources().getString(R.string.server_uri)+"get_group_task", keys2, values2);
                     JSONObject responseObj2 = new JSONObject(response2);
                     JSONArray tasks = (JSONArray) responseObj2.getJSONArray("task list");
                     if(!tasks.isNull(0)) //todo:允许无任务
@@ -99,12 +99,11 @@ public class GroupList extends AppCompatActivity {
                                         (
                                                 (String) groups.getJSONObject(i).getString("group_id"),
                                                 (String) groups.getJSONObject(i).getString("name"),
-                                          
-                                                //todo: change owner_id to owner_username (ask for api from backend)
-                                                (String) groups.getJSONObject(i).getString("owner_id"),
-                                                
+
+                                                //(String) groups.getJSONObject(i).getString("owner_id"),
+
                                                 //todo: get "whether it is a request"
-                                          
+
                                                 (String) groups.getJSONObject(i).getString("info"),
                                                 ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
                                                 new DDLForGroup
@@ -123,7 +122,7 @@ public class GroupList extends AppCompatActivity {
                                         (
                                                 (String) groups.getJSONObject(i).getString("group_id"),
                                                 (String) groups.getJSONObject(i).getString("name"),
-                                                (String) groups.getJSONObject(i).getString("owner_id"),
+                                                //(String) groups.getJSONObject(i).getString("owner_id"),
                                                 (String) groups.getJSONObject(i).getString("info"),
                                                 ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
                                                 null
@@ -164,7 +163,7 @@ public class GroupList extends AppCompatActivity {
 
                 // Todo: check invitation: if it is, don't do anything
 
-                Toast.makeText(mContext, "点选小组", Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(mContext, "点选小组", Toast.LENGTH_SHORT).show();
                 TargetGroup.currGroup = group_.get(position);
                 TargetGroup.userNames = new ArrayList<String>();
                 TargetGroup.userNames.add(currUserName);
@@ -173,11 +172,13 @@ public class GroupList extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 //todo：以下注释内容将取代上面的内容，只需要补充group id和group name
-                /*Intent intent = new Intent(mContext,showGroupDDL.class);
-                intent.putExtra("group_id",);
-                intent.putExtra("group_name",);
+                */
+
+                Intent intent = new Intent(mContext,showGroupDDL.class);
+                intent.putExtra("group_id",group_.get(position).group_id);
+                intent.putExtra("group_name",group_.get(position).group_name);
                 startActivity(intent);
-                finish();*/
+                finish();
             }
         });
         addButton = (ImageButton) findViewById(R.id.imageButton);
@@ -202,7 +203,7 @@ public class GroupList extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String[] keys = {"group_id"};
                         String[] values = {group_.get(position).group_id};
-                        String response = Requester.post(R.string.server_uri+"delete_group", keys, values);
+                        String response = Requester.post(getResources().getString(R.string.server_uri)+"delete_group", keys, values);
                         try {
                             JSONObject responseObj = new JSONObject(response);
                             boolean valid = responseObj.getBoolean("valid");
@@ -211,9 +212,8 @@ public class GroupList extends AppCompatActivity {
                                 updateData();
                             }
                             else{
-                                // todo: delete group error: check api
-                                //String error_info = responseObj.getString("error_info");
-                                //Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
+                                String error_info = responseObj.getString("error_info");
+                                Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -226,8 +226,8 @@ public class GroupList extends AppCompatActivity {
     }
 
     public void OnAddClicked(View view){
-        TargetGroupDDL.isAdding = true;//代表是添加
-        startActivity(new Intent(mContext, TargetGroupDDL.class));
+        TargetGroup.isAdding = true;//代表是添加
+        startActivity(new Intent(mContext, TargetGroup.class));
         finish();
     }
 }

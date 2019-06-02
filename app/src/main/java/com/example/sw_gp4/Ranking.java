@@ -38,7 +38,6 @@ public class Ranking extends AppCompatActivity {
     private ArrayList<Integer> friend_colors;
     private ArrayList<String> friend_ids;
     private ArrayList<String> friend_names;
-    private ArrayList<String> friend_percents;
 
     private void updateData(){
         /* Suppose the return format is
@@ -69,12 +68,10 @@ public class Ranking extends AppCompatActivity {
             JSONArray groups = (JSONArray) responseObj.getJSONArray("ranking");
             friend_ids = new ArrayList<String>();
             friend_names = new ArrayList<String>();
-            friend_percents = new ArrayList<String>();
             friend_colors = new ArrayList<Integer>();
             for(int i=0; i<groups.length(); ++i){
                 friend_ids.add((String) groups.getJSONObject(i).getString("id"));
                 friend_names.add((String) groups.getJSONObject(i).getString("name"));
-                friend_percents.add((String) groups.getJSONObject(i).getString("percent"));
                 friend_colors.add(ColorConverter.fromName(friend_names.get(i)));
             }
         } catch (JSONException e) {
@@ -112,7 +109,6 @@ public class Ranking extends AppCompatActivity {
         ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(friend_colors.get(my_rank-1));
         ((TextView)findViewById(R.id.my_name)).setText(friend_names.get(my_rank-1));
         ((TextView)findViewById(R.id.my_rank)).setText("Rank "+Integer.toString(my_rank));
-        ((TextView)findViewById(R.id.my_percent)).setText(friend_percents.get(my_rank-1)+"%");
     }
 
     public void OnAddClicked(View view){
@@ -148,7 +144,7 @@ public class Ranking extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new RankingAdapter(mContext,friend_colors,friend_names,friend_percents);
+        mAdapter = new RankingAdapter(mContext,friend_colors,friend_names);
         recyclerView.setAdapter(mAdapter);
 
     }

@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -58,7 +61,7 @@ public class ListViewAdapterForTargetGroup extends BaseSwipeAdapter {
     @Override
     public void fillValues(int position, View convertView) {
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
-        Button text_button = (Button) convertView.findViewById(R.id.group_text);
+        TextView text_button = (TextView) convertView.findViewById(R.id.group_name);
 
         ((GradientDrawable) color_button.getBackground()).setColor(
                 ContextCompat.getColor(mContext,colors[position%num_colors]));
