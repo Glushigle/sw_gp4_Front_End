@@ -88,8 +88,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
 
         // Appearance of group item
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
-        ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,group.color_id));
+        ((GradientDrawable) color_button.getBackground()).setColor(ColorConverter.fromId(group.id));
         ((TextView) convertView.findViewById(R.id.group_name)).setText(group.group_name);
         if(group.firstTask!=null)
             ((TextView) convertView.findViewById(R.id.group_first_task)).setText(group.firstTask.time);

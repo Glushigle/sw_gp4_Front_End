@@ -74,20 +74,21 @@ public class GroupList extends AppCompatActivity {
 
         String[] keys = {"username"};
         String[] values = {currUserName};
-        //服务器坏掉时的测试用code
-        /*String response = "{\"group list\":\n" +
-                "    [{\"group_id\": 1, \"info\": \"\", \"name\": \"2019软件工程第四组\", \"owner_id\": 3},\n" +
-                "    {\"group_id\": 2, \"info\": \"\", \"name\": \"2019软件工程\", \"owner_id\": 3},\n" +
-                "    {\"group_id\": 3, \"info\": \"\", \"name\": \"Multi-Document Processing小组\", \"owner_id\": 3},\n" +
-                "    {\"group_id\": 4, \"info\": \"\", \"name\": \"北京大学珍珠奶茶研究社\", \"owner_id\": 3}],\n" +
-                "    \"valid\": true}";*/
         try {
             String response = Requester.get(getResources().getString(R.string.server_uri)+"get_grouplist", keys, values);
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
             group_ = new ArrayList<Group>();
             for(int i=0; i<groups.length(); ++i){
-                String[] keys2 = {"group_id"};
+                group_.add(new Group(
+                        (String) groups.getJSONObject(i).getString("group_id"),
+                        (String) groups.getJSONObject(i).getString("name"),
+                        (String) groups.getJSONObject(i).getString("info"),
+                        ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
+                        null
+                ));
+                //TODO  以下有Server returned non-OK status: 500，自己debug
+                /*String[] keys2 = {"group_id"};
                 String[] values2 = {(String)groups.getJSONObject(i).getString("group_id")};
                 String response2 = Requester.get(getResources().getString(R.string.server_uri)+"get_group_task", keys2, values2);
                     JSONObject responseObj2 = new JSONObject(response2);
@@ -101,8 +102,6 @@ public class GroupList extends AppCompatActivity {
                                                 (String) groups.getJSONObject(i).getString("name"),
 
                                                 //(String) groups.getJSONObject(i).getString("owner_id"),
-
-                                                //todo: get "whether it is a request"
 
                                                 (String) groups.getJSONObject(i).getString("info"),
                                                 ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
@@ -129,7 +128,7 @@ public class GroupList extends AppCompatActivity {
                                         )
 
                                 );
-                    }
+                    }*/
             }
             mAdapter.resetData(group_);
             mAdapter.notifyDataSetChanged();
