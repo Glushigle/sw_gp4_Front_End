@@ -165,19 +165,20 @@ public class GroupList extends AppCompatActivity {
                 // Todo: check invitation: if it is, don't do anything
 
                 Toast.makeText(mContext, "点选小组", Toast.LENGTH_SHORT).show();
-                TargetGroup.currGroup = group_.get(position);
+                /*TargetGroup.currGroup = group_.get(position);
                 TargetGroup.userNames = new ArrayList<String>();
                 TargetGroup.userNames.add(currUserName);
                 TargetGroup.currPosition = position;
                 Intent intent = new Intent(mContext,TargetGroup.class);
                 startActivity(intent);
-                finish();
-                //todo：以下注释内容将取代上面的内容，只需要补充group id和group name
-                /*Intent intent = new Intent(mContext,showGroupDDL.class);
-                intent.putExtra("group_id",);
-                intent.putExtra("group_name",);
-                startActivity(intent);
                 finish();*/
+                //todo：以下内容将取代上面的注释内容
+                Group gp = group_.get(position);
+                Intent intent = new Intent(mContext,showGroupDDL.class);
+                intent.putExtra("group_id",gp.group_id);
+                intent.putExtra("group_name",gp.group_name);
+                startActivity(intent);
+                finish();
             }
         });
         addButton = (ImageButton) findViewById(R.id.imageButton);
