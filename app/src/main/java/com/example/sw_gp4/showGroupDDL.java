@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-//跳到此页前需要先指明group id
+//跳到此页前需要先指明group id和name
 public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.slideViewClickListener {
     private boolean isChangeable = false;
     private String groupId = null;//todo: 前一页（GroupList）传入group id和name
@@ -390,6 +390,6 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         adapter.removeData(position);
     }
     public void onEditClick(View v, int position, leftSlideAdapter adapter) {
-        Log.d("disp","onEditClick");
+        Log.d("disp","onEditClick");//todo: 编辑ddl
     }
 }
