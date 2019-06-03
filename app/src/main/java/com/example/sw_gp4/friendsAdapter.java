@@ -44,6 +44,10 @@ public class friendsAdapter extends BaseSwipeAdapter {
     @Override
     public View generateView(final int position, ViewGroup parent) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.group_list_item, null);
+        // ------------------------------------------------------------ //
+        //  NOTE: As we use layout group_list_item as a friend item,    //
+        //  plz replace all 'group_xxx' with 'friend_xxx' in your mind. //
+        // ------------------------------------------------------------ //
         return v;
     }
 
@@ -51,18 +55,12 @@ public class friendsAdapter extends BaseSwipeAdapter {
     public void fillValues(final int position, View convertView) {
         friends.MyFriend friend = myFriends.get(position);
 
-        // 因为invitation会reset这些，只好再处理一次type
         ((GradientDrawable) convertView.findViewById(R.id.group_color).getBackground()).setColor(friend.color);
         ((TextView) convertView.findViewById(R.id.group_name)).setText(friend.name);
         ((TextView) convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
         ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.GONE);
-        ((Button)convertView.findViewById(R.id.btn_deny)).setVisibility(View.INVISIBLE);
-        ((Button)convertView.findViewById(R.id.btn_accept)).setVisibility(View.INVISIBLE);
-        convertView.findViewById(R.id.group_name).setAlpha(1);
-        convertView.findViewById(R.id.group_color).setAlpha(1);
-        convertView.setClickable(true);
 
-        // Delete
+        // Delete friend
         convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +70,14 @@ public class friendsAdapter extends BaseSwipeAdapter {
 
         if(friend.invitation)
            markInvitation(convertView,position);
+        else{
+            // 因为invitation会reset这些，只好再处理一次
+            ((Button)convertView.findViewById(R.id.btn_deny)).setVisibility(View.INVISIBLE);
+            ((Button)convertView.findViewById(R.id.btn_accept)).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.group_name).setAlpha(1);
+            convertView.findViewById(R.id.group_color).setAlpha(1);
+            convertView.setClickable(true);
+        }
     }
 
     @Override

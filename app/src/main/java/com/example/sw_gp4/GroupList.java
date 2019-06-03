@@ -244,4 +244,10 @@ public class GroupList extends AppCompatActivity {
         startActivity(new Intent(mContext,showGroupDDL.class));
         finish();
     }
+
+    public void restart(){
+        Intent intent = new Intent(mContext,GroupList.class);
+        startActivity(intent);
+        finish();
+    }
 }

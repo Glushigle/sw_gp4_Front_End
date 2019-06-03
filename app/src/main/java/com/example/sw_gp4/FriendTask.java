@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,6 +89,9 @@ public class FriendTask extends AppCompatActivity {
 
         // Get the friend's tasks
         updateData();
+
+        if(tasks.size()==0)
+            Toast.makeText(mContext, "TA还没有公开DDL哦", Toast.LENGTH_SHORT).show();
 
         recyclerView = (RecyclerView) findViewById(R.id.friend_tasks);
         recyclerView.setHasFixedSize(true);

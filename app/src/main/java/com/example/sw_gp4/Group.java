@@ -8,7 +8,7 @@ public class Group
     String group_id;
     String owner_username = "";
     boolean im_leader = false;
-    boolean invitation; // todo: if it's an invitation
+    boolean invitation;
     String info;
     int color_id;
     int id;

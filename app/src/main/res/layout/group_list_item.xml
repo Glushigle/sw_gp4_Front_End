@@ -71,7 +71,7 @@
                 android:text="First task"
                 android:textAlignment="2"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:alpha="0.5"/>
         </LinearLayout>
 
