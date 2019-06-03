@@ -227,8 +227,9 @@ public class GroupList extends AppCompatActivity {
     }
 
     public void OnAddClicked(View view){
-        TargetGroupDDL.isAdding = true;//代表是添加
-        startActivity(new Intent(mContext, TargetGroupDDL.class));
+        //TargetGroupDDL.isAdding = true;//代表是添加
+        //startActivity(new Intent(mContext, TargetGroupDDL.class));
+        startActivity(new Intent(mContext,showGroupDDL.class));
         finish();
     }
 }
