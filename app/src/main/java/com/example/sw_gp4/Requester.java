@@ -24,7 +24,7 @@ public class Requester {
 
     public static String post(String full_url, String[] keys, String[] values){
 
-        Log.i(TAG, "post "+full_url+" keys_len="+Integer.toString(keys.length));
+        Log.i(TAG, "post "+full_url);
         logParams(keys, values);
         return request(full_url, keys, values, true);
     }
