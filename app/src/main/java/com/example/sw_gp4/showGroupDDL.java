@@ -116,7 +116,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         toolbar.setTitle(groupName);
         setSupportActionBar(toolbar);
         //判定权限
-        String full_url = "https://222.29.159.164:10007/check_ownership";
+        String full_url = this.getString(R.string.server_uri)+"check_ownership";
         String[] keys = {"group_id"};
         String[] values = {groupId};
         String response = Requester.get(full_url,keys,values);
@@ -170,7 +170,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
     }
     private List<DDLOfDay> getDataOfDate(int year, int month) {
         Log.d("getdataofdate","in");
-        String full_url = "https://222.29.159.164:10007/get_group_task";
+        String full_url = this.getString(R.string.server_uri)+"get_group_task";
         String[] keys = {"group_id"};
         String[] values = {groupId};
         String response = Requester.get(full_url,keys,values);
@@ -388,7 +388,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
     public void onItemClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onItemClick");
         DDLText ddl = adapter.getData(position);
-        String full_url = "https://222.29.159.164:10007/finishtask";
+        String full_url = this.getString(R.string.server_uri)+"finishtask";
         String[] keys = {"task_id"};
         String[] values = {ddl.ddl_id};
         String response = Requester.post(full_url,keys,values);
@@ -409,7 +409,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
     public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
         DDLText ddl = adapter.getData(position);
-        String full_url = "https://222.29.159.164:10007/delete_group_task";
+        String full_url = this.getString(R.string.server_uri)+"delete_group_task";
         String[] keys = {"group_id","task_id"};
         String[] values = {groupId,ddl.ddl_id};
         String response = Requester.post(full_url,keys,values);

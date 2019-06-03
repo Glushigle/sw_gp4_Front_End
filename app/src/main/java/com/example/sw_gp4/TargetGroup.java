@@ -80,7 +80,7 @@ public class TargetGroup extends AppCompatActivity
         {
             String[] keys = {"name"};
             String[] values = {"New Group"};
-            String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
+            String response = Requester.post(this.getString(R.string.server_uri)+"create_group", keys, values);
             try
             {
                 JSONObject responseObj = new JSONObject(response);
@@ -102,7 +102,7 @@ public class TargetGroup extends AppCompatActivity
             }
             String[] keys2 = {"group_id","title","deadline"};
             String[] values2 = {currGroup.group_id,"Test 2","2018-09-09 12:00"};
-            String response2 = Requester.post("https://222.29.159.164:10016/create_group_task", keys2, values2);
+            String response2 = Requester.post(this.getString(R.string.server_uri)+"create_group_task", keys2, values2);
         }
         else
         {
@@ -112,7 +112,7 @@ public class TargetGroup extends AppCompatActivity
         System.out.println("currGroup = "+currGroup);
         String[] keys = {"group_id"};
         String[] values = {currGroup.group_id};
-        String response = Requester.post("https://222.29.159.164:10016/get_group_member", keys, values);
+        String response = Requester.post(this.getString(R.string.server_uri)+"get_group_member", keys, values);
         try
         {
             JSONObject responseObj = new JSONObject(response);
@@ -203,7 +203,7 @@ public class TargetGroup extends AppCompatActivity
                 currGroup.group_id,
                 userAwaiting.getText().toString()
         };
-        String response = Requester.post("https://222.29.159.164:10016/add_member", keys, values);
+        String response = Requester.post(this.getString(R.string.server_uri)+"add_member", keys, values);
 
         try
         {

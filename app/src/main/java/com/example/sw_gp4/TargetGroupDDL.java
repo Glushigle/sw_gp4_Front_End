@@ -81,7 +81,7 @@ public class TargetGroupDDL extends AppCompatActivity
         {
             String[] keys = {"name"};
             String[] values = {"New Group"};
-            String response = Requester.post("https://222.29.159.164:10016/create_group", keys, values);
+            String response = Requester.post(this.getString(R.string.server_uri)+"create_group", keys, values);
             try
             {
                 JSONObject responseObj = new JSONObject(response);
@@ -113,7 +113,7 @@ public class TargetGroupDDL extends AppCompatActivity
         //获取DDL列表
         String[] keys = {"group_id"};
         String[] values = {currGroup.group_id};
-        String response = Requester.post("https://222.29.159.164:10016/get_group_task", keys, values);
+        String response = Requester.post(this.getString(R.string.server_uri)+"get_group_task", keys, values);
         try
         {
             JSONObject responseObj = new JSONObject(response);

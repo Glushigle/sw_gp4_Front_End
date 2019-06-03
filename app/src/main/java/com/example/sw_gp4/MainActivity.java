@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
 
-        String full_url = "https://222.29.159.164:10007/login";
+        String full_url = this.getString(R.string.server_uri)+"login";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
         String response = Requester.post(full_url, keys, values);

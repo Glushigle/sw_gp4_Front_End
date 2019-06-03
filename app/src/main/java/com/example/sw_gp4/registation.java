@@ -57,7 +57,7 @@ public class registation extends AppCompatActivity {
             Toast.makeText(this, "两次密码不一致", Toast.LENGTH_SHORT).show();
             return;
         }
-        String full_url = "https://222.29.159.164:10007/register";
+        String full_url = this.getString(R.string.server_uri)+"register";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
         String response = Requester.post(full_url, keys, values);
