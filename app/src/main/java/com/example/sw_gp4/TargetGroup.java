@@ -196,7 +196,7 @@ public class TargetGroup extends AppCompatActivity
 
     public void OnAddClicked(View view)
     {
-        String[] keys = {"group_id", "user_id"};
+        String[] keys = {"group_id", "user_username"};
         String[] values = {
                 currGroup.group_id,
                 userAwaiting.getText().toString()
@@ -209,7 +209,7 @@ public class TargetGroup extends AppCompatActivity
             boolean valid = responseObj.getBoolean("valid");
             if (valid)
             {
-                Toast.makeText(mContext, "Member added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "小组邀请已送出", Toast.LENGTH_SHORT).show();
                 mAdapter.resetData(userNames);
 
             }

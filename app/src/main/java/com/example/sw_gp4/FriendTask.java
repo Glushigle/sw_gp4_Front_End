@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,11 +84,14 @@ public class FriendTask extends AppCompatActivity {
         //this.friend = new Friend(1,0,"Kate","75%");
         // Update this friends' panel
         ((ImageView)findViewById(R.id.friend_color)).setBackgroundColor(this.friend.color);
-        ((TextView)findViewById(R.id.name)).setText(this.friend.username);
+        ((TextView)findViewById(R.id.name)).setText(this.friend.username+" 的DDL");
 
 
         // Get the friend's tasks
         updateData();
+
+        if(tasks.size()==0)
+            Toast.makeText(mContext, "TA还没有公开DDL哦", Toast.LENGTH_SHORT).show();
 
         recyclerView = (RecyclerView) findViewById(R.id.friend_tasks);
         recyclerView.setHasFixedSize(true);

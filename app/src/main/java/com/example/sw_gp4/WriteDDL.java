@@ -101,7 +101,7 @@ public class WriteDDL extends AppCompatActivity {
                         fetchInput(R.id.ddl_title),
                         formattedDDL(),
                         fetchInput(R.id.ddl_info),
-                        ((Switch)findViewById(R.id.ddl_public)).isChecked()? "1":"0"
+                        ((Switch)findViewById(R.id.ddl_public)).isChecked()? "0":"1"
                 };
                 response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
             }
@@ -220,7 +220,7 @@ public class WriteDDL extends AppCompatActivity {
                             responseObj.getInt("publicity"));
                     ((TextView)findViewById(R.id.ddl_title)).setText(responseObj.getString("title"));
                     ((TextView)findViewById(R.id.ddl_info)).setText(responseObj.getString("info"));
-                    ((Switch)findViewById(R.id.ddl_public)).setChecked(task.publicity==1);
+                    ((Switch)findViewById(R.id.ddl_public)).setChecked(task.publicity==0);
                     ddl_date.setText(Task.getZhDate(responseObj.getString("finish_time")));
                     ddl_time.setText(Task.getZhTime(responseObj.getString("finish_time")));
                     //Toast.makeText(mContext, "DDL received", Toast.LENGTH_SHORT).show();

@@ -79,9 +79,9 @@ public class FriendTaskAdapter extends RecyclerView.Adapter<FriendTaskAdapter.Ft
         holder.title.setText(task.title);
         holder.info.setText(task.info);
 
-        if(task.status==1){    //todo: if done
-
-        }
+        float alpha = (float) ((task.status==1)? 1.0 : 0.5);
+        holder.month.setAlpha(alpha);
+        holder.title.setAlpha(alpha);
     }
 
     @Override

@@ -24,6 +24,8 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class GroupListAdapter extends BaseSwipeAdapter {
@@ -54,7 +56,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         return v;
     }
 
-    private void markInvitation(View convertView){
+    private void markInvitation(View convertView, final int position){
         convertView.findViewById(R.id.group_name).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_first_task).setVisibility(View.GONE);
@@ -69,17 +71,47 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         btn_deny.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "deny invitation", Toast.LENGTH_SHORT).show();
-                // todo deny group invitation request
-                // update ui
+                String[] keys = {"group_id"};
+                String[] values = {groups.get(position).group_id};
+                try{
+                    String response = Requester.post(mContext.getResources().getString(R.string.server_uri)+"deny_groupReq",keys,values);
+                    JSONObject responseObj = new JSONObject(response);
+                    boolean valid = responseObj.getBoolean("valid");
+                    if(valid){
+                        Toast.makeText(mContext, "已狠心拒绝邀请", Toast.LENGTH_SHORT).show();
+                        ((GroupList)mContext).restart();
+                    }
+                    else{
+                        String error_info = responseObj.getString("error_info");
+                        Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(mContext, "怎么可以拒绝邀请！", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btn_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "accept invitation", Toast.LENGTH_SHORT).show();
-                // todo accept group invitation request
-                //update ui
+                String[] keys = {"group_id"};
+                String[] values = {groups.get(position).group_id};
+                try{
+                    String response = Requester.post(mContext.getResources().getString(R.string.server_uri)+"join_group",keys,values);
+                    JSONObject responseObj = new JSONObject(response);
+                    boolean valid = responseObj.getBoolean("valid");
+                    if(valid){
+                        Toast.makeText(mContext, "成功加入小组！", Toast.LENGTH_SHORT).show();
+                        ((GroupList)mContext).restart();
+                    }
+                    else{
+                        String error_info = responseObj.getString("error_info");
+                        Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(mContext, "不好意思，后会有期", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -111,9 +143,16 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         if(group.im_leader)
             ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
 
-        //todo: Mark group invitation
         if(group.invitation)
-            markInvitation(convertView);
+            markInvitation(convertView, position);
+        else {
+            // 因为invitation会reset这些，只好再处理一次
+            ((Button)convertView.findViewById(R.id.btn_deny)).setVisibility(View.INVISIBLE);
+            ((Button)convertView.findViewById(R.id.btn_accept)).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.group_name).setAlpha(1);
+            convertView.findViewById(R.id.group_color).setAlpha(1);
+            convertView.setClickable(true);
+        }
 
         // Delete
         convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
