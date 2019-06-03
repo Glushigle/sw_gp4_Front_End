@@ -96,7 +96,7 @@ public class WriteDDL extends AppCompatActivity {
 
             // Save New Personal DDL
             if(((WriteDDL)mContext).personal){
-                String[] keys = {"title","deadline","info","publicity"};
+                String[] keys = {"title","finish_time","info","publicity"};
                 String[] values = {
                         fetchInput(R.id.ddl_title),
                         formattedDDL(),
@@ -108,7 +108,7 @@ public class WriteDDL extends AppCompatActivity {
 
             // Save New Group DDL
             else{
-                String[] keys = {"title","deadline","info","publicity", "group_id"};
+                String[] keys = {"title","finish_time","info","publicity", "group_id"};
                 String[] values = {
                         fetchInput(R.id.ddl_title),
                         formattedDDL(),

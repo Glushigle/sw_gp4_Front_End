@@ -111,41 +111,40 @@ public class GroupList extends AppCompatActivity {
                 String response2 = Requester.post(getResources().getString(R.string.server_uri)+"get_group_task", keys2, values2);
                 JSONObject responseObj2 = new JSONObject(response2);
                 JSONArray tasks = (JSONArray) responseObj2.getJSONArray("task list");
+                Group group = null;
                 if(!tasks.isNull(0)) //todo:允许无任务
                 {
-                    group_.add
-                            (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
-                                    (
-                                            (String) groups.getJSONObject(i).getString("group_id"),
-                                            (String) groups.getJSONObject(i).getString("name"),
-                                            (String) groups.getJSONObject(i).getString("info"),
-                                            ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
-                                            new DDLForGroup
-                                                    (
-                                                            tasks.getJSONObject(0).getString("finish_time"),
-                                                            tasks.getJSONObject(0).getString("title")
-                                                    ),
-                                            false
-                                    )
-
+                    group = new Group
+                            (
+                                    (String) groups.getJSONObject(i).getString("group_id"),
+                                    (String) groups.getJSONObject(i).getString("name"),
+                                    (String) groups.getJSONObject(i).getString("info"),
+                                    ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
+                                    new DDLForGroup
+                                            (
+                                                    tasks.getJSONObject(0).getString("finish_time"),
+                                                    tasks.getJSONObject(0).getString("title")
+                                            ),
+                                    false
                             );
                 }
                 else
                 {
-                    group_.add
-                            (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
-                                    (
-                                            (String) groups.getJSONObject(i).getString("group_id"),
-                                            (String) groups.getJSONObject(i).getString("name"),
-                                            (String) groups.getJSONObject(i).getString("info"),
-                                            ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
-                                            null,
-                                            false
-                                    )
-
+                    group = new Group
+                            (
+                                    (String) groups.getJSONObject(i).getString("group_id"),
+                                    (String) groups.getJSONObject(i).getString("name"),
+                                    (String) groups.getJSONObject(i).getString("info"),
+                                    ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
+                                    null,
+                                    false
                             );
                 }
-                String responseOwner = Requester.get(getResources().getString(R.string.server_uri)+"", keys2, values2);
+
+                String responseOwner = Requester.get(getResources().getString(R.string.server_uri)+"check_ownership", keys2, values2);
+                group.im_leader = (new JSONObject(response2)).getBoolean("valid");
+
+                group_.add(group);
             }
         } catch (JSONException e) {
             e.printStackTrace();
