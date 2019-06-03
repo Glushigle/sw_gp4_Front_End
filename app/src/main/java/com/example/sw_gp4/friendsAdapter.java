@@ -98,8 +98,26 @@ public class friendsAdapter extends BaseSwipeAdapter {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "已删除请求", Toast.LENGTH_SHORT).show();
-                // todo deny invitation request
-                // update ui
+                String[] keys = {"friend_username"};
+                String[] values = {myFriends.get(position).username};
+                try{
+                    String response = Requester.post(mContext.getResources().getString(R.string.server_uri)+"deny_friendReqs",keys,values);
+                    JSONObject responseObj = new JSONObject(response);
+                    boolean valid = responseObj.getBoolean("valid");
+                    if(valid){
+                        Toast.makeText(mContext, "已狠心拒绝邀请", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        String error_info = responseObj.getString("error_info");
+                        Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(mContext, "怎么可以拒绝别人呢？", Toast.LENGTH_SHORT).show();
+                }
+
+                //update ui
+                ((friends)mContext).updateData();
             }
         });
         btn_accept.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +143,6 @@ public class friendsAdapter extends BaseSwipeAdapter {
 
                 //update ui
                 ((friends)mContext).updateData();
-                notifyDataSetChanged();
             }
         });
     }

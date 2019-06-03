@@ -39,30 +39,8 @@ public class WriteDDL extends AppCompatActivity {
 
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            = (new Navigation(mContext)).mOnNavigationItemSelectedListener;
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_GroupList:
-                    //进到小组页
-                    startActivity(new Intent(mContext,GroupList.class));
-                    finish();
-                    return true;
-                case R.id.navigation_showDDL:
-                    //进到个人页
-                    startActivity(new Intent(mContext,showDDL.class));
-                    finish();
-                    return true;
-                case R.id.navigation_Ranking:
-                    //进到好友页
-                    startActivity(new Intent(mContext,Ranking.class));
-                    finish();
-                    return true;
-            }
-            return false;
-        }
-    };
     private ImageButton.OnClickListener mOnCrossClickedListener
             = new Button.OnClickListener(){
         @Override
