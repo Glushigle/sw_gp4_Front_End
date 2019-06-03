@@ -141,8 +141,8 @@ public class GroupList extends AppCompatActivity {
                             );
                 }
 
-                String responseOwner = Requester.get(getResources().getString(R.string.server_uri)+"check_ownership", keys2, values2);
-                group.im_leader = (new JSONObject(response2)).getBoolean("valid");
+                //String responseOwner = Requester.post(getResources().getString(R.string.server_uri)+"check_ownership", keys2, values2);
+                //group.im_leader = (new JSONObject(responseOwner)).getBoolean("valid");
 
                 group_.add(group);
             }
