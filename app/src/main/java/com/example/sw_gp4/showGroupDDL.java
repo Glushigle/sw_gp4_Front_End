@@ -120,10 +120,11 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         toolbar.setTitle(groupName);
         setSupportActionBar(toolbar);
         //判定权限
+        /*
         String full_url = this.getString(R.string.server_uri)+"check_ownership";
         String[] keys = {"group_id"};
         String[] values = {groupId};
-        String response = Requester.get(full_url,keys,values);
+        String response = Requester.get("https://222.29.159.164:10014/check_ownership",keys,values);
         try {
             JSONObject responseObj = new JSONObject(response);
             boolean valid = responseObj.getBoolean("valid");
@@ -138,6 +139,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             e.printStackTrace();
         }
         //显示DDL内容
+        */
         show_ddl_view(initYear,initMonth,isChangeable);
     }
     private void show_ddl_view(int year, int month, boolean changeable) {
@@ -401,7 +403,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
     public void onItemClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onItemClick");
         DDLText ddl = adapter.getData(position);
-        String full_url = this.getString(R.string.server_uri)+"finishtask";
+        String full_url = "https://222.29.159.164:10014/"+"finishtask";
         String[] keys = {"task_id"};
         String[] values = {ddl.ddl_id};
         String response = Requester.post(full_url,keys,values);
@@ -422,7 +424,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
     public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
         DDLText ddl = adapter.getData(position);
-        String full_url = this.getString(R.string.server_uri)+"delete_group_task";
+        String full_url = "https://222.29.159.164:10014/"+"delete_group_task";
         String[] keys = {"group_id","task_id"};
         String[] values = {groupId,ddl.ddl_id};
         String response = Requester.post(full_url,keys,values);

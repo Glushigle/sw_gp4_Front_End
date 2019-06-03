@@ -108,7 +108,7 @@ public class WriteDDL extends AppCompatActivity {
 
             // Save New Group DDL
             else{
-                String[] keys = {"title","finish_time","info","publicity", "group_id"};
+                String[] keys = {"title","deadline","info","publicity", "group_id"};
                 String[] values = {
                         fetchInput(R.id.ddl_title),
                         formattedDDL(),
@@ -116,7 +116,7 @@ public class WriteDDL extends AppCompatActivity {
                         ((Switch)findViewById(R.id.ddl_public)).isChecked()? "1":"0",
                         ((WriteDDL)mContext).group_id
                 };
-                response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
+                response = Requester.post(getResources().getString(R.string.server_uri)+"create_group_task",keys,values);
             }
 
             try{
