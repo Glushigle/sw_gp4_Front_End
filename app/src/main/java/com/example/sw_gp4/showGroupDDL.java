@@ -32,9 +32,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.slideViewClickListener {
@@ -156,7 +158,10 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_none.setBackgroundColor(Color.rgb(255,255,255));
             tv_none.setTextColor(Color.rgb(132,133,135));
             tv_none.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            tv_none.setText("暂无数据\n点击上方加号新建");
+            if (isChangeable)
+                tv_none.setText("暂无数据\n点击上方加号新建");
+            else
+                tv_none.setText("暂无数据");
             li_parent.addView(tv_none);
         }
         else {
@@ -188,8 +193,8 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
                 JSONObject tmpObj;
                 for (int i = 0; i < size; ++i) {//提取需要的数据
                     tmpObj = allData.getJSONObject(i);
-                    Log.d("date = ",tmpObj.getString("deadline"));
-                    String deadline = tmpObj.getString("deadline");
+                    Log.d("date = ",tmpObj.getString("finish_time"));
+                    String deadline = tmpObj.getString("finish_time");
                     if (deadline.startsWith(ym)) {//指定月份的ddl
                         String dy = deadline.substring(8,10);//该月的第几天
                         int d = Integer.parseInt(dy);
@@ -200,10 +205,16 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
                             }
                             currentDay = d;
                             ddlofday.day = dy;
-                            SimpleDateFormat format = new SimpleDateFormat("E");
-                            ddlofday.week = format.format(deadline);//星期几
+                            try {
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date temp = format.parse(deadline);
+                                format = new SimpleDateFormat("E");
+                                ddlofday.week = format.format(temp);//星期几
+                            } catch(ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        String id = tmpObj.getString("id");//ddl信息
+                        String id = tmpObj.getString("task_id");//ddl信息
                         String time = deadline.substring(11,16);
                         String title = tmpObj.getString("title");
                         String description = tmpObj.getString("info");
@@ -340,9 +351,9 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             //设置内容
             DDLText ddl = data.get(i);
             if (ddl.ddl_status.equals("1")) {
-                tv_title.setBackgroundColor(Color.rgb(125,125,125));
-                tv_time.setBackgroundColor(Color.rgb(125,125,125));
-                tv_description.setBackgroundColor(Color.rgb(125,125,125));
+                tv_title.setBackgroundColor(Color.rgb(192,192,192));
+                tv_time.setBackgroundColor(Color.rgb(192,192,192));
+                tv_description.setBackgroundColor(Color.rgb(192,192,192));
             }
             else {
                 int color = ColorConverter.fromId(i);
