@@ -17,8 +17,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".FriendTask" ></activity>
-        <activity android:name=".showGroupDDL">
-        </activity>
+        <activity android:name=".showGroupDDL"></activity>
         <activity android:name=".registation" />
         <activity android:name=".WriteDDL"></activity>
         <activity android:name=".Ranking"></activity>
