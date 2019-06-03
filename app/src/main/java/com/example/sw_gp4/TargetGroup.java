@@ -43,29 +43,26 @@ public class TargetGroup extends AppCompatActivity
             R.color.gp_5};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener()
-    {
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item)
-        {
-            switch (item.getItemId())
-            {
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
                 case R.id.navigation_GroupList:
                     //进到小组页
-                    Intent intent1 = new Intent(mContext, GroupList.class);
+                    Intent intent1 = new Intent(mContext,GroupList.class);
                     startActivity(intent1);
                     finish();
                     return true;
                 case R.id.navigation_showDDL:
                     //进到个人页
-                    Intent intent2 = new Intent(mContext, showDDL.class);
+                    Intent intent2 = new Intent(mContext,showDDL.class);
                     startActivity(intent2);
                     finish();
                     return true;
                 case R.id.navigation_Ranking:
                     //进到好友页
-                    Intent intent3 = new Intent(mContext, Ranking.class);
+                    Intent intent3 = new Intent(mContext,friends.class);
                     startActivity(intent3);
                     finish();
                     return true;
@@ -90,12 +87,13 @@ public class TargetGroup extends AppCompatActivity
                     (
                             (String) responseObj.getString("group_id"),
                             (String) responseObj.getString("name"),
-                            (String) responseObj.getString("owner_id"),
                             (String) responseObj.getString("info"),
-                            colors[(responseObj.getInt("group_id")-1)%colors.length],
-                            new DDLForGroup("13:00","Test 3")
+                            ColorConverter.fromId((String) responseObj.getString("group_id")),
+                            null,//new DDLForGroup("13:00","Test 3")
+                            false
                         )
                     );
+                    currGroup.owner_username = User.username;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -29,13 +29,17 @@ import java.util.Locale;
 
 public class WriteDDL extends AppCompatActivity {
 
-    private boolean existing;   // cf created
-    private boolean personal;   // cf group
+    private boolean existing;   // c.f. created
+    private boolean personal;   // c.f. group
     private String group_id;
     private String group_name;
     private Task task = new Task();
+    //private int entry_year = -1;
+    //private int entry_month = -1;
 
     private Context mContext=this;
+    String username;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -44,23 +48,27 @@ public class WriteDDL extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_GroupList:
                     //进到小组页
-                    startActivity(new Intent(mContext,GroupList.class));
+                    Intent intent1 = new Intent(mContext,GroupList.class);
+                    startActivity(intent1);
                     finish();
                     return true;
                 case R.id.navigation_showDDL:
                     //进到个人页
-                    startActivity(new Intent(mContext,showDDL.class));
+                    Intent intent2 = new Intent(mContext,showDDL.class);
+                    startActivity(intent2);
                     finish();
                     return true;
                 case R.id.navigation_Ranking:
                     //进到好友页
-                    startActivity(new Intent(mContext,Ranking.class));
+                    Intent intent3 = new Intent(mContext,friends.class);
+                    startActivity(intent3);
                     finish();
                     return true;
             }
             return false;
         }
     };
+
     private ImageButton.OnClickListener mOnCrossClickedListener
             = new Button.OnClickListener(){
         @Override
@@ -88,7 +96,7 @@ public class WriteDDL extends AppCompatActivity {
 
             // Save New Personal DDL
             if(((WriteDDL)mContext).personal){
-                String[] keys = {"title","deadline","info","publicity"};
+                String[] keys = {"title","finish_time","info","publicity"};
                 String[] values = {
                         fetchInput(R.id.ddl_title),
                         formattedDDL(),
@@ -100,7 +108,7 @@ public class WriteDDL extends AppCompatActivity {
 
             // Save New Group DDL
             else{
-                String[] keys = {"title","deadline","info","publicity", "group_id"};
+                String[] keys = {"title","finish_time","info","publicity", "group_id"};
                 String[] values = {
                         fetchInput(R.id.ddl_title),
                         formattedDDL(),
@@ -135,20 +143,25 @@ public class WriteDDL extends AppCompatActivity {
     }
     private int[] next(String gap){
         Calendar cal = Calendar.getInstance();
-        switch (gap){
-            case "day":
-                cal.add(Calendar.DATE, 1);
-                cal.set(Calendar.HOUR_OF_DAY, 9);
-                break;
-            case "hour":
-                cal.add(Calendar.HOUR_OF_DAY, 1);
-                break;
-        }
+        // 如果year和month 和今天一样 或 -1，直接下小时
+        //if(this.entry_year==-1||this.entry_month==-1||(cal.YEAR ==this.entry_year && cal.MONTH+1==this.entry_month)) {
+            switch (gap) {
+                case "day": // 隔天早九
+                    cal.add(Calendar.DATE, 1);
+                    cal.set(Calendar.HOUR_OF_DAY, 9);
+                    break;
+                case "hour": // 下一小時
+                    cal.add(Calendar.HOUR_OF_DAY, 1);
+                    break;
+            }
+        //}
+        //else{ // 有傳year & month進來
+        //    int[] dt = {this.entry_year, this.entry_month, cal.get(Calendar.DATE), 0, 0};
+        //    return dt;
+        //}
         return cal2int(cal);
     }
-    private void updateTime(int[] dt){
-        this.task.finish_time = dt;
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,11 +185,15 @@ public class WriteDDL extends AppCompatActivity {
                 this.task.id = extras.getString("task_id");
                 this.group_id = extras.getString("group_id");
                 this.group_name = extras.getString("group_name");
+                //this.entry_year = extras.getInt("entry_year");
+                //this.entry_month = extras.getInt("entry_month");
             }
         } else {
             this.task.id = (String) savedInstanceState.getSerializable("task_id");
             this.group_id = (String) savedInstanceState.getSerializable("group_id");
             this.group_name = (String) savedInstanceState.getSerializable("group_name");
+            //this.entry_year = (Integer) savedInstanceState.getSerializable("entry_year");
+            //this.entry_month = (Integer) savedInstanceState.getSerializable("entry_month");
         }
         this.existing = (this.task.id != null);
         this.personal = (this.group_id == null);
@@ -185,39 +202,31 @@ public class WriteDDL extends AppCompatActivity {
         final TextView ddl_date = findViewById(R.id.ddl_date);
         final TextView ddl_time = findViewById(R.id.ddl_time);
         if(this.existing){
+
             //get task.finish_time from backend. Same for personal/group-wise
             String[] keys = {"task_id"};
             String[] values = {task.id};
-            //String response = Requester.post(getResources().getString(R.string.server_uri)+"get_task",keys,values);
-            /* 假设response
-            {"valid":"true",
-             "task":{"task_id":"1", "title":"Title 1", "finish_time":"2019-05-20 14:00:00", "status":"1", "info":"Info 1", "publicity":"1"}}
-            */
-            String response = "{\"valid\":\"true\",\n" +
-                    "             \"task\":{\"task_id\":\"1\", \"title\":\"Title 1\", \"finish_time\":\"2019-05-20 14:00:00\", \"status\":\"1\", \"info\":\"Info 1\", \"publicity\":\"1\"}}";
+            String response = Requester.post(getResources().getString(R.string.server_uri)+"get_task",keys,values);
             try{
                 JSONObject responseObj = new JSONObject(response);
                 boolean valid = responseObj.getBoolean("valid");
                 if(valid){
-                    Toast.makeText(mContext, "DDL received", Toast.LENGTH_SHORT).show();
-                    JSONObject taskObj = responseObj.getJSONObject("task");
-                    // todo: check api with backend
-                    this.task = new Task(   // Is this obj necessary?
-                            taskObj.getString("task_id"),
-                            taskObj.getString("title"),
-                            taskObj.getString("finish_time"),
-                            taskObj.getInt("status"),
-                            taskObj.getString("info"),
-                            taskObj.getInt("publicity"));
-                    ((TextView)findViewById(R.id.ddl_title)).setText(taskObj.getString("title"));
-                    ((TextView)findViewById(R.id.ddl_info)).setText(taskObj.getString("info"));
+                    this.task = new Task(
+                            responseObj.getString("task_id"),
+                            responseObj.getString("title"),
+                            responseObj.getString("finish_time"),
+                            responseObj.getInt("status"),
+                            responseObj.getString("info"),
+                            responseObj.getInt("publicity"));
+                    ((TextView)findViewById(R.id.ddl_title)).setText(responseObj.getString("title"));
+                    ((TextView)findViewById(R.id.ddl_info)).setText(responseObj.getString("info"));
                     ((Switch)findViewById(R.id.ddl_public)).setChecked(task.publicity==1);
-                    this.task.finish_time = task.finish_time;
-                    ddl_date.setText(Task.getZhDate(taskObj.getString("finish_time")));
-                    ddl_time.setText(Task.getZhTime(taskObj.getString("finish_time")));
+                    ddl_date.setText(Task.getZhDate(responseObj.getString("finish_time")));
+                    ddl_time.setText(Task.getZhTime(responseObj.getString("finish_time")));
+                    //Toast.makeText(mContext, "DDL received", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(mContext, "get_task: Invalid DDL!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "这个DDL不存在了！", Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -236,7 +245,10 @@ public class WriteDDL extends AppCompatActivity {
                 new DatePickerDialog(mContext, 0, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        ddl_date.setText(Task.getZhDate(i,i1,i2));
+                        ddl_date.setText(Task.getZhDate(i,i1+1,i2));
+                        task.finish_time[0] = i;
+                        task.finish_time[1] = i1+1;
+                        task.finish_time[2] = i2;
                     }
                 },task.finish_time[0],task.finish_time[1]-1,task.finish_time[2]).show();
             }
@@ -248,6 +260,8 @@ public class WriteDDL extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                         ddl_time.setText(Task.getZhTime(i,i1));
+                        task.finish_time[3] = i;
+                        task.finish_time[4] = i1;
                     }
                 },task.finish_time[3],task.finish_time[4],false).show();
             }

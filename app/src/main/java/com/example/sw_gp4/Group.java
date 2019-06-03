@@ -6,8 +6,8 @@ public class Group
 {
     String group_name;
     String group_id;
-    String owner_id; // todo: should be owner_username
-    boolean im_leader; // todo: I'm Leader -> mark leader_sign
+    String owner_username = "";
+    boolean im_leader = false;
     boolean invitation; // todo: if it's an invitation
     String info;
     int color_id;
@@ -48,14 +48,19 @@ public class Group
         group_id = Integer.toString(i);
         member.add(name);
     }*/
-    Group(String group_id, String group_name, String owner_id, String info, int color_id, DDLForGroup firstTask)
+    Group(String group_id, String group_name,String info, int color_id, DDLForGroup firstTask, boolean invitation) // String owner_id,
     {
         this.group_name = group_name;
         this.group_id = group_id;
         this.id = Integer.parseInt(group_id);
-        this.owner_id = owner_id;
         this.info = info;
         this.color_id = color_id;
         this.firstTask = firstTask;
+        this.invitation = invitation;
+    }
+
+    public void setOwner(String owner_username){
+        this.owner_username = owner_username;
+        this.im_leader = (User.username.equals(owner_username));
     }
 }

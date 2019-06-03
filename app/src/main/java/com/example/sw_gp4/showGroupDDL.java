@@ -44,7 +44,9 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
     private String groupId = null;//todo: 前一页（GroupList）传入group id和name
     private String groupName = null;
     private Context mContext=this;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    String username;
+
+    final public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -64,7 +66,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
                     return true;
                 case R.id.navigation_Ranking:
                     //进到好友页
-                    Intent intent3 = new Intent(mContext,Ranking.class);
+                    Intent intent3 = new Intent(mContext,friends.class);
                     startActivity(intent3);
                     finish();
                     return true;
@@ -178,7 +180,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         String full_url = this.getString(R.string.server_uri)+"get_group_task";
         String[] keys = {"group_id"};
         String[] values = {groupId};
-        String response = Requester.get(full_url,keys,values);
+        String response = Requester.post(full_url,keys,values);
         try {
             JSONObject responseObj = new JSONObject(response);
             boolean valid = responseObj.getBoolean("valid");

@@ -45,15 +45,36 @@
             android:layout_marginRight="15dp"
             android:background="@drawable/ic_color_round" />
 
-        <Button
-            android:id="@+id/group_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:text="Lorem ipsum dolor sit"
-            android:textAlignment="2"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/group_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="bottom"
+                android:text="Group Name"
+                android:textAlignment="2"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+            <TextView
+                android:id="@+id/group_first_task"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="3dp"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:text="First task"
+                android:textAlignment="2"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:visibility="visible"
+                android:alpha="0.5"/>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btn_deny"

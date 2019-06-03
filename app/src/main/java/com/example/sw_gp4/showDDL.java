@@ -55,10 +55,13 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                     return true;
                 case R.id.navigation_showDDL:
                     //进到个人页
+                    Intent intent2 = new Intent(mContext,showDDL.class);
+                    startActivity(intent2);
+                    finish();
                     return true;
                 case R.id.navigation_Ranking:
                     //进到好友页
-                    Intent intent3 = new Intent(mContext,Ranking.class);
+                    Intent intent3 = new Intent(mContext,friends.class);
                     startActivity(intent3);
                     finish();
                     return true;
@@ -66,6 +69,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             return false;
         }
     };
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,7 +201,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                 return null;
             }
         } catch(JSONException e) {
-            Toast.makeText(this, "bug in getDataOfDate()", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "目前没有DDL～", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return null;

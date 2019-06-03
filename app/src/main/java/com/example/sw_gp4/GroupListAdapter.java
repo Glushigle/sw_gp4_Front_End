@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,10 +55,12 @@ public class GroupListAdapter extends BaseSwipeAdapter {
     }
 
     private void markInvitation(View convertView){
-        convertView.findViewById(R.id.group_text).setAlpha((float)0.5);
+        convertView.findViewById(R.id.group_name).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
+        convertView.findViewById(R.id.group_first_task).setVisibility(View.GONE);
+        ((TextView)convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
 
-        ((Button)convertView.findViewById(R.id.group_text)).setWidth(450);
+        ((TextView)convertView.findViewById(R.id.group_name)).setWidth(450);
 
         Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
         Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);
@@ -87,15 +90,10 @@ public class GroupListAdapter extends BaseSwipeAdapter {
 
         // Appearance of group item
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
-        Button text_button = (Button) convertView.findViewById(R.id.group_text);
-        ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,group.color_id));
-
-        //String tempString = "<font color='#00FF00'>"+group.firstTask.time+"</font>";
-        //text_button.setText(group.group_name+"\n"+Html.fromHtml(tempString));
-        //todo:想改颜色失败了，再说
-        // TODO: click button -> show group DDL
-        text_button.setText(group.group_name);
+        ((GradientDrawable) color_button.getBackground()).setColor(ColorConverter.fromId(group.id));
+        ((TextView) convertView.findViewById(R.id.group_name)).setText(group.group_name);
+        if(group.firstTask!=null)
+            ((TextView) convertView.findViewById(R.id.group_first_task)).setText(group.firstTask.time);
 
         // Group item clicked: share the listener with mListView
         ImageButton.OnClickListener fakeItemClick = new ImageButton.OnClickListener(){
@@ -109,14 +107,12 @@ public class GroupListAdapter extends BaseSwipeAdapter {
             }
         };
         color_button.setOnClickListener(fakeItemClick);
-        text_button.setOnClickListener(fakeItemClick);
 
-        //todo: Mark group leader
-        //if(group.im_leader)
-        //    ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
+        if(group.im_leader)
+            ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
 
         //todo: Mark group invitation
-        //if(group.invitation)
+        if(group.invitation)
             markInvitation(convertView);
 
         // Delete

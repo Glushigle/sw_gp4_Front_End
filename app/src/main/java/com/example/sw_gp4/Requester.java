@@ -24,8 +24,15 @@ public class Requester {
 
     public static String post(String full_url, String[] keys, String[] values){
 
-        Log.i(TAG, "post "+full_url+" keys_len="+Integer.toString(keys.length));
+        Log.i(TAG, "post "+full_url);
+        logParams(keys, values);
         return request(full_url, keys, values, true);
+    }
+
+    private static void logParams(String[] keys, String[] values){
+        for(int i=0; i<keys.length; ++i){
+            Log.d(TAG, keys[i]+"="+values[i]);
+        }
     }
 
     private static String request(String full_url, String[] keys, String[] values, boolean post){
