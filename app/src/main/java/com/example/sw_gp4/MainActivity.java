@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             boolean success = responseObj.getBoolean("valid");
             if (success){
                 GroupList.currUserName = username.getText().toString();//用currUserName记录当前用户名
+                User.username = username.getText().toString(); // 大家一起share username嘛^^ 每個activity都要用欸
                 Intent intent = new Intent(this,showDDL.class);
                 startActivity(intent);
             }else{

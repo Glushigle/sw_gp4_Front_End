@@ -34,53 +34,42 @@ public class Ranking extends AppCompatActivity {
     private Context mContext=this;
     private ImageButton addButton;
 
+    private String currUserName;
     private int my_rank;
     private ArrayList<Integer> friend_colors;
-    private ArrayList<String> friend_ids;
-    private ArrayList<String> friend_names;
+    private ArrayList<String> friend_usernames;
+    //private ArrayList<String> friend_names;
 
     private void updateData(){
-        /* Suppose the return format is
-            {"my rank": "2",
-             "ranking":[
-                 {"id":"1", "name":"Name 1", "percent":"100"},
-                 {"id":"2", "name":"Name 2", "percent":"97"},
-                 ...
-                 {"id":"n", "name":"Name n", "percent":"0"}]
-            }
-        */
-
-        // TODO: programmatically get response
-        //String[] keys = {"username"};
-        //String[] values = {"user1"};
-        //String response = PostRequester.request("full_url", keys, values);
-        String response = "{\"my rank\":\"2\"," +
-                "           \"ranking\":[\n" +
-                "                 {\"id\":\"1\", \"name\":\"Bob\",   \"percent\":\"100\"},\n" +
-                "                 {\"id\":\"2\", \"name\":\"Alice\", \"percent\": \"97\"},\n" +
-                "                 {\"id\":\"3\", \"name\":\"Kate\",  \"percent\": \"95\"},\n" +
-                "                 {\"id\":\"4\", \"name\":\"Carol\", \"percent\": \"92\"},\n" +
-                "                 {\"id\":\"5\", \"name\":\"Dave\",  \"percent\": \"90\"}]\n" +
-                "            }";
         try {
-            JSONObject responseObj = new JSONObject(response);
-            my_rank = (int) responseObj.getInt("my rank");
-            JSONArray groups = (JSONArray) responseObj.getJSONArray("ranking");
-            friend_ids = new ArrayList<String>();
-            friend_names = new ArrayList<String>();
+            String[] keys = {};
+            String[] values = {};
+            String response = Requester.get(
+                    getResources().getString(R.string.server_uri)+"get_friendlist",
+                    keys, values);
+            JSONObject responseObj = new JSONObject(response);//TODO 問後端我ranking多少
+            JSONArray friends = (JSONArray) responseObj.getJSONArray("friend list");
+            friend_usernames = new ArrayList<String>();
+            //friend_names = new ArrayList<String>();
             friend_colors = new ArrayList<Integer>();
-            for(int i=0; i<groups.length(); ++i){
-                friend_ids.add((String) groups.getJSONObject(i).getString("id"));
-                friend_names.add((String) groups.getJSONObject(i).getString("name"));
-                friend_colors.add(ColorConverter.fromName(friend_names.get(i)));
+            for(int i=0; i<friends.length(); ++i){
+                friend_usernames.add((String) friends.getJSONObject(i).getString("username"));
+                //friend_names.add((String) groups.getJSONObject(i).getString("name"));
+                friend_colors.add(ColorConverter.fromName(friend_usernames.get(i)));
             }
+
+            //TODO set my rank
+            my_rank = friend_usernames.size();
+            friend_usernames.add(currUserName);
+            friend_colors.add(ColorConverter.fromName((currUserName)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            =null;
+            /*new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -103,11 +92,11 @@ public class Ranking extends AppCompatActivity {
             }
             return false;
         }
-    };
+    };*/
 
     private void setMyRank(){
         ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(friend_colors.get(my_rank-1));
-        ((TextView)findViewById(R.id.my_name)).setText(friend_names.get(my_rank-1));
+        ((TextView)findViewById(R.id.my_name)).setText(friend_usernames.get(my_rank-1));
         ((TextView)findViewById(R.id.my_rank)).setText("Rank "+Integer.toString(my_rank));
     }
 
@@ -144,8 +133,19 @@ public class Ranking extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new RankingAdapter(mContext,friend_colors,friend_names);
+        mAdapter = new RankingAdapter(mContext,friend_colors,friend_usernames);
         recyclerView.setAdapter(mAdapter);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                this.currUserName = null;
+            } else {
+                this.currUserName = extras.getString("username");
+            }
+        } else {
+            this.currUserName  = (String) savedInstanceState.getSerializable("username");
+        }
 
     }
 }

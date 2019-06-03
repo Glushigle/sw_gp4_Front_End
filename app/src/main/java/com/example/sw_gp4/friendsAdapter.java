@@ -3,16 +3,20 @@ package com.example.sw_gp4;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -48,6 +52,8 @@ public class friendsAdapter extends BaseSwipeAdapter {
 
         ((GradientDrawable) convertView.findViewById(R.id.group_color).getBackground()).setColor(friend.color);
         ((TextView) convertView.findViewById(R.id.group_name)).setText(friend.name);
+        ((TextView) convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
+        ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.GONE);
 
         // Delete
         convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
@@ -57,9 +63,8 @@ public class friendsAdapter extends BaseSwipeAdapter {
             }
         });
 
-        //todo: Mark group invitation
-        //if(group.invitation)
-        markInvitation(convertView);
+        if(friend.invitation)
+           markInvitation(convertView,position);
     }
 
     @Override
@@ -79,7 +84,7 @@ public class friendsAdapter extends BaseSwipeAdapter {
     }
 
 
-    private void markInvitation(View convertView){
+    private void markInvitation(View convertView, final int position){
         convertView.findViewById(R.id.group_name).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
 
@@ -100,9 +105,27 @@ public class friendsAdapter extends BaseSwipeAdapter {
         btn_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "成功建起友谊的桥梁", Toast.LENGTH_SHORT).show();
-                // todo accept invitation request
+                String[] keys = {"friend_username"};
+                String[] values = {myFriends.get(position).username};
+                try{
+                    String response = Requester.post(mContext.getResources().getString(R.string.server_uri)+"agree_friendReqs",keys,values);
+                    JSONObject responseObj = new JSONObject(response);
+                    boolean valid = responseObj.getBoolean("valid");
+                    if(valid){
+                        Toast.makeText(mContext, "成功建起友谊的桥梁", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        String error_info = responseObj.getString("error_info");
+                        Toast.makeText(mContext, "错误："+error_info, Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(mContext, "不好意思，后会有期", Toast.LENGTH_SHORT).show();
+                }
+
                 //update ui
+                ((friends)mContext).updateData();
+                notifyDataSetChanged();
             }
         });
     }

@@ -51,34 +51,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
         }
     }
 
-    private void markInvitation(MyViewHolder holder){
-        holder.fname.setAlpha((float)0.5);
-        holder.fname.setWidth(200);
-        holder.fcolor.setAlpha((float)0.5);
-        holder.frank.setVisibility(View.INVISIBLE);
 
-        View convertView = holder.convertView;
-        Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
-        Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);
-        btn_deny.setVisibility(View.VISIBLE);
-        btn_accept.setVisibility(View.VISIBLE);
-        btn_deny.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext, "deny invitation", Toast.LENGTH_SHORT).show();
-                // todo deny invitation request
-                // update ui
-            }
-        });
-        btn_accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext, "accept invitation", Toast.LENGTH_SHORT).show();
-                // todo accept invitation request
-                //update ui
-            }
-        });
-    }
 
     public RankingAdapter(Context mContext, ArrayList<Integer> friend_colors, ArrayList<String> friend_names) {
         super();

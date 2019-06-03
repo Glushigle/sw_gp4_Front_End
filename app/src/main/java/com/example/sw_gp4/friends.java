@@ -3,6 +3,7 @@ package com.example.sw_gp4;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -24,51 +26,25 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class friends extends AppCompatActivity {
-    public static String currUserName;
     public static ArrayList<MyFriend> myfriends;
     private ListView mListView;
     private friendsAdapter mAdapter;
-
     public class MyFriend {
         public String name;
         public String username;
+        public boolean invitation;
         public int color;
-        MyFriend(String name, String username){
+        public MyFriend(String name, String username, boolean invitation){
             this.name = name;
             this.username = username;
             this.color = ColorConverter.fromName(username);
+            this.invitation = invitation;
         }
     }
 
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_GroupList:
-                    //进到小组页
-                    Intent intent1 = new Intent(mContext,GroupList.class);
-                    startActivity(intent1);
-                    finish();
-                    return true;
-                case R.id.navigation_showDDL:
-                    //进到个人页
-                    Intent intent2 = new Intent(mContext,showDDL.class);
-                    startActivity(intent2);
-                    finish();
-                    return true;
-                case R.id.navigation_Ranking:
-                    //进到好友页
-                    Intent intent3 = new Intent(mContext,Ranking.class);
-                    startActivity(intent3);
-                    finish();
-                    return true;
-            }
-            return false;
-        }
-    };
+            = (new Navigation(mContext)).mOnNavigationItemSelectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +59,22 @@ public class friends extends AppCompatActivity {
         mAdapter = new friendsAdapter(this, myfriends);
         mListView.setAdapter(mAdapter);
         updateData();
+
+        ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(ColorConverter.fromName(User.username));
+        ((TextView)findViewById(R.id.my_name)).setText(User.username);
+
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(mContext, "点选好友"+myfriends.get(position).username, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, FriendTask.class);
+                intent.putExtra("color", myfriends.get(position).color);
+                intent.putExtra("friend_username", myfriends.get(position).username);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void add_friend(View v){
@@ -108,26 +100,46 @@ public class friends extends AppCompatActivity {
         }
     }
 
-    private void updateData(){
+    public void updateData(){
 
         String[] keys = {};
         String[] values = {};
+        myfriends = new ArrayList<MyFriend>();
         try {
             String response = Requester.get(getResources().getString(R.string.server_uri)+"get_friendlist", keys, values);
             JSONObject responseObj = new JSONObject(response);
             JSONArray friendlist = (JSONArray) responseObj.getJSONArray("friend list");
-            myfriends = new ArrayList<MyFriend>();
             for(int i=0; i<friendlist.length(); ++i){
                 JSONObject friend = friendlist.getJSONObject(i);
-                myfriends.add(new MyFriend(
-                        friend.getString("name"),
-                        friend.getString("username")));
+                if(!friend.getString("username").equals(User.username))
+                    myfriends.add(new MyFriend(
+                            friend.getString("name"),
+                            friend.getString("username"),
+                            false));
             }
-            mAdapter.resetData(myfriends);
-            mAdapter.notifyDataSetChanged();
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try{
+            String response = Requester.get(getResources().getString(R.string.server_uri)+"get_friendreq", keys, values);
+            JSONObject responseObj = new JSONObject(response);
+            JSONArray friendlist = (JSONArray) responseObj.getJSONArray("friend requests");
+            for(int i=0; i<friendlist.length(); ++i){
+                JSONObject friend = friendlist.getJSONObject(i);
+                if(!friend.getString("username").equals(User.username))
+                    myfriends.add(new MyFriend(
+                            friend.getString("name"),
+                            friend.getString("username"),
+                            true));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mAdapter.resetData(myfriends);
+        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -162,4 +174,6 @@ public class friends extends AppCompatActivity {
                 .show();
         mAdapter.closeAllItems();
     }
+
+
 }
