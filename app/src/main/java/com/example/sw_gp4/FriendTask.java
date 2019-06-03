@@ -83,7 +83,7 @@ public class FriendTask extends AppCompatActivity {
         //this.friend = new Friend(1,0,"Kate","75%");
         // Update this friends' panel
         ((ImageView)findViewById(R.id.friend_color)).setBackgroundColor(this.friend.color);
-        ((TextView)findViewById(R.id.name)).setText(this.friend.username);
+        ((TextView)findViewById(R.id.name)).setText(this.friend.username+" 的DDL");
 
 
         // Get the friend's tasks
