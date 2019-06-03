@@ -43,8 +43,35 @@ public class friends extends AppCompatActivity {
     }
 
     private Context mContext=this;
+    String username;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = (new Navigation(mContext)).mOnNavigationItemSelectedListener;
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_GroupList:
+                    //进到小组页
+                    Intent intent1 = new Intent(mContext,GroupList.class);
+                    startActivity(intent1);
+                    finish();
+                    return true;
+                case R.id.navigation_showDDL:
+                    //进到个人页
+                    Intent intent2 = new Intent(mContext,showDDL.class);
+                    startActivity(intent2);
+                    finish();
+                    return true;
+                case R.id.navigation_Ranking:
+                    //进到好友页
+                    Intent intent3 = new Intent(mContext,friends.class);
+                    startActivity(intent3);
+                    finish();
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +88,7 @@ public class friends extends AppCompatActivity {
         updateData();
 
         ((GradientDrawable) findViewById(R.id.my_color).getBackground()).setColor(ColorConverter.fromName(User.username));
-        ((TextView)findViewById(R.id.my_name)).setText(User.username);
+        ((TextView)findViewById(R.id.my_name)).setText(User.username+" 的好友");
 
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,7 +110,7 @@ public class friends extends AppCompatActivity {
         String[] keys = {"friend_username"};
         String[] values = {friend_username};
         try{
-            String response = Requester.post(getResources().getString(R.string.server_uri)+"add_friend", keys, values);
+            String response = Requester.post(this.getString(R.string.server_uri)+"add_friend", keys, values);
             JSONObject responseObj = new JSONObject(response);
             boolean valid = responseObj.getBoolean("valid");
             if(valid){
@@ -117,8 +144,6 @@ public class friends extends AppCompatActivity {
                             friend.getString("username"),
                             false));
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -175,5 +200,9 @@ public class friends extends AppCompatActivity {
         mAdapter.closeAllItems();
     }
 
-
+    public void restart(){
+        Intent intent = new Intent(mContext,friends.class);
+        startActivity(intent);
+        finish();
+    }
 }

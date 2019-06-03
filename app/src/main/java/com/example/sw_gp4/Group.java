@@ -7,7 +7,7 @@ public class Group
     String group_name;
     String group_id;
     String owner_username = "";
-    boolean im_leader;
+    boolean im_leader = false;
     boolean invitation; // todo: if it's an invitation
     String info;
     int color_id;
@@ -57,5 +57,10 @@ public class Group
         this.color_id = color_id;
         this.firstTask = firstTask;
         this.invitation = invitation;
+    }
+
+    public void setOwner(String owner_username){
+        this.owner_username = owner_username;
+        this.im_leader = (User.username.equals(owner_username));
     }
 }

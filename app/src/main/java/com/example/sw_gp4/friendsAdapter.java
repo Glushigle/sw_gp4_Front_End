@@ -1,6 +1,7 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
@@ -50,10 +51,16 @@ public class friendsAdapter extends BaseSwipeAdapter {
     public void fillValues(final int position, View convertView) {
         friends.MyFriend friend = myFriends.get(position);
 
+        // 因为invitation会reset这些，只好再处理一次type
         ((GradientDrawable) convertView.findViewById(R.id.group_color).getBackground()).setColor(friend.color);
         ((TextView) convertView.findViewById(R.id.group_name)).setText(friend.name);
         ((TextView) convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
         ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.GONE);
+        ((Button)convertView.findViewById(R.id.btn_deny)).setVisibility(View.INVISIBLE);
+        ((Button)convertView.findViewById(R.id.btn_accept)).setVisibility(View.INVISIBLE);
+        convertView.findViewById(R.id.group_name).setAlpha(1);
+        convertView.findViewById(R.id.group_color).setAlpha(1);
+        convertView.setClickable(true);
 
         // Delete
         convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
@@ -83,12 +90,12 @@ public class friendsAdapter extends BaseSwipeAdapter {
         return position;
     }
 
-
     private void markInvitation(View convertView, final int position){
         convertView.findViewById(R.id.group_name).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
 
         ((TextView)convertView.findViewById(R.id.group_name)).setWidth(450);
+        convertView.setClickable(false);
 
         Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
         Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);
@@ -97,7 +104,6 @@ public class friendsAdapter extends BaseSwipeAdapter {
         btn_deny.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "已删除请求", Toast.LENGTH_SHORT).show();
                 String[] keys = {"friend_username"};
                 String[] values = {myFriends.get(position).username};
                 try{
@@ -106,6 +112,7 @@ public class friendsAdapter extends BaseSwipeAdapter {
                     boolean valid = responseObj.getBoolean("valid");
                     if(valid){
                         Toast.makeText(mContext, "已狠心拒绝邀请", Toast.LENGTH_SHORT).show();
+                        ((friends)mContext).restart();
                     }
                     else{
                         String error_info = responseObj.getString("error_info");
@@ -115,9 +122,6 @@ public class friendsAdapter extends BaseSwipeAdapter {
                     e.printStackTrace();
                     Toast.makeText(mContext, "怎么可以拒绝别人呢？", Toast.LENGTH_SHORT).show();
                 }
-
-                //update ui
-                ((friends)mContext).updateData();
             }
         });
         btn_accept.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +135,7 @@ public class friendsAdapter extends BaseSwipeAdapter {
                     boolean valid = responseObj.getBoolean("valid");
                     if(valid){
                         Toast.makeText(mContext, "成功建起友谊的桥梁", Toast.LENGTH_SHORT).show();
+                        ((friends)mContext).restart();
                     }
                     else{
                         String error_info = responseObj.getString("error_info");
@@ -140,9 +145,6 @@ public class friendsAdapter extends BaseSwipeAdapter {
                     e.printStackTrace();
                     Toast.makeText(mContext, "不好意思，后会有期", Toast.LENGTH_SHORT).show();
                 }
-
-                //update ui
-                ((friends)mContext).updateData();
             }
         });
     }

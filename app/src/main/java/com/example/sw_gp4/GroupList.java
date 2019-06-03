@@ -45,7 +45,33 @@ public class GroupList extends AppCompatActivity {
     private ImageButton addButton;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = (new Navigation(mContext)).mOnNavigationItemSelectedListener;
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_GroupList:
+                    //进到小组页
+                    Intent intent1 = new Intent(mContext,GroupList.class);
+                    startActivity(intent1);
+                    finish();
+                    return true;
+                case R.id.navigation_showDDL:
+                    //进到个人页
+                    Intent intent2 = new Intent(mContext,showDDL.class);
+                    startActivity(intent2);
+                    finish();
+                    return true;
+                case R.id.navigation_Ranking:
+                    //进到好友页
+                    Intent intent3 = new Intent(mContext,friends.class);
+                    startActivity(intent3);
+                    finish();
+                    return true;
+            }
+            return false;
+        }
+    };
 
     private void updateData(){
 
@@ -158,7 +184,7 @@ public class GroupList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // Todo: check invitation: if it is, don't do anything
+                if(group_.get(position).invitation) return;
 
                 Toast.makeText(mContext, "点选小组", Toast.LENGTH_SHORT).show();
                 /*TargetGroup.currGroup = group_.get(position);

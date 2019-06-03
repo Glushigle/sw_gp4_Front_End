@@ -90,18 +90,12 @@
             <Button
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/colorPrimary"
                 android:onClick="add_friend"
                 android:text="添加" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="我的好友："
-            android:paddingLeft="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"/>
 
         <ListView
             android:id="@+id/friend_list"

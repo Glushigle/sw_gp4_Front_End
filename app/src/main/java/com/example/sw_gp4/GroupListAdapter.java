@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         convertView.findViewById(R.id.group_name).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_first_task).setVisibility(View.GONE);
+        ((TextView)convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
 
         ((TextView)convertView.findViewById(R.id.group_name)).setWidth(450);
 

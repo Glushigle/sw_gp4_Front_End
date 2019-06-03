@@ -31,7 +31,7 @@ public class Requester {
 
     private static void logParams(String[] keys, String[] values){
         for(int i=0; i<keys.length; ++i){
-            Log.d(TAG, "key="+keys[i]+"; value="+values[i]);
+            Log.d(TAG, keys[i]+"="+values[i]);
         }
     }
 
