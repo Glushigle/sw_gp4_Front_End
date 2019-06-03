@@ -34,8 +34,8 @@ public class WriteDDL extends AppCompatActivity {
     private String group_id;
     private String group_name;
     private Task task = new Task();
-    private int entry_year = -1;
-    private int entry_month = -1;
+    //private int entry_year = -1;
+    //private int entry_month = -1;
 
     private Context mContext=this;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -138,7 +138,7 @@ public class WriteDDL extends AppCompatActivity {
     private int[] next(String gap){
         Calendar cal = Calendar.getInstance();
         // 如果year和month 和今天一样 或 -1，直接下小时
-        if(this.entry_year==-1||this.entry_month==-1||(cal.YEAR ==this.entry_year && cal.MONTH+1==this.entry_month)) {
+        //if(this.entry_year==-1||this.entry_month==-1||(cal.YEAR ==this.entry_year && cal.MONTH+1==this.entry_month)) {
             switch (gap) {
                 case "day": // 隔天早九
                     cal.add(Calendar.DATE, 1);
@@ -148,11 +148,11 @@ public class WriteDDL extends AppCompatActivity {
                     cal.add(Calendar.HOUR_OF_DAY, 1);
                     break;
             }
-        }
-        else{ // 有傳year & month進來
-            int[] dt = {this.entry_year, this.entry_month, cal.get(Calendar.DATE), 0, 0};
-            return dt;
-        }
+        //}
+        //else{ // 有傳year & month進來
+        //    int[] dt = {this.entry_year, this.entry_month, cal.get(Calendar.DATE), 0, 0};
+        //    return dt;
+        //}
         return cal2int(cal);
     }
 
@@ -179,15 +179,15 @@ public class WriteDDL extends AppCompatActivity {
                 this.task.id = extras.getString("task_id");
                 this.group_id = extras.getString("group_id");
                 this.group_name = extras.getString("group_name");
-                this.entry_year = extras.getInt("entry_year");
-                this.entry_month = extras.getInt("entry_month");
+                //this.entry_year = extras.getInt("entry_year");
+                //this.entry_month = extras.getInt("entry_month");
             }
         } else {
             this.task.id = (String) savedInstanceState.getSerializable("task_id");
             this.group_id = (String) savedInstanceState.getSerializable("group_id");
             this.group_name = (String) savedInstanceState.getSerializable("group_name");
-            this.entry_year = (Integer) savedInstanceState.getSerializable("entry_year");
-            this.entry_month = (Integer) savedInstanceState.getSerializable("entry_month");
+            //this.entry_year = (Integer) savedInstanceState.getSerializable("entry_year");
+            //this.entry_month = (Integer) savedInstanceState.getSerializable("entry_month");
         }
         this.existing = (this.task.id != null);
         this.personal = (this.group_id == null);
@@ -239,7 +239,10 @@ public class WriteDDL extends AppCompatActivity {
                 new DatePickerDialog(mContext, 0, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        ddl_date.setText(Task.getZhDate(i,i1,i2));
+                        ddl_date.setText(Task.getZhDate(i,i1+1,i2));
+                        task.finish_time[0] = i;
+                        task.finish_time[1] = i1+1;
+                        task.finish_time[2] = i2;
                     }
                 },task.finish_time[0],task.finish_time[1]-1,task.finish_time[2]).show();
             }
@@ -251,6 +254,8 @@ public class WriteDDL extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                         ddl_time.setText(Task.getZhTime(i,i1));
+                        task.finish_time[3] = i;
+                        task.finish_time[4] = i1;
                     }
                 },task.finish_time[3],task.finish_time[4],false).show();
             }

@@ -90,13 +90,13 @@ public class TargetGroup extends AppCompatActivity
                     (
                             (String) responseObj.getString("group_id"),
                             (String) responseObj.getString("name"),
-                            //(String) responseObj.getString("owner_id"),
                             (String) responseObj.getString("info"),
                             ColorConverter.fromId((String) responseObj.getString("group_id")),
                             null,//new DDLForGroup("13:00","Test 3")
                             false
                         )
                     );
+                    currGroup.owner_username = User.username;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

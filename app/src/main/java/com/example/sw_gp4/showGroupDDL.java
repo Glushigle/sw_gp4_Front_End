@@ -178,7 +178,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         String full_url = this.getString(R.string.server_uri)+"get_group_task";
         String[] keys = {"group_id"};
         String[] values = {groupId};
-        String response = Requester.get(full_url,keys,values);
+        String response = Requester.post(full_url,keys,values);
         try {
             JSONObject responseObj = new JSONObject(response);
             boolean valid = responseObj.getBoolean("valid");

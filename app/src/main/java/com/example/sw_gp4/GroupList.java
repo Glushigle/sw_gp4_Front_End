@@ -74,8 +74,8 @@ public class GroupList extends AppCompatActivity {
 
         // Groups I'm already in
         try {
-            String[] keys = {"username"};
-            String[] values = {currUserName};
+            String[] keys = {};
+            String[] values = {};
             String response = Requester.get(getResources().getString(R.string.server_uri)+"get_grouplist", keys, values);
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
@@ -88,48 +88,46 @@ public class GroupList extends AppCompatActivity {
                         null,
                         false
                 ));
-                //TODO  以下有Server returned non-OK status: 500，自己debug
-                /*String[] keys2 = {"group_id"};
+                String[] keys2 = {"group_id"};
                 String[] values2 = {(String)groups.getJSONObject(i).getString("group_id")};
-                String response2 = Requester.get(getResources().getString(R.string.server_uri)+"get_group_task", keys2, values2);
-                    JSONObject responseObj2 = new JSONObject(response2);
-                    JSONArray tasks = (JSONArray) responseObj2.getJSONArray("task list");
-                    if(!tasks.isNull(0)) //todo:允许无任务
-                    {
-                        group_.add
-                                (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
-                                        (
-                                                (String) groups.getJSONObject(i).getString("group_id"),
-                                                (String) groups.getJSONObject(i).getString("name"),
+                String response2 = Requester.post(getResources().getString(R.string.server_uri)+"get_group_task", keys2, values2);
+                JSONObject responseObj2 = new JSONObject(response2);
+                JSONArray tasks = (JSONArray) responseObj2.getJSONArray("task list");
+                if(!tasks.isNull(0)) //todo:允许无任务
+                {
+                    group_.add
+                            (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
+                                    (
+                                            (String) groups.getJSONObject(i).getString("group_id"),
+                                            (String) groups.getJSONObject(i).getString("name"),
+                                            (String) groups.getJSONObject(i).getString("info"),
+                                            ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
+                                            new DDLForGroup
+                                                    (
+                                                            tasks.getJSONObject(0).getString("finish_time"),
+                                                            tasks.getJSONObject(0).getString("title")
+                                                    ),
+                                            false
+                                    )
 
-                                                //(String) groups.getJSONObject(i).getString("owner_id"),
+                            );
+                }
+                else
+                {
+                    group_.add
+                            (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
+                                    (
+                                            (String) groups.getJSONObject(i).getString("group_id"),
+                                            (String) groups.getJSONObject(i).getString("name"),
+                                            (String) groups.getJSONObject(i).getString("info"),
+                                            ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
+                                            null,
+                                            false
+                                    )
 
-                                                (String) groups.getJSONObject(i).getString("info"),
-                                                ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
-                                                new DDLForGroup
-                                                        (
-                                                                tasks.getJSONObject(0).getString("finish_time"),
-                                                                tasks.getJSONObject(0).getString("title")
-                                                        )
-                                        )
-
-                                );
-                    }
-                    else
-                    {
-                        group_.add
-                                (new Group // Group(String group_id, String group_name, String owner_id, String info, int color_id)
-                                        (
-                                                (String) groups.getJSONObject(i).getString("group_id"),
-                                                (String) groups.getJSONObject(i).getString("name"),
-                                                //(String) groups.getJSONObject(i).getString("owner_id"),
-                                                (String) groups.getJSONObject(i).getString("info"),
-                                                ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
-                                                null
-                                        )
-
-                                );
-                    }*/
+                            );
+                }
+                String responseOwner = Requester.get(getResources().getString(R.string.server_uri)+"", keys2, values2);
             }
         } catch (JSONException e) {
             e.printStackTrace();

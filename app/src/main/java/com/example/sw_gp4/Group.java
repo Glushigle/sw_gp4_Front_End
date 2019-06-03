@@ -6,8 +6,8 @@ public class Group
 {
     String group_name;
     String group_id;
-    //String owner_id;
-    //boolean im_leader;
+    String owner_username = "";
+    boolean im_leader;
     boolean invitation; // todo: if it's an invitation
     String info;
     int color_id;
@@ -53,7 +53,6 @@ public class Group
         this.group_name = group_name;
         this.group_id = group_id;
         this.id = Integer.parseInt(group_id);
-        //this.owner_id = owner_id;
         this.info = info;
         this.color_id = color_id;
         this.firstTask = firstTask;

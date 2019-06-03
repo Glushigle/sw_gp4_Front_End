@@ -106,8 +106,8 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         };
         color_button.setOnClickListener(fakeItemClick);
 
-        //if(group.im_leader)
-        //    ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
+        if(group.im_leader)
+            ((View)convertView.findViewById(R.id.leader_sign)).setVisibility(View.VISIBLE);
 
         //todo: Mark group invitation
         if(group.invitation)
