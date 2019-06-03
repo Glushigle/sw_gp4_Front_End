@@ -91,11 +91,10 @@ public class TargetGroupDDL extends AppCompatActivity
                     (
                             (String) responseObj.getString("group_id"),
                             (String) responseObj.getString("name"),
-                            (String) responseObj.getString("owner_id"),
                             (String) responseObj.getString("info"),
-                            colors[(responseObj.getInt("group_id")-1)%colors.length],
-                            //new DDLForGroup("13:00","Test 3")
-                            null
+                            ColorConverter.fromName((String) responseObj.getString("name")),
+                            new DDLForGroup("13:00","Test 3"),
+                            false
                         )
                     );
                 }
