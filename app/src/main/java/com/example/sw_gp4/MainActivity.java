@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
 
-        String full_url = getResources().getString(R.string.server_uri)+"login";
+        String full_url = this.getString(R.string.server_uri)+"login";
         String[] keys = {"username","password"};
         String[] values = {username.getText().toString(), password.getText().toString()};
         String response = Requester.post(full_url, keys, values);
@@ -57,28 +57,6 @@ public class MainActivity extends AppCompatActivity {
     public void register(View v) {
         Intent reg = new Intent(this,registation.class);
         startActivity(reg);
-//        EditText username = (EditText) findViewById(R.id.et_user_name) ;
-//        EditText password = (EditText) findViewById(R.id.et_psw) ;
-//
-//        String full_url = getResources().getString(R.string.server_uri)+"register";
-//        String[] keys = {"username","password"};
-//        String[] values = {username.getText().toString(), password.getText().toString()};
-//        String response = Requester.post(full_url, keys, values);
-//        try {
-//            Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
-//            JSONObject responseObj = new JSONObject(response);
-//            boolean success = responseObj.getBoolean("valid");
-//            if (success){
-//                Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
-//            }else{
-//                String info = responseObj.getString("error_info");
-//                Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
-//            }
-//
-//        } catch (JSONException e) {
-//            Toast.makeText(this, "bug", Toast.LENGTH_SHORT).show();
-//            e.printStackTrace();
-//        }
     }
 
 }

@@ -80,7 +80,7 @@ public class TargetGroup extends AppCompatActivity
         {
             String[] keys = {"name"};
             String[] values = {"New Group"};
-            String response = Requester.post(getResources().getString(R.string.server_uri)+"create_group", keys, values);
+            String response = Requester.post(this.getString(R.string.server_uri)+"create_group", keys, values);
             try
             {
                 JSONObject responseObj = new JSONObject(response);
@@ -101,18 +101,19 @@ public class TargetGroup extends AppCompatActivity
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //String[] keys2 = {"group_id","title","deadline"};
-            //String[] values2 = {currGroup.group_id,"Test 2","2018-09-09 12:00"};
-            //String response2 = Requester.post(getResources().getString(R.string.server_uri)+"create_group_task", keys2, values2);
+            String[] keys2 = {"group_id","title","deadline"};
+            String[] values2 = {currGroup.group_id,"Test 2","2018-09-09 12:00"};
+            String response2 = Requester.post(this.getString(R.string.server_uri)+"create_group_task", keys2, values2);
         }
         else
         {
             currGroup = GroupList.group_.get(currPosition);
         }
         //获取组员列表
+        System.out.println("currGroup = "+currGroup);
         String[] keys = {"group_id"};
         String[] values = {currGroup.group_id};
-        String response = Requester.get(getResources().getString(R.string.server_uri)+"get_group_member", keys, values);
+        String response = Requester.post(this.getString(R.string.server_uri)+"get_group_member", keys, values);
         try
         {
             JSONObject responseObj = new JSONObject(response);
@@ -203,7 +204,7 @@ public class TargetGroup extends AppCompatActivity
                 currGroup.group_id,
                 userAwaiting.getText().toString()
         };
-        String response = Requester.post(getResources().getString(R.string.server_uri)+"add_member", keys, values);
+        String response = Requester.post(this.getString(R.string.server_uri)+"add_member", keys, values);
 
         try
         {
