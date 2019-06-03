@@ -106,14 +106,6 @@ public class GroupList extends AppCompatActivity {
             JSONObject responseObj = new JSONObject(response);
             JSONArray groups = (JSONArray) responseObj.getJSONArray("group list");
             for(int i=0; i<groups.length(); ++i){
-                group_.add(new Group(
-                        (String) groups.getJSONObject(i).getString("group_id"),
-                        (String) groups.getJSONObject(i).getString("name"),
-                        (String) groups.getJSONObject(i).getString("info"),
-                        ColorConverter.fromId(groups.getJSONObject(i).getInt("group_id")),
-                        null,
-                        false
-                ));
                 String[] keys2 = {"group_id"};
                 String[] values2 = {(String)groups.getJSONObject(i).getString("group_id")};
                 String response2 = Requester.post(getResources().getString(R.string.server_uri)+"get_group_task", keys2, values2);
