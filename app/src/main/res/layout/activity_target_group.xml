@@ -45,25 +45,6 @@
                 android:visibility="visible"
                 app:srcCompat="@color/colorPrimaryDark" />
 
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="230dp"
-                android:layout_height="match_parent"
-                android:layout_margin="0dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="false"
-                android:background="@color/colorPrimaryDark"
-                android:cropToPadding="false"
-                android:paddingLeft="10dp"
-                android:paddingRight="17dp"
-                android:scaleType="fitCenter"
-                android:text="SAVE"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_ddl_save" />
-
-
 
         </LinearLayout>
 
@@ -72,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark"
+            android:editable="false"
             android:ems="10"
             android:gravity="bottom"
             android:hint="小组名"
@@ -109,10 +91,14 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/btn_add_member"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="ADD" />
+            android:id="@+id/button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="111dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:onClick="OnAddClicked"
+            android:text="添加" />
     </LinearLayout>
 
 

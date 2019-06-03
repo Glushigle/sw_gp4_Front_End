@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -238,13 +239,49 @@ public class GroupList extends AppCompatActivity {
         mAdapter.closeAllItems();
     }
 
-    public void OnAddClicked(View view){
-        //TargetGroupDDL.isAdding = true;//代表是添加
-        //startActivity(new Intent(mContext, TargetGroupDDL.class));
-        startActivity(new Intent(mContext,showGroupDDL.class));
-        finish();
-    }
+    public void OnAddClicked(View view)
+    {
+        final EditText editText = new EditText(GroupList.this);
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("请输入小组名").setView(editText)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
+                        String[] keys = {"name"};
+                        System.out.println("小组名为" + editText.getText().toString().trim());
+                        String[] values = {editText.getText().toString().trim()};
+                        String response = Requester.post(
+                                //R.string.server_uri
+                                "https://222.29.159.164:10014/create_group"
+                                //  + "create_group"
+                                , keys, values);
+                        try
+                        {
+                            JSONObject responseObj = new JSONObject(response);
+                            boolean valid = responseObj.getBoolean("valid");
+                            if (valid)
+                            {
+                                Toast.makeText(mContext, "已添加小组", Toast.LENGTH_SHORT).show();
+                                updateData();
+                            }
+                            else
+                            {
+                                Toast.makeText(mContext, "已添加小组", Toast.LENGTH_SHORT).show();
 
+                            }
+                        } catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
+        mAdapter.closeAllItems();
+
+    }
     public void restart(){
         Intent intent = new Intent(mContext,GroupList.class);
         startActivity(intent);
