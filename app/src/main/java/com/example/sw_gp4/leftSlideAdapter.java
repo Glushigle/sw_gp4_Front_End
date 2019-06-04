@@ -66,7 +66,7 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
         LinearLayout ll_tmp = (LinearLayout)holder.ll_text.getParent();
         ll_tmp.setBackground(context.getDrawable(R.drawable.border));
         //ll_tmp.setBackgroundResource(0);
-        DDLText ddl = data.get(position);   //获取ddl信息
+        final DDLText ddl = data.get(position);   //获取ddl信息
         if (ddl.ddl_status.equals("1")) {
             holder.tv_title.setBackgroundColor(Color.rgb(192,192,192));
             holder.tv_time.setBackgroundColor(Color.rgb(192,192,192));
@@ -118,11 +118,13 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
         });
         holder.ll_text.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                int pos = holder.getLayoutPosition();
-                holder.tv_title.setBackgroundColor(Color.rgb(192,192,192));
-                holder.tv_time.setBackgroundColor(Color.rgb(192,192,192));
-                holder.tv_description.setBackgroundColor(Color.rgb(192,192,192));
-                clickListener.onItemClick(v,pos,leftSlideAdapter.this);
+                if (ddl.ddl_status.equals("0")) {
+                    int pos = holder.getLayoutPosition();
+                    holder.tv_title.setBackgroundColor(Color.rgb(192,192,192));
+                    holder.tv_time.setBackgroundColor(Color.rgb(192,192,192));
+                    holder.tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                    clickListener.onItemClick(v,pos,leftSlideAdapter.this);
+                }
                 return true;
             }
         });

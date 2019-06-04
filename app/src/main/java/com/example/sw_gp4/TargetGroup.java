@@ -1,10 +1,12 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,15 +26,15 @@ import java.util.ArrayList;
 public class TargetGroup extends AppCompatActivity
 {
     public static ArrayList<String> userNames;
-    public static Group currGroup;
-    public static int currPosition;
+    public static String groupId = null;
+    public static String groupName = null;
     public static boolean isAdding;
     private ListView mListView;
     private ListViewAdapterForTargetGroup mAdapter;
     private Context mContext = this;
     private Button addButton;
     //private EditText targetGroupName;
-    private Button changeButton;
+    private  EditText GN;
     private EditText userAwaiting;
     private ImageButton closeButton;
     private int colors[] = {
@@ -73,44 +75,10 @@ public class TargetGroup extends AppCompatActivity
 
     private void updateData()
     {
-        if(isAdding)
-        {
-            String[] keys = {"name"};
-            String[] values = {"New Group"};
-            String response = Requester.post(this.getString(R.string.server_uri)+"create_group", keys, values);
-            try
-            {
-                JSONObject responseObj = new JSONObject(response);
-                boolean valid = responseObj.getBoolean("valid");
-                if(valid){
-                    currGroup = (new Group
-                    (
-                            (String) responseObj.getString("group_id"),
-                            (String) responseObj.getString("name"),
-                            (String) responseObj.getString("info"),
-                            ColorConverter.fromId((String) responseObj.getString("group_id")),
-                            null,//new DDLForGroup("13:00","Test 3")
-                            false
-                        )
-                    );
-                    currGroup.owner_username = User.username;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            String[] keys2 = {"group_id","title","deadline"};
-            String[] values2 = {currGroup.group_id,"Test 2","2018-09-09 12:00"};
-            String response2 = Requester.post(this.getString(R.string.server_uri)+"create_group_task", keys2, values2);
-        }
-        else
-        {
-            currGroup = GroupList.group_.get(currPosition);
-        }
-        //获取组员列表
-        System.out.println("currGroup = "+currGroup);
+        GN.setText(groupName);
         String[] keys = {"group_id"};
-        String[] values = {currGroup.group_id};
-        String response = Requester.post(this.getString(R.string.server_uri)+"get_group_member", keys, values);
+        String[] values = {groupId};
+        String response = Requester.post("https://222.29.159.164:10014/"+"get_group_member", keys, values);
         try
         {
             JSONObject responseObj = new JSONObject(response);
@@ -140,7 +108,13 @@ public class TargetGroup extends AppCompatActivity
         navigation.setSelectedItemId(R.id.navigation_GroupList);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        Intent intent = getIntent();
+        groupName = intent.getStringExtra("group_name");
+        groupId = intent.getStringExtra("group_id");
+
         // Group List
+
+        GN = findViewById(R.id.group_name);
         updateData();
         mListView = (ListView) findViewById(R.id.ddl_list);
         mAdapter = new ListViewAdapterForTargetGroup(this);
@@ -155,7 +129,7 @@ public class TargetGroup extends AppCompatActivity
             }
         });
         mListView = (ListView) findViewById(R.id.ddl_list);
-        addButton = (Button) findViewById(R.id.btn_add_member);
+        addButton = (Button) findViewById(R.id.button);
         addButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -176,7 +150,47 @@ public class TargetGroup extends AppCompatActivity
             }
         });
 
-
+        GN.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                final EditText editText = new EditText(TargetGroup.this);
+                new AlertDialog.Builder(TargetGroup.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("请输入小组名").setView(editText)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int whichButton)
+                            {
+                                String[] keys = {"name","group_id"};
+                                String[] values = {editText.getText().toString().trim(),groupId};
+                                String response = Requester.post(
+                                        //R.string.server_uri
+                                        "https://222.29.159.164:10014/update_group"
+                                        //  + "create_group"
+                                        , keys, values);
+                                try
+                                {
+                                    JSONObject responseObj = new JSONObject(response);
+                                    boolean valid = responseObj.getBoolean("valid");
+                                    if (valid)
+                                    {
+                                        Toast.makeText(mContext, "已添加小组", Toast.LENGTH_SHORT).show();
+                                        groupName = editText.getText().toString().trim();
+                                        updateData();
+                                    }
+                                } catch (JSONException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+                mAdapter.closeAllItems();
+            }
+        });
         userAwaiting = (EditText) findViewById(R.id.text_member_name);
 
 
@@ -188,8 +202,35 @@ public class TargetGroup extends AppCompatActivity
         // Toast the returns; update if successful
         if (valid)
         {
-            userNames.remove(position);
-            mAdapter.resetData(userNames);
+            String[] keys = {"user_username","group_id"};
+            String[] values = {userNames.get(position),groupId};
+            String response = Requester.post(
+                    //R.string.server_uri
+                    "https://222.29.159.164:10014/delete_member"
+                    //  + "create_group"
+                    , keys, values);
+            try
+            {
+                JSONObject responseObj = new JSONObject(response);
+                boolean valid2 = responseObj.getBoolean("valid");
+                if (valid2)
+                {
+                    userNames.remove(position);
+                    mAdapter.resetData(userNames);
+
+                    Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                    updateData();
+                }
+                else
+                {
+                    String error_info = responseObj.getString("error_info");
+                    Toast.makeText(mContext, "删除失败："+error_info, Toast.LENGTH_SHORT).show();
+
+                }
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
         }
         return valid;
     }
@@ -198,10 +239,10 @@ public class TargetGroup extends AppCompatActivity
     {
         String[] keys = {"group_id", "user_username"};
         String[] values = {
-                currGroup.group_id,
+                groupId,
                 userAwaiting.getText().toString()
         };
-        String response = Requester.post(this.getString(R.string.server_uri)+"add_member", keys, values);
+        String response = Requester.post("https://222.29.159.164:10014/"+"add_member", keys, values);
 
         try
         {

@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -84,7 +85,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         // Navigation bar
         // Every activity with a navigation bar should add these lines
         BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.navigation_showDDL);
+        navigation.setSelectedItemId(R.id.navigation_GroupList);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //获取小组信息（id、name）
         Intent intent = getIntent();
@@ -93,6 +94,28 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         if (groupId == null || groupName == null) {
             Toast.makeText(this, "未传入小组id和小组name", Toast.LENGTH_SHORT).show();
             finish();
+        }
+        //判定权限
+        String full_url = this.getString(R.string.server_uri)+"check_ownership";
+        String[] keys = {"group_id"};
+        String[] values = {groupId};
+        String response = Requester.post(full_url,keys,values);
+        try {
+            JSONObject responseObj = new JSONObject(response);
+            boolean valid = responseObj.getBoolean("valid");
+            if (valid) {
+                isChangeable = true;
+            }
+            else {
+                isChangeable = false;
+            }
+        } catch(JSONException e) {
+            Toast.makeText(this, "bug in onCreate()", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        if (!isChangeable) {
+            ImageButton addBtn = findViewById(R.id.groupddlAddBtn);
+            addBtn.setVisibility(View.GONE);
         }
         //设置顶部标题栏
         Calendar cal = Calendar.getInstance();
@@ -119,26 +142,8 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         Toolbar toolbar = findViewById(R.id.groupddlTbar);
         toolbar.setTitle(groupName);
         setSupportActionBar(toolbar);
-        //判定权限
-        String full_url = this.getString(R.string.server_uri)+"check_ownership";
-        String[] keys = {"group_id"};
-        String[] values = {groupId};
-        String response = Requester.post(full_url,keys,values);
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if (valid) {
-                isChangeable = true;
-            }
-            else {
-                isChangeable = false;
-            }
-        } catch(JSONException e) {
-            Toast.makeText(this, "bug in onCreate()", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
         //显示DDL内容
-        show_ddl_view(initYear,initMonth,isChangeable);
+        show_ddl_view(initYear,initMonth+1,isChangeable);
     }
     private void show_ddl_view(int year, int month, boolean changeable) {
         LinearLayout li_parent = findViewById(R.id.groupddlDisp);//父布局
@@ -176,7 +181,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         }
     }
     private List<DDLOfDay> getDataOfDate(int year, int month) {
-        Log.d("getdataofdate","in");
+        Log.d("getdataofdate",String.valueOf(year)+String.valueOf(month));
         String full_url = this.getString(R.string.server_uri)+"get_group_task";
         String[] keys = {"group_id"};
         String[] values = {groupId};
@@ -187,7 +192,6 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             if (valid){
                 JSONArray allData = responseObj.getJSONArray("task list");//所有数据
                 int size = allData.length();//数据长度
-                Log.d("data size = ",String.valueOf(size));
                 List<DDLOfDay> ddlofmonth = new ArrayList<>();//指定月份的所有ddl
                 int currentDay = 0;
                 String ym = String.format("%d-%02d",year,month);
@@ -195,7 +199,6 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
                 JSONObject tmpObj;
                 for (int i = 0; i < size; ++i) {//提取需要的数据
                     tmpObj = allData.getJSONObject(i);
-                    Log.d("date = ",tmpObj.getString("finish_time"));
                     String deadline = tmpObj.getString("finish_time");
                     if (deadline.startsWith(ym)) {//指定月份的ddl
                         String dy = deadline.substring(8,10);//该月的第几天
@@ -203,24 +206,24 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
                         if (d != currentDay) {
                             if (currentDay != 0) {
                                 ddlofmonth.add(ddlofday);//存储之前某一天的数据
-                                ddlofday.data.clear();
                             }
                             currentDay = d;
-                            ddlofday.day = dy;
+                            String wk = null;
                             try {
                                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 Date temp = format.parse(deadline);
                                 format = new SimpleDateFormat("E");
-                                ddlofday.week = format.format(temp);//星期几
+                                wk = format.format(temp);//星期几
                             } catch(ParseException e) {
                                 e.printStackTrace();
                             }
+                            ddlofday = new DDLOfDay(dy,wk);
                         }
                         String id = tmpObj.getString("task_id");//ddl信息
                         String time = deadline.substring(11,16);
                         String title = tmpObj.getString("title");
                         String description = tmpObj.getString("info");
-                        String status = tmpObj.getString("status");
+                        String status = tmpObj.getString("status");Log.d("status",status);
                         ddlofday.data.add(new DDLText(id,time,status,title,description));
                     }
                 }
@@ -316,7 +319,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             li_tmp.setBackgroundColor(Color.rgb(255,255,255));
             li_tmp.setBackground(this.getDrawable(R.drawable.border));
             //标题
-            TextView tv_title = new TextView(this);
+            final TextView tv_title = new TextView(this);
             tv_title.setLayoutParams(para);
             //tv_title.setBackgroundColor(Color.rgb(255,255,255));背景颜色
             tv_title.setMaxHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
@@ -328,7 +331,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP,19);
             tv_title.setTypeface(Typeface.DEFAULT_BOLD);
             //时间
-            TextView tv_time = new TextView(this);
+            final TextView tv_time = new TextView(this);
             tv_time.setLayoutParams(para);
             //tv_time.setBackgroundColor(Color.rgb(255,255,255));背景颜色
             tv_time.setMaxHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
@@ -340,7 +343,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             tv_time.setTypeface(Typeface.DEFAULT_BOLD);
             //描述
-            TextView tv_description = new TextView(this);
+            final TextView tv_description = new TextView(this);
             tv_description.setLayoutParams(para);
             //tv_description.setBackgroundColor(Color.rgb(255,255,255));背景颜色
             tv_description.setMaxHeight((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
@@ -351,7 +354,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_description.setTextColor(Color.rgb(0,0,0));//文本颜色
             tv_description.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             //设置内容
-            DDLText ddl = data.get(i);
+            final DDLText ddl = data.get(i);
             if (ddl.ddl_status.equals("1")) {
                 tv_title.setBackgroundColor(Color.rgb(192,192,192));
                 tv_time.setBackgroundColor(Color.rgb(192,192,192));
@@ -375,6 +378,17 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             li_tmp.addView(tv_title);
             li_tmp.addView(tv_time);
             li_tmp.addView(tv_description);
+            li_tmp.setOnLongClickListener(new View.OnLongClickListener() {
+                public boolean onLongClick(View v) {
+                    if (ddl.ddl_status.equals("0")) {
+                        tv_title.setBackgroundColor(Color.rgb(192,192,192));
+                        tv_time.setBackgroundColor(Color.rgb(192,192,192));
+                        tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                        onFinishTask(ddl.ddl_id);
+                    }
+                    return true;
+                }
+            });
             li_ddl.addView(li_tmp);
         }
         li_date_ddl.addView(li_ddl);
@@ -397,13 +411,10 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         startActivity(new Intent(this,GroupList.class));
         finish();
     }
-    //以下为leftSlideAdapter.slideViewClickListener
-    public void onItemClick(View v, int position, leftSlideAdapter adapter) {
-        Log.d("disp","onItemClick");
-        DDLText ddl = adapter.getData(position);
-        String full_url = this.getString(R.string.server_uri)+"finishtask";
-        String[] keys = {"task_id"};
-        String[] values = {ddl.ddl_id};
+    private void onFinishTask(String task_id) {
+        String full_url = this.getString(R.string.server_uri)+"update_group_task";
+        String[] keys = {"task_id", "group_id", "status"};
+        String[] values = {task_id, groupId, "1"};
         String response = Requester.post(full_url,keys,values);
         try {
             JSONObject responseObj = new JSONObject(response);
@@ -415,9 +426,15 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
                 Toast.makeText(this, "标记失败", Toast.LENGTH_SHORT).show();
             }
         } catch(JSONException e) {
-            Toast.makeText(this, "bug in onItemClick()", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "bug in onFinishTask()", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+    //以下为leftSlideAdapter.slideViewClickListener
+    public void onItemClick(View v, int position, leftSlideAdapter adapter) {
+        Log.d("disp","onItemClick");
+        DDLText ddl = adapter.getData(position);
+        onFinishTask(ddl.ddl_id);
     }
     public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
