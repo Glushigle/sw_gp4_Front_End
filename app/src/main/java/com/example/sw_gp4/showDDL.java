@@ -135,7 +135,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             li_parent.addView(tv_none);
         }
         else {
-            int sz = ddlofmonth.size();Log.d("datasize",String.valueOf(sz));
+            int sz = ddlofmonth.size();
             DDLOfDay ddlofday;
             for (int i = 0; i < sz; ++i) {
                 ddlofday = ddlofmonth.get(i);
@@ -144,7 +144,6 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         }
     }
     private List<DDLOfDay> getDataOfDate(int year, int month) {
-        Log.d("getdataofdate",String.valueOf(year)+String.valueOf(month));
         String full_url = this.getString(R.string.server_uri)+"get_tasklist";
         String[] keys = {};
         String[] values = {};
@@ -155,7 +154,6 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             if (valid){
                 JSONArray allData = responseObj.getJSONArray("task list");//所有数据
                 int size = allData.length();//数据长度
-                Log.d("data size = ",String.valueOf(size));
                 List<DDLOfDay> ddlofmonth = new ArrayList<>();//指定月份的所有ddl
                 int currentDay = 0;
                 String ym = String.format("%d-%02d",year,month);
@@ -163,26 +161,24 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                 JSONObject tmpObj;
                 for (int i = 0; i < size; ++i) {//提取需要的数据
                     tmpObj = allData.getJSONObject(i);
-                    Log.d("date = ",tmpObj.getString("finish_time"));
                     String deadline = tmpObj.getString("finish_time");
                     if (deadline.startsWith(ym)) {//指定月份的ddl
                         String dy = deadline.substring(8,10);//该月的第几天
                         int d = Integer.parseInt(dy);
                         if (d != currentDay) {
-                            if (currentDay != 0) {Log.d("savedata",String.valueOf(currentDay)+" "+String.valueOf(ddlofday.data.size()));
+                            if (currentDay != 0)
                                 ddlofmonth.add(ddlofday);//存储之前某一天的数据
-                                ddlofday.data.clear();
-                            }
                             currentDay = d;
-                            ddlofday.day = dy;
+                            String wk = null;
                             try {
                                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 Date temp = format.parse(deadline);
                                 format = new SimpleDateFormat("E");
-                                ddlofday.week = format.format(temp);//星期几
+                                wk = format.format(temp);//星期几
                             } catch(ParseException e) {
                                 e.printStackTrace();
                             }
+                            ddlofday = new DDLOfDay(dy,wk);
                         }
                         String id = tmpObj.getString("task_id");//ddl信息
                         String time = deadline.substring(11,16);
@@ -192,8 +188,8 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                         ddlofday.data.add(new DDLText(id,time,status,title,description));
                     }
                 }
-                if (currentDay != 0){//最后出现的一天的ddl
-                    ddlofmonth.add(ddlofday);Log.d("savedata",String.valueOf(currentDay)+" "+String.valueOf(ddlofday.data.size()));}
+                if (currentDay != 0)//最后出现的一天的ddl
+                    ddlofmonth.add(ddlofday);
                 return ddlofmonth;
             }
             else{
