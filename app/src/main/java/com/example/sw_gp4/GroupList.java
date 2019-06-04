@@ -268,7 +268,7 @@ public class GroupList extends AppCompatActivity {
                             }
                             else
                             {
-                                Toast.makeText(mContext, "已添加小组", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "小组创建失败", Toast.LENGTH_SHORT).show();
 
                             }
                         } catch (JSONException e)

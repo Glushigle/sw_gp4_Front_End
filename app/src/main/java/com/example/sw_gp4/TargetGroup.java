@@ -217,8 +217,15 @@ public class TargetGroup extends AppCompatActivity
                 {
                     userNames.remove(position);
                     mAdapter.resetData(userNames);
+
                     Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
                     updateData();
+                }
+                else
+                {
+                    String error_info = responseObj.getString("error_info");
+                    Toast.makeText(mContext, "删除失败："+error_info, Toast.LENGTH_SHORT).show();
+
                 }
             } catch (JSONException e)
             {
