@@ -93,30 +93,57 @@ public class WriteDDL extends AppCompatActivity {
         public void onClick(View view) {
 
             String response = null;
+            if(existing){
+                // Update Personal DDL
+                if(((WriteDDL)mContext).personal){
+                    String[] keys = {"title","finish_time","info","publicity", "task_id"};
+                    String[] values = {
+                            fetchInput(R.id.ddl_title),
+                            formattedDDL(),
+                            fetchInput(R.id.ddl_info),
+                            ((Switch)findViewById(R.id.ddl_public)).isChecked()? "0":"1",
+                            task.id
+                    };
+                    response = Requester.post(getResources().getString(R.string.server_uri)+"update_task",keys,values);
+                }
 
-            // Save New Personal DDL
-            if(((WriteDDL)mContext).personal){
-                String[] keys = {"title","finish_time","info","publicity"};
-                String[] values = {
-                        fetchInput(R.id.ddl_title),
-                        formattedDDL(),
-                        fetchInput(R.id.ddl_info),
-                        ((Switch)findViewById(R.id.ddl_public)).isChecked()? "0":"1"
-                };
-                response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
+                // Update Group DDL
+                else{
+                    String[] keys = {"title","finish_time","info", "task_id", "group_id"};
+                    String[] values = {
+                            fetchInput(R.id.ddl_title),
+                            formattedDDL(),
+                            fetchInput(R.id.ddl_info),
+                            task.id,
+                            ((WriteDDL)mContext).group_id
+                    };
+                    response = Requester.post(getResources().getString(R.string.server_uri)+"update_group_task",keys,values);
+                }
             }
-
-            // Save New Group DDL
             else{
-                String[] keys = {"title","deadline","info","publicity", "group_id"};
-                String[] values = {
-                        fetchInput(R.id.ddl_title),
-                        formattedDDL(),
-                        fetchInput(R.id.ddl_info),
-                        ((Switch)findViewById(R.id.ddl_public)).isChecked()? "1":"0",
-                        ((WriteDDL)mContext).group_id
-                };
-                response = Requester.post(getResources().getString(R.string.server_uri)+"create_group_task",keys,values);
+                // Save New Personal DDL
+                if(((WriteDDL)mContext).personal){
+                    String[] keys = {"title","finish_time","info","publicity"};
+                    String[] values = {
+                            fetchInput(R.id.ddl_title),
+                            formattedDDL(),
+                            fetchInput(R.id.ddl_info),
+                            ((Switch)findViewById(R.id.ddl_public)).isChecked()? "0":"1"
+                    };
+                    response = Requester.post(getResources().getString(R.string.server_uri)+"create_task",keys,values);
+                }
+
+                // Save New Group DDL
+                else{
+                    String[] keys = {"title","deadline","info", "group_id"};
+                    String[] values = {
+                            fetchInput(R.id.ddl_title),
+                            formattedDDL(),
+                            fetchInput(R.id.ddl_info),
+                            ((WriteDDL)mContext).group_id
+                    };
+                    response = Requester.post(getResources().getString(R.string.server_uri)+"create_group_task",keys,values);
+                }
             }
 
             try{
@@ -124,7 +151,14 @@ public class WriteDDL extends AppCompatActivity {
                 boolean valid = responseObj.getBoolean("valid");
                 if(valid){
                     Toast.makeText(mContext, "DDL saved", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(mContext,showDDL.class));
+                    if(((WriteDDL) mContext).personal)
+                        startActivity(new Intent(mContext,showDDL.class));
+                    else {
+                        Intent intent = new Intent(mContext, showGroupDDL.class);
+                        intent.putExtra("group_id",group_id);
+                        intent.putExtra("group_name",group_name);
+                        startActivity(intent);
+                    }
                     finish();
                 }
                 else{
@@ -272,6 +306,7 @@ public class WriteDDL extends AppCompatActivity {
             TextView groupname_view = findViewById(R.id.group_name);
             groupname_view.setText(this.group_name);
             groupname_view.setVisibility(View.VISIBLE);
+            findViewById(R.id.ddl_public).setVisibility(View.GONE);
         }
 
     }
