@@ -135,7 +135,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             li_parent.addView(tv_none);
         }
         else {
-            int sz = ddlofmonth.size();
+            int sz = ddlofmonth.size();Log.d("datasize",String.valueOf(sz));
             DDLOfDay ddlofday;
             for (int i = 0; i < sz; ++i) {
                 ddlofday = ddlofmonth.get(i);
@@ -169,7 +169,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                         String dy = deadline.substring(8,10);//该月的第几天
                         int d = Integer.parseInt(dy);
                         if (d != currentDay) {
-                            if (currentDay != 0) {
+                            if (currentDay != 0) {Log.d("savedata",String.valueOf(currentDay)+" "+String.valueOf(ddlofday.data.size()));
                                 ddlofmonth.add(ddlofday);//存储之前某一天的数据
                                 ddlofday.data.clear();
                             }
@@ -192,8 +192,8 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
                         ddlofday.data.add(new DDLText(id,time,status,title,description));
                     }
                 }
-                if (currentDay != 0)//最后出现的一天的ddl
-                    ddlofmonth.add(ddlofday);
+                if (currentDay != 0){//最后出现的一天的ddl
+                    ddlofmonth.add(ddlofday);Log.d("savedata",String.valueOf(currentDay)+" "+String.valueOf(ddlofday.data.size()));}
                 return ddlofmonth;
             }
             else{
@@ -273,10 +273,8 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             JSONObject responseObj = new JSONObject(response);
             boolean success = responseObj.getBoolean("valid");
             if (success){
-                Toast.makeText(this, "退出成功", Toast.LENGTH_SHORT).show();
-                finish();
-            }else{
-                Toast.makeText(this, "退出失败", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
             }
 
         } catch (JSONException e) {

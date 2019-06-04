@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 User.username = username.getText().toString(); // 大家一起share username嘛^^ 每個activity都要用欸
                 Intent intent = new Intent(this,showDDL.class);
                 startActivity(intent);
+                finish();
             }else{
                 String info = responseObj.getString("error_info");
                 Toast.makeText(this, info, Toast.LENGTH_SHORT).show();
