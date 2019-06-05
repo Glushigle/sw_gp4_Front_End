@@ -6,7 +6,9 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -241,6 +243,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         }
         return null;
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data,
                               boolean changeable) {
         //屏幕宽度
@@ -270,7 +273,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         tv_date.setLayoutParams(para2);
         tv_date.setGravity(Gravity.CENTER);//文本居中
         tv_date.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_date.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_date.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_date.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         tv_date.setTypeface(Typeface.DEFAULT_BOLD);
         tv_date.setText(date);//设置显示的文本
@@ -279,7 +282,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         tv_week.setLayoutParams(para2);
         tv_week.setGravity(Gravity.CENTER);//文本居中
         tv_week.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_week.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_week.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_week.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
         tv_week.setTypeface(Typeface.DEFAULT_BOLD);
         tv_week.setText(week);//设置显示的文本
@@ -303,6 +306,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         }
         li_parent.addView(li_date_ddl);//加入布局li_parent
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void onUnchangeable(LinearLayout li_date_ddl, List<DDLText> data) {
         LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -327,7 +331,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_title.setEllipsize(TextUtils.TruncateAt.END);
             tv_title.setSingleLine(true);
             tv_title.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
-            tv_title.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_title.setTextColor(Color.rgb(80,80,80));//文本颜色
             tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP,19);
             tv_title.setTypeface(Typeface.DEFAULT_BOLD);
             //时间
@@ -339,7 +343,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_time.setEllipsize(TextUtils.TruncateAt.END);
             tv_time.setSingleLine(true);
             tv_time.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
-            tv_time.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_time.setTextColor(Color.rgb(80,80,80));//文本颜色
             tv_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             tv_time.setTypeface(Typeface.DEFAULT_BOLD);
             //描述
@@ -351,14 +355,14 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_description.setEllipsize(TextUtils.TruncateAt.END);
             tv_description.setMaxLines(3);
             tv_description.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
-            tv_description.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_description.setTextColor(Color.rgb(80,80,80));//文本颜色
             tv_description.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             //设置内容
             final DDLText ddl = data.get(i);
             if (ddl.ddl_status.equals("1")) {
-                tv_title.setBackgroundColor(Color.rgb(192,192,192));
-                tv_time.setBackgroundColor(Color.rgb(192,192,192));
-                tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                tv_title.setBackgroundColor(Color.rgb(245,245,245));
+                tv_time.setBackgroundColor(Color.rgb(245,245,245));
+                tv_description.setBackgroundColor(Color.rgb(245,245,245));
             }
             else {
                 int color = ColorConverter.fromIdLight(ddl.ddl_id);
@@ -381,9 +385,9 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             li_tmp.setOnLongClickListener(new View.OnLongClickListener() {
                 public boolean onLongClick(View v) {
                     if (ddl.ddl_status.equals("0")) {
-                        tv_title.setBackgroundColor(Color.rgb(192,192,192));
-                        tv_time.setBackgroundColor(Color.rgb(192,192,192));
-                        tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                        tv_title.setBackgroundColor(Color.rgb(245,245,245));
+                        tv_time.setBackgroundColor(Color.rgb(245,245,245));
+                        tv_description.setBackgroundColor(Color.rgb(245,245,245));
                         onFinishTask(ddl.ddl_id);
                     }
                     return true;

@@ -71,9 +71,9 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
         //ll_tmp.setBackgroundResource(0);
         final DDLText ddl = data.get(position);   //获取ddl信息
         if (ddl.ddl_status.equals("1")) {
-            holder.tv_title.setBackgroundColor(Color.rgb(192,192,192));
-            holder.tv_time.setBackgroundColor(Color.rgb(192,192,192));
-            holder.tv_description.setBackgroundColor(Color.rgb(192,192,192));
+            holder.tv_title.setBackgroundColor(Color.rgb(245,245,245));
+            holder.tv_time.setBackgroundColor(Color.rgb(245,245,245));
+            holder.tv_description.setBackgroundColor(Color.rgb(245,245,245));
         }
         else {
             int color = ColorConverter.fromIdLight(ddl.ddl_id);//
@@ -123,9 +123,9 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
             public boolean onLongClick(View v) {
                 if (ddl.ddl_status.equals("0")) {
                     int pos = holder.getLayoutPosition();
-                    holder.tv_title.setBackgroundColor(Color.rgb(192,192,192));
-                    holder.tv_time.setBackgroundColor(Color.rgb(192,192,192));
-                    holder.tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                    holder.tv_title.setBackgroundColor(Color.rgb(245,245,245));
+                    holder.tv_time.setBackgroundColor(Color.rgb(245,245,245));
+                    holder.tv_description.setBackgroundColor(Color.rgb(245,245,245));
                     clickListener.onItemClick(v,pos,leftSlideAdapter.this);
                 }
                 return true;

@@ -126,7 +126,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         ((TextView) convertView.findViewById(R.id.group_name)).setText(group.group_name);
         if(group.firstTask!=null) {
             Toast.makeText(mContext,"DEBUG",Toast.LENGTH_SHORT);
-            ((TextView) convertView.findViewById(R.id.group_first_task)).setText(group.firstTask.time + " " + group.firstTask.title);
+            ((TextView) convertView.findViewById(R.id.group_first_task)).setText(group.firstTask.time.split(" ")[0]+" "+group.firstTask.title);
             ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.VISIBLE);
         }
         else{

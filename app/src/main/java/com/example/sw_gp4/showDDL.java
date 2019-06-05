@@ -6,7 +6,9 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +73,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     };
     String username;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +97,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             @Override
             public void onClick(View v) {
                 new datePickerDialog(showDDL.this, 0, new datePickerDialog.dateSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                     @Override
                     public void onDateSet(DatePicker dp, int year, int month) {
                         String date = String.format("%d年%d月",year,month+1);
@@ -110,6 +114,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         //显示DDL内容
         show_ddl_view(initYear,initMonth+1);
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void show_ddl_view(int year, int month) {
         LinearLayout li_parent = findViewById(R.id.li_ddl_disp);//父布局
         if (li_parent.getChildCount() != 0) {
@@ -202,6 +207,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         }
         return null;
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data) {
         //屏幕宽度
         Resources resources = this.getResources();
@@ -229,7 +235,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         tv_date.setLayoutParams(para2);
         tv_date.setGravity(Gravity.CENTER);//文本居中
         tv_date.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_date.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_date.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_date.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         tv_date.setTypeface(Typeface.DEFAULT_BOLD);
         tv_date.setText(date);//设置显示的文本
@@ -238,7 +244,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         tv_week.setLayoutParams(para2);
         tv_week.setGravity(Gravity.CENTER);//文本居中
         tv_week.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_week.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_week.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_week.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
         tv_week.setTypeface(Typeface.DEFAULT_BOLD);
         tv_week.setText(week);//设置显示的文本
