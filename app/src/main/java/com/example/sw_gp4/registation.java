@@ -17,13 +17,13 @@ public class registation extends AppCompatActivity {
         setContentView(R.layout.activity_registation);
     }
     public String encode(String str){
-        int tmp;
+        int tmp, length = str.length();
         char ch[] = new char[100];
         ch = str.toCharArray();
-        for(int i = 0; i< str.length();i++){
+        for(int i = 0; i < length; i++){
             tmp = (int)ch[i];
-            tmp+=4;
-            ch[i]=(char)tmp;
+            tmp += 4;
+            ch[i] = (char)tmp;
         }
         String code = new String(ch);
         return code;
@@ -33,7 +33,6 @@ public class registation extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.reg_username) ;
         EditText password = (EditText) findViewById(R.id.reg_psw) ;
         EditText password2 = (EditText) findViewById(R.id.reg_psw_2) ;
-        String encoded_password = encode(password.getText().toString());
         boolean hasDigit = false;
         boolean hasLetter = false;
         for(int i=0 ; i<password.getText().toString().length() ; i++){
@@ -72,7 +71,7 @@ public class registation extends AppCompatActivity {
         }
         String full_url = this.getString(R.string.server_uri)+"register";
         String[] keys = {"username","password"};
-        String[] values = {username.getText().toString(), encoded_password};
+        String[] values = {username.getText().toString(), encode(password.getText().toString())};
         String response = Requester.post(full_url, keys, values);
         try {
             //Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
