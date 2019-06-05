@@ -361,7 +361,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
                 tv_description.setBackgroundColor(Color.rgb(192,192,192));
             }
             else {
-                int color = ColorConverter.fromId(i);
+                int color = ColorConverter.fromIdLight(ddl.ddl_id);
                 tv_title.setBackgroundColor(color);
                 tv_time.setBackgroundColor(color);
                 tv_description.setBackgroundColor(color);
