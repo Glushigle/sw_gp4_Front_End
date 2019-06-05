@@ -1,6 +1,7 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -147,6 +149,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         //显示DDL内容
         show_ddl_view(initYear,initMonth+1,isChangeable);
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void show_ddl_view(int year, int month, boolean changeable) {
         LinearLayout li_parent = findViewById(R.id.groupddlDisp);//父布局
         if (li_parent.getChildCount() != 0) {
@@ -440,27 +443,38 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         DDLText ddl = adapter.getData(position);
         onFinishTask(ddl.ddl_id);
     }
-    public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
+    public void onDeleteClick(View v, final int position, final leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
-        DDLText ddl = adapter.getData(position);
-        String full_url = this.getString(R.string.server_uri)+"delete_group_task";
-        String[] keys = {"group_id","task_id"};
-        String[] values = {groupId,ddl.ddl_id};
-        String response = Requester.post(full_url,keys,values);
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if (valid){
-                Toast.makeText(this, "删除DDL成功", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this, "删除DDL失败", Toast.LENGTH_SHORT).show();
-            }
-        } catch(JSONException e) {
-            Toast.makeText(this, "bug in onDeleteClick()", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-        adapter.removeData(position);
+        final Context mContext = this;
+        new AlertDialog.Builder(this)
+                .setMessage("确定要删除DDL吗？")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        DDLText ddl = adapter.getData(position);
+                        String full_url = mContext.getString(R.string.server_uri)+"delete_group_task";
+                        String[] keys = {"group_id","task_id"};
+                        String[] values = {groupId,ddl.ddl_id};
+                        String response = Requester.post(full_url,keys,values);
+                        try {
+                            JSONObject responseObj = new JSONObject(response);
+                            boolean valid = responseObj.getBoolean("valid");
+                            if (valid){
+                                Toast.makeText(mContext, "删除DDL成功", Toast.LENGTH_SHORT).show();
+                                adapter.removeData(position);
+                            }
+                            else{
+                                Toast.makeText(mContext , "删除DDL失败", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch(JSONException e) {
+                            Toast.makeText(mContext , "bug in onDeleteClick()", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
+        adapter.closeMenu();
     }
     public void onEditClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onEditClick");
