@@ -26,13 +26,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public String encode(String str){
+        int tmp;
+        char ch[] = new char[100];
+        ch = str.toCharArray();
+        for(int i = 0; i< str.length();i++){
+            tmp = (int)ch[i];
+            tmp+=4;
+            ch[i]=(char)tmp;
+        }
+        String code = new String(ch);
+        //Toast.makeText(this, code, Toast.LENGTH_SHORT).show();
+        return code;
+    }
+
     public void login(View v) {
         EditText username = (EditText) findViewById(R.id.et_user_name) ;
         EditText password = (EditText) findViewById(R.id.et_psw) ;
 
+        String encoded_password = encode(password.getText().toString());
         String full_url = this.getString(R.string.server_uri)+"login";
         String[] keys = {"username","password"};
-        String[] values = {username.getText().toString(), password.getText().toString()};
+        String[] values = {username.getText().toString(), encoded_password};
         String response = Requester.post(full_url, keys, values);
         try {
             JSONObject responseObj = new JSONObject(response);
