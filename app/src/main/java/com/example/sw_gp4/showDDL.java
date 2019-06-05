@@ -279,6 +279,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             if (success){
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
 
         } catch (JSONException e) {
