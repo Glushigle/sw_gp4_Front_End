@@ -37,12 +37,6 @@ public class TargetGroup extends AppCompatActivity
     private  EditText GN;
     private EditText userAwaiting;
     private ImageButton closeButton;
-    private int colors[] = {
-            R.color.gp_1,
-            R.color.gp_2,
-            R.color.gp_3,
-            R.color.gp_4,
-            R.color.gp_5};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

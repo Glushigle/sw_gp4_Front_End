@@ -63,9 +63,9 @@ public class ListViewAdapterForTargetGroup extends BaseSwipeAdapter {
         ImageButton color_button = (ImageButton) convertView.findViewById(R.id.group_color);
         TextView text_button = (TextView) convertView.findViewById(R.id.group_name);
 
-        ((GradientDrawable) color_button.getBackground()).setColor(
-                ContextCompat.getColor(mContext,colors[position%num_colors]));
-        text_button.setText(TargetGroup.userNames.get(position));
+        String username = TargetGroup.userNames.get(position);
+        ((GradientDrawable) color_button.getBackground()).setColor(ColorConverter.fromName(username));
+        text_button.setText(username);
     }
 
     @Override

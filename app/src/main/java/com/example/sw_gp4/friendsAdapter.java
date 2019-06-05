@@ -60,14 +60,6 @@ public class friendsAdapter extends BaseSwipeAdapter {
         ((TextView) convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
         ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.GONE);
 
-        // Delete friend
-        convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((friends) mContext).OnDeleteClicked(view, position);
-            }
-        });
-
         if(friend.invitation)
            markInvitation(convertView,position);
         else{
@@ -77,6 +69,16 @@ public class friendsAdapter extends BaseSwipeAdapter {
             convertView.findViewById(R.id.group_name).setAlpha(1);
             convertView.findViewById(R.id.group_color).setAlpha(1);
             convertView.setClickable(true);
+
+            // Delete friend
+            View trash = convertView.findViewById(R.id.trash);
+            trash.setVisibility(View.VISIBLE);
+            trash.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((friends) mContext).OnDeleteClicked(view, position);
+                }
+            });
         }
     }
 
@@ -99,9 +101,8 @@ public class friendsAdapter extends BaseSwipeAdapter {
     private void markInvitation(View convertView, final int position){
         convertView.findViewById(R.id.group_name).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
-
-        ((TextView)convertView.findViewById(R.id.group_name)).setWidth(450);
         convertView.setClickable(false);
+        convertView.findViewById(R.id.trash).setVisibility(View.GONE);
 
         Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
         Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);

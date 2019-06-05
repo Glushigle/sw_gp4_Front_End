@@ -28,69 +28,83 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <View
-            android:id="@+id/leader_sign"
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:visibility="invisible" />
-
-        <ImageButton
-            android:id="@+id/group_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/ic_color_round" />
-
         <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-            <Button
-                android:id="@+id/group_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:orientation="horizontal">
+            <View
+                android:id="@+id/leader_sign"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/group_color"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:gravity="bottom"
-                android:text="Group Name"
-                android:textAlignment="2"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
-            <TextView
-                android:id="@+id/group_first_task"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="3dp"
-                android:background="@android:color/transparent"
-                android:gravity="top"
-                android:text="First task"
-                android:textAlignment="2"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:visibility="invisible"
-                android:alpha="0.5"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/ic_color_round" />
+
+            <LinearLayout
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="bottom"
+                    android:text="Group Name"
+                    android:textAlignment="2"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+                <TextView
+                    android:id="@+id/group_first_task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="3dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:text="First task"
+                    android:textAlignment="2"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:visibility="invisible"
+                    android:alpha="0.5"/>
+            </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
+            <Button
+                android:id="@+id/btn_deny"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/ic_deny"
+                android:visibility="invisible"
+                android:layout_gravity="center_vertical"/>
 
-        <Button
-            android:id="@+id/btn_deny"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/ic_deny"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/btn_accept"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/ic_accept"
-            android:visibility="invisible" />
+            <Button
+                android:id="@+id/btn_accept"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/ic_accept"
+                android:visibility="invisible"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
 
     </LinearLayout>
 </com.daimajia.swipe.SwipeLayout>

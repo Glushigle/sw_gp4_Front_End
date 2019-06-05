@@ -61,8 +61,7 @@ public class GroupListAdapter extends BaseSwipeAdapter {
         convertView.findViewById(R.id.group_color).setAlpha((float)0.5);
         convertView.findViewById(R.id.group_first_task).setVisibility(View.GONE);
         ((TextView)convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
-
-        ((TextView)convertView.findViewById(R.id.group_name)).setWidth(450);
+        convertView.findViewById(R.id.trash).setVisibility(View.GONE);
 
         Button btn_deny = (Button)convertView.findViewById(R.id.btn_deny);
         Button btn_accept = (Button)convertView.findViewById(R.id.btn_accept);
@@ -130,7 +129,8 @@ public class GroupListAdapter extends BaseSwipeAdapter {
             ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.VISIBLE);
         }
         else{
-            ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.INVISIBLE);
+            ((TextView) convertView.findViewById(R.id.group_first_task)).setVisibility(View.GONE);
+            ((TextView)convertView.findViewById(R.id.group_name)).setGravity(Gravity.CENTER_VERTICAL);
         }
 
         // Group item clicked: share the listener with mListView
@@ -158,15 +158,17 @@ public class GroupListAdapter extends BaseSwipeAdapter {
             convertView.findViewById(R.id.group_name).setAlpha(1);
             convertView.findViewById(R.id.group_color).setAlpha(1);
             convertView.setClickable(true);
-        }
 
-        // Delete
-        convertView.findViewById(R.id.trash).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((GroupList) mContext).OnDeleteClicked(view, position);
-            }
-        });
+            // Delete
+            View trash = convertView.findViewById(R.id.trash);
+            trash.setVisibility(View.VISIBLE);
+            trash.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((GroupList) mContext).OnDeleteClicked(view, position);
+                }
+            });
+        }
     }
 
     @Override
