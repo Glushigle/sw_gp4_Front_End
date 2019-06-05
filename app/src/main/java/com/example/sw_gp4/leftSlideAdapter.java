@@ -2,7 +2,9 @@ package com.example.sw_gp4;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +62,7 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
         View v = LayoutInflater.from(context).inflate(R.layout.left_slide_view,parent,false);
         return new VH(v);
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull final VH holder, final int position) {
         Log.d("adapter","onBindViewHolder"+String.valueOf(position));
@@ -68,12 +71,12 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
         //ll_tmp.setBackgroundResource(0);
         final DDLText ddl = data.get(position);   //获取ddl信息
         if (ddl.ddl_status.equals("1")) {
-            holder.tv_title.setBackgroundColor(Color.rgb(192,192,192));
-            holder.tv_time.setBackgroundColor(Color.rgb(192,192,192));
-            holder.tv_description.setBackgroundColor(Color.rgb(192,192,192));
+            holder.tv_title.setBackgroundColor(Color.rgb(245,245,245));
+            holder.tv_time.setBackgroundColor(Color.rgb(245,245,245));
+            holder.tv_description.setBackgroundColor(Color.rgb(245,245,245));
         }
         else {
-            int color = ColorConverter.fromId(position);
+            int color = ColorConverter.fromIdLight(ddl.ddl_id);//
             holder.tv_title.setBackgroundColor(color);
             holder.tv_time.setBackgroundColor(color);
             holder.tv_description.setBackgroundColor(color);
@@ -120,9 +123,9 @@ public class leftSlideAdapter extends RecyclerView.Adapter<leftSlideAdapter.VH> 
             public boolean onLongClick(View v) {
                 if (ddl.ddl_status.equals("0")) {
                     int pos = holder.getLayoutPosition();
-                    holder.tv_title.setBackgroundColor(Color.rgb(192,192,192));
-                    holder.tv_time.setBackgroundColor(Color.rgb(192,192,192));
-                    holder.tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                    holder.tv_title.setBackgroundColor(Color.rgb(245,245,245));
+                    holder.tv_time.setBackgroundColor(Color.rgb(245,245,245));
+                    holder.tv_description.setBackgroundColor(Color.rgb(245,245,245));
                     clickListener.onItemClick(v,pos,leftSlideAdapter.this);
                 }
                 return true;

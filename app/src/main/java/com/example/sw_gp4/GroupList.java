@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -198,10 +200,10 @@ public class GroupList extends AppCompatActivity {
         addButton = (ImageButton) findViewById(R.id.imageButton);
         addButton.setOnClickListener(new View.OnClickListener()
         {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(mContext, "添加小组", Toast.LENGTH_SHORT).show();
                 OnAddClicked(v);
             }
         });
@@ -239,11 +241,11 @@ public class GroupList extends AppCompatActivity {
         mAdapter.closeAllItems();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void OnAddClicked(View view)
     {
         final EditText editText = new EditText(GroupList.this);
         new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("请输入小组名").setView(editText)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener()
                 {

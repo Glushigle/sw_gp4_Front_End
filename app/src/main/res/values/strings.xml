@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">sw_gp4</string>
+    <string name="app_name">ShareDDL</string>
     <string name="title_activity_login">登录</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

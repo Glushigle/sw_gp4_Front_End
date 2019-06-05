@@ -36,4 +36,21 @@ public class ColorConverter {
         }
         return fromId(fake_id);
     }
+
+    static final int a = 237;
+    static final int b = 255;
+    static final int c = a+15;
+    static final int stride = 3;
+    public static int fromIdLight(int id){
+        int[] RGB = {-1,-1,-1};
+        RGB[id%3] = b;
+        if(RGB[id%2]<0) RGB[id%2] = a;
+        else RGB[id%2+1] = a;
+        for(int i=0; i<3; ++i){ if(RGB[i]<0) RGB[i] = a+id*stride%(b-a); }
+
+        return Color.argb(255, RGB[0], RGB[1], RGB[2]);
+    }
+    public static int fromIdLight(String id_str){
+        return fromIdLight(Integer.parseInt(id_str));
+    }
 }

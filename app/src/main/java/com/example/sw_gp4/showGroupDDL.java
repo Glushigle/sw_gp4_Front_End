@@ -1,13 +1,17 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -145,6 +149,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         //显示DDL内容
         show_ddl_view(initYear,initMonth+1,isChangeable);
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void show_ddl_view(int year, int month, boolean changeable) {
         LinearLayout li_parent = findViewById(R.id.groupddlDisp);//父布局
         if (li_parent.getChildCount() != 0) {
@@ -241,6 +246,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         }
         return null;
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data,
                               boolean changeable) {
         //屏幕宽度
@@ -270,7 +276,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         tv_date.setLayoutParams(para2);
         tv_date.setGravity(Gravity.CENTER);//文本居中
         tv_date.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_date.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_date.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_date.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         tv_date.setTypeface(Typeface.DEFAULT_BOLD);
         tv_date.setText(date);//设置显示的文本
@@ -279,7 +285,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         tv_week.setLayoutParams(para2);
         tv_week.setGravity(Gravity.CENTER);//文本居中
         tv_week.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_week.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_week.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_week.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
         tv_week.setTypeface(Typeface.DEFAULT_BOLD);
         tv_week.setText(week);//设置显示的文本
@@ -303,6 +309,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         }
         li_parent.addView(li_date_ddl);//加入布局li_parent
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void onUnchangeable(LinearLayout li_date_ddl, List<DDLText> data) {
         LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -327,7 +334,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_title.setEllipsize(TextUtils.TruncateAt.END);
             tv_title.setSingleLine(true);
             tv_title.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
-            tv_title.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_title.setTextColor(Color.rgb(80,80,80));//文本颜色
             tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP,19);
             tv_title.setTypeface(Typeface.DEFAULT_BOLD);
             //时间
@@ -339,7 +346,7 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_time.setEllipsize(TextUtils.TruncateAt.END);
             tv_time.setSingleLine(true);
             tv_time.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
-            tv_time.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_time.setTextColor(Color.rgb(80,80,80));//文本颜色
             tv_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             tv_time.setTypeface(Typeface.DEFAULT_BOLD);
             //描述
@@ -351,17 +358,17 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             tv_description.setEllipsize(TextUtils.TruncateAt.END);
             tv_description.setMaxLines(3);
             tv_description.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);//文本居中靠左
-            tv_description.setTextColor(Color.rgb(0,0,0));//文本颜色
+            tv_description.setTextColor(Color.rgb(80,80,80));//文本颜色
             tv_description.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             //设置内容
             final DDLText ddl = data.get(i);
             if (ddl.ddl_status.equals("1")) {
-                tv_title.setBackgroundColor(Color.rgb(192,192,192));
-                tv_time.setBackgroundColor(Color.rgb(192,192,192));
-                tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                tv_title.setBackgroundColor(Color.rgb(245,245,245));
+                tv_time.setBackgroundColor(Color.rgb(245,245,245));
+                tv_description.setBackgroundColor(Color.rgb(245,245,245));
             }
             else {
-                int color = ColorConverter.fromId(i);
+                int color = ColorConverter.fromIdLight(ddl.ddl_id);
                 tv_title.setBackgroundColor(color);
                 tv_time.setBackgroundColor(color);
                 tv_description.setBackgroundColor(color);
@@ -381,9 +388,9 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
             li_tmp.setOnLongClickListener(new View.OnLongClickListener() {
                 public boolean onLongClick(View v) {
                     if (ddl.ddl_status.equals("0")) {
-                        tv_title.setBackgroundColor(Color.rgb(192,192,192));
-                        tv_time.setBackgroundColor(Color.rgb(192,192,192));
-                        tv_description.setBackgroundColor(Color.rgb(192,192,192));
+                        tv_title.setBackgroundColor(Color.rgb(245,245,245));
+                        tv_time.setBackgroundColor(Color.rgb(245,245,245));
+                        tv_description.setBackgroundColor(Color.rgb(245,245,245));
                         onFinishTask(ddl.ddl_id);
                     }
                     return true;
@@ -436,27 +443,38 @@ public class showGroupDDL extends AppCompatActivity implements leftSlideAdapter.
         DDLText ddl = adapter.getData(position);
         onFinishTask(ddl.ddl_id);
     }
-    public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
+    public void onDeleteClick(View v, final int position, final leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
-        DDLText ddl = adapter.getData(position);
-        String full_url = this.getString(R.string.server_uri)+"delete_group_task";
-        String[] keys = {"group_id","task_id"};
-        String[] values = {groupId,ddl.ddl_id};
-        String response = Requester.post(full_url,keys,values);
-        try {
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");
-            if (valid){
-                Toast.makeText(this, "删除DDL成功", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this, "删除DDL失败", Toast.LENGTH_SHORT).show();
-            }
-        } catch(JSONException e) {
-            Toast.makeText(this, "bug in onDeleteClick()", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-        adapter.removeData(position);
+        final Context mContext = this;
+        new AlertDialog.Builder(this)
+                .setMessage("确定要删除DDL吗？")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        DDLText ddl = adapter.getData(position);
+                        String full_url = mContext.getString(R.string.server_uri)+"delete_group_task";
+                        String[] keys = {"group_id","task_id"};
+                        String[] values = {groupId,ddl.ddl_id};
+                        String response = Requester.post(full_url,keys,values);
+                        try {
+                            JSONObject responseObj = new JSONObject(response);
+                            boolean valid = responseObj.getBoolean("valid");
+                            if (valid){
+                                Toast.makeText(mContext, "删除DDL成功", Toast.LENGTH_SHORT).show();
+                                adapter.removeData(position);
+                            }
+                            else{
+                                Toast.makeText(mContext , "删除DDL失败", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch(JSONException e) {
+                            Toast.makeText(mContext , "bug in onDeleteClick()", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
+        adapter.closeMenu();
     }
     public void onEditClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onEditClick");

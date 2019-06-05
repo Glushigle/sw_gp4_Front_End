@@ -1,13 +1,17 @@
 package com.example.sw_gp4;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -71,6 +75,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
     };
     String username;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +99,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             @Override
             public void onClick(View v) {
                 new datePickerDialog(showDDL.this, 0, new datePickerDialog.dateSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                     @Override
                     public void onDateSet(DatePicker dp, int year, int month) {
                         String date = String.format("%d年%d月",year,month+1);
@@ -110,6 +116,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         //显示DDL内容
         show_ddl_view(initYear,initMonth+1);
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void show_ddl_view(int year, int month) {
         LinearLayout li_parent = findViewById(R.id.li_ddl_disp);//父布局
         if (li_parent.getChildCount() != 0) {
@@ -202,6 +209,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         }
         return null;
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void add_ddl_view(LinearLayout li_parent, String date, String week, List<DDLText> data) {
         //屏幕宽度
         Resources resources = this.getResources();
@@ -229,7 +237,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         tv_date.setLayoutParams(para2);
         tv_date.setGravity(Gravity.CENTER);//文本居中
         tv_date.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_date.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_date.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_date.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         tv_date.setTypeface(Typeface.DEFAULT_BOLD);
         tv_date.setText(date);//设置显示的文本
@@ -238,7 +246,7 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
         tv_week.setLayoutParams(para2);
         tv_week.setGravity(Gravity.CENTER);//文本居中
         tv_week.setBackgroundColor(Color.rgb(255,255,255));//背景颜色
-        tv_week.setTextColor(Color.rgb(0,0,0));//文本颜色
+        tv_week.setTextColor(Color.rgb(80,80,80));//文本颜色
         tv_week.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
         tv_week.setTypeface(Typeface.DEFAULT_BOLD);
         tv_week.setText(week);//设置显示的文本
@@ -299,27 +307,38 @@ public class showDDL extends AppCompatActivity implements leftSlideAdapter.slide
             e.printStackTrace();
         }
     }
-    public void onDeleteClick(View v, int position, leftSlideAdapter adapter) {
+    public void onDeleteClick(View v, final int position, final leftSlideAdapter adapter) {
         Log.d("disp","onDeleteClick");
-        DDLText ddl = adapter.getData(position);
-        String full_url = this.getString(R.string.server_uri)+"delete_task";
-        String[] keys = {"task_id"};
-        String[] values = {ddl.ddl_id};Log.d("taskid",values[0]);
-        String response = Requester.post(full_url,keys,values);Log.d("debug","0");
-        try {Log.d("debug","1");
-            JSONObject responseObj = new JSONObject(response);
-            boolean valid = responseObj.getBoolean("valid");Log.d("debug","2");
-            if (valid){
-                Toast.makeText(this, "删除DDL成功", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this, "删除DDL失败", Toast.LENGTH_SHORT).show();
-            }
-        } catch(JSONException e) {
-            Toast.makeText(this, "bug in onDeleteClick()", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-        adapter.removeData(position);
+        final Context mContext = this;
+        new AlertDialog.Builder(this)
+                .setMessage("确定要删除DDL吗？")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        DDLText ddl = adapter.getData(position);
+                        String full_url = mContext.getString(R.string.server_uri)+"delete_task";
+                        String[] keys = {"task_id"};
+                        String[] values = {ddl.ddl_id};Log.d("taskid",values[0]);
+                        String response = Requester.post(full_url,keys,values);Log.d("debug","0");
+                        try {Log.d("debug","1");
+                            JSONObject responseObj = new JSONObject(response);
+                            boolean valid = responseObj.getBoolean("valid");Log.d("debug","2");
+                            if (valid){
+                                Toast.makeText(mContext, "删除DDL成功", Toast.LENGTH_SHORT).show();
+                                adapter.removeData(position);
+                            }
+                            else{
+                                Toast.makeText(mContext, "删除DDL失败", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch(JSONException e) {
+                            Toast.makeText(mContext, "bug in onDeleteClick()", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
+        adapter.closeMenu();
     }
     public void onEditClick(View v, int position, leftSlideAdapter adapter) {
         Log.d("disp","onEditClick");
