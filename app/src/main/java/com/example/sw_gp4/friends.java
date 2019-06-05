@@ -94,6 +94,9 @@ public class friends extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(myfriends.get(position).invitation) return;
+
                 Toast.makeText(mContext, "点选好友"+myfriends.get(position).username, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, FriendTask.class);
                 intent.putExtra("color", myfriends.get(position).color);
